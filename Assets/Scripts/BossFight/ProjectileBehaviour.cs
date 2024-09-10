@@ -25,7 +25,12 @@ public class ProjectileBehaviour : MonoBehaviour
     private void OnTriggerEnter(Collider _otherBody)
     {
         Destroy(gameObject);
-        //if (ProjectileType == Type.Bonus && _otherBody.TryGetComponent(out ScriptNamePlayer nomVar)
-        //nomVar.FonctionACall();
+        //if (_otherBody.TryGetComponent(out ScriptNamePlayer nomVar)
+        //{
+        //    if (ProjectileType == Type.Bonus)
+        //        nomVar.FonctionACall();
+        //    else if (ProjectileType == Type.Normal)
+        //        nomVar.FonctionACall();
+        //}
     }
 }
