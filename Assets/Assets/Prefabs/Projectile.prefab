@@ -100,6 +100,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {x: 0, y: 0, z: 0}
   Speed: 10
+  ProjectileType: 0
+  LayerMaskPostBounce:
+    serializedVersion: 2
+    m_Bits: 288
 --- !u!65 &2829189892451140568
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -16,6 +16,8 @@ public class BossAttackManager : MonoBehaviour
         }
 
         StartCoroutine(PlayerShootLoop());
+
+        //StartCoroutine(GetComponent<BossDash>().DashToPlayer(Target.transform.position));
     }
 
     [Header("Player Shoot")]
