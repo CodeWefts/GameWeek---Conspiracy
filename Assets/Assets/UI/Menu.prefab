@@ -198,6 +198,8 @@ GameObject:
   - component: {fileID: 7846580375375465393}
   - component: {fileID: 270595684435832825}
   - component: {fileID: 2997816462887626609}
+  - component: {fileID: 7507611454952681738}
+  - component: {fileID: 8570991699179735805}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -307,6 +309,40 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7507611454952681738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978257849035628570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"Settings
+      Menu","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 9117935805739759708}
+--- !u!114 &8570991699179735805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978257849035628570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"ButtonSettings","summary":null,"pan":{"x":-15.33334,"y":64.33333},"zoom":0.9,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-225.0,"y":-77.0},"guid":"1a5c8663-a60c-422f-a9f5-bd9d5363658a","$version":"A","$type":"Unity.VisualScripting.OnButtonClick","$id":"10"},{"chainable":false,"parameterNames":["value"],"member":{"name":"SetActive","parameterTypes":["System.Boolean"],"targetType":"UnityEngine.GameObject","targetTypeName":"UnityEngine.GameObject","$version":"A"},"defaultValues":{"target":null,"%value":{"$content":true,"$type":"System.Boolean"}},"position":{"x":26.0,"y":-78.0},"guid":"2eab731c-6522-45c7-a802-4bbbbafd2089","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"specifyFallback":false,"kind":"Object","defaultValues":{"name":{"$content":"Settings
+      Menu","$type":"System.String"},"object":null},"position":{"x":-238.0,"y":53.0},"guid":"b58ed135-ac82-453b-88f8-4031e9cd53a9","$version":"A","$type":"Unity.VisualScripting.GetVariable","$id":"16"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"8ce4e386-8f68-41ad-847d-102e220788f8","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"16"},"sourceKey":"value","destinationUnit":{"$ref":"12"},"destinationKey":"target","guid":"369aae2d-3947-4a9e-b8bf-307971c5f464","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}}'
+    _objectReferences: []
 --- !u!1 &1077159741209863875
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +646,8 @@ GameObject:
   - component: {fileID: 7831214425507085702}
   - component: {fileID: 3766732856657044100}
   - component: {fileID: 6946779548975224118}
+  - component: {fileID: 6546575575525294520}
+  - component: {fileID: 2351607510369548547}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -719,6 +757,36 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6546575575525294520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335331886243156461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!114 &2351607510369548547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335331886243156461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"QuitButton","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-260.0,"y":-64.0},"guid":"ef4c85de-e344-43b1-b9ff-db26816da29f","$version":"A","$type":"Unity.VisualScripting.OnButtonClick","$id":"10"},{"chainable":false,"parameterNames":[],"member":{"name":"Quit","parameterTypes":[],"targetType":"UnityEngine.Application","targetTypeName":"UnityEngine.Application","$version":"A"},"defaultValues":{},"position":{"x":256.0,"y":-54.0},"guid":"7fe961c6-32fa-4e09-a034-bb1bd4d038a2","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"defaultValues":{"duration":{"$content":0.5,"$type":"System.Single"},"unscaledTime":{"$content":false,"$type":"System.Boolean"}},"position":{"x":-58.0,"y":-70.0},"guid":"9dd4ce66-821e-4fd0-8e69-121adb54b831","$version":"A","$type":"Unity.VisualScripting.Timer","$id":"16"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"16"},"destinationKey":"start","guid":"21088f4a-592f-4d5b-8feb-755abcf4296f","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"16"},"sourceKey":"completed","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"0b08297f-9b42-428c-83c9-bfe5a86965b0","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}}}'
+    _objectReferences: []
 --- !u!1 &1402319624789767193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,11 +1126,11 @@ RectTransform:
   m_Children:
   - {fileID: 5722546305783509884}
   - {fileID: 3237940785636995767}
-  m_Father: {fileID: 3925172584687382553}
+  m_Father: {fileID: 2915889442799990313}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00035957524, y: 58.573795}
+  m_AnchoredPosition: {x: -0.000034398545, y: 91.10002}
   m_SizeDelta: {x: 350.12, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3540953632414493683
@@ -1213,6 +1281,8 @@ GameObject:
   - component: {fileID: 5187155905992888064}
   - component: {fileID: 1757298117231448557}
   - component: {fileID: 2163371071218939081}
+  - component: {fileID: 9009116457446110511}
+  - component: {fileID: 7815780282465349155}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -1233,11 +1303,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3076910431316714015}
-  m_Father: {fileID: 3925172584687382553}
+  m_Father: {fileID: 2915889442799990313}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00039397378, y: -133.62622}
+  m_AnchoredPosition: {x: 0, y: -101.100006}
   m_SizeDelta: {x: 140, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5187155905992888064
@@ -1322,6 +1392,40 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9009116457446110511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3584377872266142700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"Settings
+      Menu","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 9117935805739759708}
+--- !u!114 &7815780282465349155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3584377872266142700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"BackButton","summary":null,"pan":{"x":88.41537,"y":0.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-207.0,"y":-40.0},"guid":"8402f4db-4761-4285-8156-4a2e8038859c","$version":"A","$type":"Unity.VisualScripting.OnButtonClick","$id":"10"},{"chainable":false,"parameterNames":["value"],"member":{"name":"SetActive","parameterTypes":["System.Boolean"],"targetType":"UnityEngine.GameObject","targetTypeName":"UnityEngine.GameObject","$version":"A"},"defaultValues":{"target":null,"%value":{"$content":false,"$type":"System.Boolean"}},"position":{"x":20.0,"y":-47.0},"guid":"d9f1e6fa-f3ff-4a9b-b618-c01da2f4f9d5","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"specifyFallback":false,"kind":"Object","defaultValues":{"name":{"$content":"Settings
+      Menu","$type":"System.String"},"object":null},"position":{"x":-203.0,"y":115.0},"guid":"66f939b3-8fdc-43ab-a834-26a5e0935d94","$version":"A","$type":"Unity.VisualScripting.GetVariable","$id":"16"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"4d048669-dfc1-4235-9a97-e736704698a1","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"16"},"sourceKey":"value","destinationUnit":{"$ref":"12"},"destinationKey":"target","guid":"753c3372-b7a1-4eb0-8d69-e419938ebe78","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}}'
+    _objectReferences: []
 --- !u!1 &3854995988831180145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,11 +1458,11 @@ RectTransform:
   - {fileID: 7959723640411498461}
   - {fileID: 3964881466278514649}
   - {fileID: 960550339361611228}
-  m_Father: {fileID: 3925172584687382553}
+  m_Father: {fileID: 989620545273671135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00039397378, y: -28.526213}
+  m_AnchoredPosition: {x: 0, y: -0.000011444092}
   m_SizeDelta: {x: 250.33, y: 21.406}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5994289303293432917
@@ -1439,7 +1543,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6655036147103322945}
+  - {fileID: 989620545273671135}
+  - {fileID: 2782571996756893143}
   m_Father: {fileID: 3925172584687382553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -1646,12 +1753,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3925172584687382553}
+  m_Children:
+  - {fileID: 6984888564702547763}
+  - {fileID: 5250785536310496154}
+  m_Father: {fileID: 2915889442799990313}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00039397378, y: -28.526203}
+  m_AnchoredPosition: {x: 0, y: 4.0000153}
   m_SizeDelta: {x: 350.12, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5770278432200801582
@@ -1961,11 +2070,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3925172584687382553}
+  m_Father: {fileID: 989620545273671135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -19.99963, y: -3.5262127}
+  m_AnchoredPosition: {x: -20.000025, y: 24.999989}
   m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4346656959413248450
@@ -2171,11 +2280,6 @@ RectTransform:
   - {fileID: 8199394004108024639}
   - {fileID: 2265735398327330104}
   - {fileID: 2915889442799990313}
-  - {fileID: 6655036147103322945}
-  - {fileID: 989620545273671135}
-  - {fileID: 6984888564702547763}
-  - {fileID: 5250785536310496154}
-  - {fileID: 2782571996756893143}
   m_Father: {fileID: 4250328869254864571}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
