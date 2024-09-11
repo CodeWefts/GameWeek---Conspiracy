@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Speed: 1
   m_DashPower: 3
   m_TimeBtwDashes: 1
-  m_DashLength: 0.5
+  m_DashDuration: 0.5
 --- !u!114 &560125562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,9 +387,12 @@ MonoBehaviour:
   m_AttackDamage: 1
   m_TimeBtwAttacks: 1
   m_MaxHealth: 3
-  m_EnemyLayer:
+  m_BossLayer:
     serializedVersion: 2
     m_Bits: 64
+  m_ProjectileLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &657912859
 GameObject:
   m_ObjectHideFlags: 0

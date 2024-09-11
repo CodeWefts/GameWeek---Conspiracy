@@ -11,13 +11,17 @@ public class PlayerCombat : MonoBehaviour
 
     private int m_Health;
 
-    [SerializeField] private LayerMask m_EnemyLayer;
+    [SerializeField] private LayerMask m_BossLayer;
+    [SerializeField] private LayerMask m_ProjectileLayer;
+    private LayerMask m_CurrentLayerMask;
 
     private string m_MeleeAttack = "MeleeAttack";
 
     private Collider[] m_EnemiesHit;
 
     private float m_AttackTimer;
+
+    private bool m_IsBossVulnerable = true;
 
     // Start is called before the first frame update
     void Start()
@@ -40,12 +44,14 @@ public class PlayerCombat : MonoBehaviour
 
     private void MeleeAttack()
     {
-        m_EnemiesHit = Physics.OverlapSphere(transform.position, m_AttackRange, m_EnemyLayer);
+        if (m_IsBossVulnerable) m_CurrentLayerMask = m_BossLayer;
+        else m_CurrentLayerMask = m_ProjectileLayer;
+
+        m_EnemiesHit = Physics.OverlapSphere(transform.position, m_AttackRange, m_CurrentLayerMask);
 
         foreach (Collider lEnemy in m_EnemiesHit)
         {
             Debug.Log("Hit :"+ lEnemy.gameObject.name);
-
         }
     }
 

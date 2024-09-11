@@ -16,9 +16,9 @@ public class PlayerMovement : MonoBehaviour
     private string m_Dash = "Dash";
 
     private bool m_IsDashing;
-    [SerializeField, Range(1f, 5f)] private float m_DashPower;
+    [SerializeField, Range(1f, 10f)] private float m_DashPower;
     [SerializeField] private float m_TimeBtwDashes = 1f;
-    [SerializeField] private float m_DashLength = 0.5f;
+    [SerializeField] private float m_DashDuration = 0.5f;
     private float m_IsDashingTimer;
     private float m_DashTimer;
     private float m_DashMultiplicator = 1f;
@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
         {
             m_IsDashingTimer += Time.deltaTime;
 
-            if (m_IsDashingTimer >= m_DashLength)
+            if (m_IsDashingTimer >= m_DashDuration)
             {
                 m_IsDashing = false;
                 m_IsDashingTimer = 0f;
