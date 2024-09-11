@@ -3,6 +3,25 @@ using UnityEngine;
 
 public class BossManager : MonoBehaviour
 {
+    private BossDash m_DashScrpt = null;
+
+    private BossProjectile m_ProjScrpt = null;
+
+    private AOESpawnManager m_AOESpawnManager = null;
+
+    // turn to true when starting an attack, gets turned to false by the other scripts
+    [HideInInspector] public bool IsBossBussy = false;
+
+    [HideInInspector] public bool IsBossVulnerable = false;
+
+    public int Health = 10;
+
+    [Header("Boss Phases")]
+    public int CurrentBossPhase = 1;
+
+    [SerializeField] private int m_HealthEndFirstPhase = 8;
+    [SerializeField] private int m_HealthEndSecondPhase = 5;
+
     private enum ACTIONS
     {
         AOE_Random,
@@ -17,17 +36,9 @@ public class BossManager : MonoBehaviour
 
     private List<ACTIONS> m_Previous; // latest actions get added to 0
 
-    [SerializeField] private int m_HealthEndFirstPhase = 8;
-    [SerializeField] private int m_HealthEndSecondPhase = 5;
+    private List<ACTIONS> m_ThirdWavePool;
+
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
-
-    // turn to true when starting an attack, gets turned to false by the other scripts
-    [HideInInspector] public bool IsBossBussy = false;
-    [HideInInspector] public bool IsBossVulnerable = false;
-
-    public int Health = 10;
-    [Header("Boss Phases")] public int CurrentBossPhase = 1;
-
     private void Start()
     {
         if (!TryGetComponent(out m_DashScrpt)) Debug.LogError("BossDash script not found in BossManager");
