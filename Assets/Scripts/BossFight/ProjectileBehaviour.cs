@@ -2,18 +2,23 @@ using UnityEngine;
 
 public class ProjectileBehaviour : MonoBehaviour
 {
-    public Vector3 Target = Vector3.zero;
+    [HideInInspector] public Vector3 Target = Vector3.zero;
 
     public float Speed = 2f;
 
     private Vector3 m_Direction = Vector3.zero;
 
+    public int PlayerDamage = 1;
+
+    public int BossDamage = 1;
+
     public enum Type
     {
         Normal,
-        Bouncy,
-        Bounced,
-        Bonus
+        BouncyRed,
+        BouncedRed,
+        BouncyGreen,
+        BouncedGreen
     }
 
     [HideInInspector] public Type ProjectileType = Type.Normal;
@@ -22,30 +27,40 @@ public class ProjectileBehaviour : MonoBehaviour
 
     public string BossName = "Boss";
 
+    [HideInInspector] public BossManager BossManager = null;
+
     private void Start() => m_Direction = (Target - transform.position).normalized;
 
     private void Update() => transform.position += Speed * Time.deltaTime * m_Direction;
 
     public void ProjectileBounced()
     {
-        Target = GameObject.Find(BossName).transform.position;
-        m_Direction = (Target - transform.position).normalized;
+        if (ProjectileType == Type.BouncyGreen || ProjectileType == Type.BouncyRed)
+        {
+            if (ProjectileType == Type.BouncyGreen)
+                ProjectileType = Type.BouncedGreen;
+            else if (ProjectileType == Type.BouncyRed)
+                ProjectileType = Type.BouncedRed;
 
-        GetComponent<BoxCollider>().excludeLayers = LayerMaskPostBounce;
+            Target = BossManager.gameObject.transform.position;
+            m_Direction = (Target - transform.position).normalized;
 
-        ProjectileType = Type.Bounced;
+            GetComponent<BoxCollider>().excludeLayers = LayerMaskPostBounce;
+        }
     }
 
     // Uses layers to ignore certain layers (like other particules)
     private void OnTriggerEnter(Collider _otherBody)
     {
+        if (ProjectileType == Type.BouncedGreen || ProjectileType == Type.BouncedRed
+            && _otherBody.gameObject.name == BossName)
+            BossManager.TakeDamage(BossDamage);
+        else if (_otherBody.gameObject.TryGetComponent(out PlayerCombat playerScript))
+        {
+            Debug.Log("Player is hit by projectile");
+            playerScript.DamageTaken(PlayerDamage);
+        }
+
         Destroy(gameObject);
-        //if (_otherBody.TryGetComponent(out PlayerScriptName playerScript)
-        //{
-        //    if (ProjectileType == Type.Bonus)
-        //        playerScript.FonctionACallPourHeal();
-        //    else
-        //        playerScript.FonctionACallPourDamage();
-        //}
     }
 }

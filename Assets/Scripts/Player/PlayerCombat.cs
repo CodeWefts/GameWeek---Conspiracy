@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
@@ -20,14 +18,14 @@ public class PlayerCombat : MonoBehaviour
     private float m_AttackTimer;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         m_Health = m_MaxHealth;
         m_AttackTimer = m_TimeBtwAttacks;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetButtonDown(m_MeleeAttack) && m_AttackTimer >= m_TimeBtwAttacks)
         {
@@ -44,8 +42,7 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider lEnemy in m_EnemiesHit)
         {
-            Debug.Log("Hit :"+ lEnemy.gameObject.name);
-
+            Debug.Log("Hit :" + lEnemy.gameObject.name);
         }
     }
 
@@ -64,12 +61,10 @@ public class PlayerCombat : MonoBehaviour
 
     public void ProjectileAbsorbed()
     {
-
     }
 
     public void Defeat()
     {
-
     }
 
     private void OnDrawGizmosSelected()

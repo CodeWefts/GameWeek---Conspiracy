@@ -10,7 +10,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - Player
   - Water
   - UI
   - Boss
@@ -19,9 +19,6 @@ TagManager:
   - Phone
   - AOEZone
   - DespawnZone
-  - 
-  - 
-  - 
   - 
   - 
   - 
