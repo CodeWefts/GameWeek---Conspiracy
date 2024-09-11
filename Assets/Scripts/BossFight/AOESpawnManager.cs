@@ -30,6 +30,7 @@ public class AOESpawnManager : MonoBehaviour
     [SerializeField] public GameObject AOEPhoneObject;
     [SerializeField] public GameObject PlayerCameraObject;
     [SerializeField] public GameObject PlayerObject;
+    [SerializeField] public GameObject CircleMapObject;
 
     // Variables for the Waves
     [SerializeField] public Vector3 lastPosition;
@@ -43,13 +44,14 @@ public class AOESpawnManager : MonoBehaviour
     private bool isCoroutine = false;
     private double circleRadius = 0.0f;
     private double AOEZoneRadius;
+    [SerializeField] private float timerLeft = 1.0f;
 
     // Start is called before the first frame update
     // ---------------------------------------------
     void Start()
     {
         // Get Sizes
-        circleRadius = gameObject.transform.localScale.x / 2.0f; // Get the radius of the map
+        circleRadius = CircleMapObject.gameObject.transform.localScale.x / 2.0f; // Get the radius of the map
         AOEZoneRadius = AOEZoneObject.transform.localScale.x / 2.0f; // Get the radius of the AOE's Zone
 
         // Get Positions
@@ -77,8 +79,8 @@ public class AOESpawnManager : MonoBehaviour
         double radius = circleRadius * Math.Sqrt(UnityEngine.Random.Range(0.0f, 1.0f)) - AOEZoneObject.transform.localScale.x;
         double theta = UnityEngine.Random.Range(0.0f, 1.0f) * 2 * Math.PI;
 
-        double positionX = gameObject.transform.position.x + radius * Math.Cos(theta);
-        double positionZ = gameObject.transform.position.z + radius * Math.Sin(theta);
+        double positionX = CircleMapObject.gameObject.transform.position.x + radius * Math.Cos(theta);
+        double positionZ = CircleMapObject.gameObject.transform.position.z + radius * Math.Sin(theta);
 
         // Set the position on the circle
         AOEPosition = new Vector3((float)positionX, 0.01f, (float)positionZ);
@@ -93,7 +95,13 @@ public class AOESpawnManager : MonoBehaviour
         if (isLeftToRight)
         {
             if (lastPosition.x > maximumPosition.x)
+            {
                 isWavePhaseFinish = true;
+
+                // TODOLETE AND MOVE ON THE BOSS MANAGER : JUST FOR THE BUILD
+                // ----------------------------------------------------------
+                isRandomPhase = true;
+            }
 
             if (lastPosition.z > maximumPosition.z && lastPosition.x < maximumPosition.x)
                 lastPosition.z -= (float)AOEZoneRadius;
@@ -129,7 +137,7 @@ public class AOESpawnManager : MonoBehaviour
     // --------------------
     private void AOESpawn(Vector3 AOEPosition)
     {
-        if (Distance(AOEPosition, gameObject.transform.position) > circleRadius)
+        if (Distance(AOEPosition, CircleMapObject.gameObject.transform.position) > circleRadius)
             return;
 
         SetFrequencyOfSpecialAttack();
@@ -196,9 +204,19 @@ public class AOESpawnManager : MonoBehaviour
     {
         while (isRandomPhase && isBossAOEPhase)
         {
+            timerLeft -= Time.deltaTime * 3;
             AOESpawn(SetAOERandomSpawnPosition());
+            if (timerLeft <= 0.0f)
+            {
+                isRandomPhase = false;
+                // TODOLETE AND MOVE ON THE BOSS MANAGER : JUST FOR THE BUILD
+                // ----------------------------------------------------------
+                isLeftToRight = !isLeftToRight;
+                ResetWaves();
+            }
             yield return new WaitForSeconds(0.2f);
         }
+
         isCoroutine = false;
     }
 
@@ -292,7 +310,7 @@ public class AOESpawnManager : MonoBehaviour
     {
         if (isBossAOEPhase && !isCoroutine)
         {
-            ResetWaves();
+            //ResetWaves();
             if (isRandomPhase)
             {
                 StartCoroutine(TimerForRandom());

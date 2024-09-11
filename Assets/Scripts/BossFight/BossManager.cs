@@ -3,25 +3,6 @@ using UnityEngine;
 
 public class BossManager : MonoBehaviour
 {
-    private BossDash m_DashScrpt = null;
-
-    private BossProjectile m_ProjScrpt = null;
-
-    private AOESpawnManager m_AOESpawnManager = null;
-
-    // turn to true when starting an attack, gets turned to false by the other scripts
-    [HideInInspector] public bool IsBossBussy = false;
-
-    [HideInInspector] public bool IsBossVulnerable = false;
-
-    public int Health = 10;
-
-    [Header("Boss Phases")]
-    public int CurrentBossPhase = 1;
-
-    [SerializeField] private int m_HealthEndFirstPhase = 8;
-    [SerializeField] private int m_HealthEndSecondPhase = 5;
-
     private enum ACTIONS
     {
         AOE_Random,
@@ -34,9 +15,21 @@ public class BossManager : MonoBehaviour
         First_Movement,
     }
 
+    private BossDash m_DashScrpt = null;
+    private BossProjectile m_ProjScrpt = null;
+    private AOESpawnManager m_AOESpawnManager = null;
     private List<ACTIONS> m_Previous;
 
+    [SerializeField] private int m_HealthEndFirstPhase = 8;
+    [SerializeField] private int m_HealthEndSecondPhase = 5;
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
+
+    // turn to true when starting an attack, gets turned to false by the other scripts
+    [HideInInspector] public bool IsBossBussy = false;
+    [HideInInspector] public bool IsBossVulnerable = false;
+
+    public int Health = 10;
+    [Header("Boss Phases")] public int CurrentBossPhase = 1;
 
     private void Start()
     {
@@ -48,12 +41,6 @@ public class BossManager : MonoBehaviour
         {
             ACTIONS.First_Movement
         };
-
-        //m_ProjScrpt.TripleShootLoop(); // Test
-        //m_ProjScrpt.ShootPlayer(22000); // Test
-
-        //m_DashScrpt.DashToPlayer(Target.transform.position); // Test
-        //m_DashScrpt.DashToWaypoint(Random.Range(0, m_DashScrpt.Waypoints.Length)); // Test
     }
 
     private void Update()
