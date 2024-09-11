@@ -171,17 +171,18 @@ public class AOESpawnManager : MonoBehaviour
 
     private void SetFrequencyOfSpecialAttack()
     {
+        /*
         if (nbrOfAOE > 0)
         {
             int random;
-            random = UnityEngine.Random.Range(0, 100);
-            if (random <= 5)
+            random = UnityEngine.Random.Range(1, 1000);
+            if (random < 10)
             {
                 UnityEngine.Debug.Log(random);
                 nbrOfAOE--;
                 isAOEspe = true;
             }
-        }
+        }*/
     }
 
     // Update is called once per frame
