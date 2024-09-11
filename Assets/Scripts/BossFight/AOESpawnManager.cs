@@ -266,12 +266,33 @@ public class AOESpawnManager : MonoBehaviour
         }
     }
 
+    void ResetWaves()
+    {
+        if (isWavePhaseFinish)
+        {
+            if (isLeftToRight)
+            {
+                lastPosition = new Vector3((float)-circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
+                maximumPosition = new Vector3((float)circleRadius - (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
+            }
+            else if (!isLeftToRight)
+            {
+                lastPosition = new Vector3((float)circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
+                maximumPosition = new Vector3((float)-circleRadius + (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
+            }
+            isRowFinish = false;
+            isWavePhaseFinish = false;
+            isWavePhase = true;
+        }
+    }
+
     // Update is called once per frame
     // -------------------------------
     private void Update()
     {
         if (isBossAOEPhase && !isCoroutine)
         {
+            ResetWaves();
             if (isRandomPhase)
             {
                 StartCoroutine(TimerForRandom());
