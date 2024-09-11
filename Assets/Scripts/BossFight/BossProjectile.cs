@@ -72,17 +72,9 @@ public class BossProjectile : MonoBehaviour
             Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetTripleShoot), 1f, 0f);
             Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
 
-            GameObject newProj0 = Instantiate(PlayerTargetedProjectile, spawnPoint, Quaternion.identity);
-            newProj0.GetComponent<ProjectileBehaviour>().Target = target;
-            newProj0.GetComponent<ProjectileBehaviour>().BossManager = m_BigBoss;
-
-            GameObject newProj1 = Instantiate(PlayerTargetedProjectile, spawnPoint, Quaternion.identity);
-            newProj1.GetComponent<ProjectileBehaviour>().Target = target + m_SideBulletOffset;
-            newProj1.GetComponent<ProjectileBehaviour>().BossManager = m_BigBoss;
-
-            GameObject newProj2 = Instantiate(PlayerTargetedProjectile, spawnPoint, Quaternion.identity);
-            newProj2.GetComponent<ProjectileBehaviour>().Target = target - m_SideBulletOffset;
-            newProj2.GetComponent<ProjectileBehaviour>().BossManager = m_BigBoss;
+            SpawnProjectile(target, spawnPoint);
+            SpawnProjectile(target + m_SideBulletOffset, spawnPoint);
+            SpawnProjectile(target - m_SideBulletOffset, spawnPoint);
         }
     }
 
@@ -93,17 +85,51 @@ public class BossProjectile : MonoBehaviour
             Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetDoubleShoot), 1f, 0f);
             Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
 
-            GameObject newProj0 = Instantiate(PlayerTargetedProjectile, spawnPoint, Quaternion.identity);
-            newProj0.GetComponent<ProjectileBehaviour>().Target = target;
-            newProj0.GetComponent<ProjectileBehaviour>().BossManager = m_BigBoss;
-
-            GameObject newProj1 = Instantiate(PlayerTargetedProjectile, spawnPoint, Quaternion.identity);
-            newProj1.GetComponent<ProjectileBehaviour>().Target = target + m_SideBulletOffset;
-            newProj1.GetComponent<ProjectileBehaviour>().BossManager = m_BigBoss;
-
-            GameObject newProj2 = Instantiate(PlayerTargetedProjectile, spawnPoint, Quaternion.identity);
-            newProj2.GetComponent<ProjectileBehaviour>().Target = target - m_SideBulletOffset;
-            newProj2.GetComponent<ProjectileBehaviour>().BossManager = m_BigBoss;
+            SpawnProjectile(target, spawnPoint);
+            SpawnProjectile(target + m_SideBulletOffset, spawnPoint);
+            SpawnProjectile(target - m_SideBulletOffset, spawnPoint);
         }
+    }
+
+    private System.Numerics.Vector<int> m_typePool;
+
+    private void RefillPool(int _sizePool)
+    {
+        int phase = m_BigBoss.CurrentBossPhase;
+        if (phase > (m_PhaseChanceToSpawnGreenOrRed.Length - 1))
+            Debug.LogError("Phase not handled in BossProjectile");
+
+        m_typePool = new System.Numerics.Vector<int>(_sizePool);
+
+        int redChances = m_PhaseChanceToSpawnGreenOrRed[phase];
+        int greenChances = m_PhaseChanceToSpawnGreenOrRed[phase];
+        int normChances = 100 - (redChances + greenChances);
+    }
+
+    [SerializeField] private int[] m_PhaseChanceToSpawnGreenOrRed;
+
+    /* Chances per Phases default
+     * 1/3
+     * 60 norm / 20/20
+     * 80 / 10/10
+     * */
+
+    private new ProjectileBehaviour.TypeProj GetType()
+    {
+        int phase = m_BigBoss.CurrentBossPhase;
+        if (phase > (m_PhaseChanceToSpawnGreenOrRed.Length - 1))
+            Debug.LogError("Phase not handled in BossProjectile");
+
+        return ProjectileBehaviour.TypeProj.Normal;
+    }
+
+    private void SpawnProjectile(Vector3 _target, Vector3 _spawnPoint)
+    {
+        GameObject newProj = Instantiate(PlayerTargetedProjectile, _spawnPoint, Quaternion.identity);
+        ProjectileBehaviour newProjScript = newProj.GetComponent<ProjectileBehaviour>();
+
+        newProjScript.Target = _target;
+        newProjScript.BossManager = m_BigBoss;
+        newProjScript.MakeType(GetType());
     }
 }

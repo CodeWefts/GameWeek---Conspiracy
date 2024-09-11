@@ -158,6 +158,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsBossBussy: 0
+  IsBossVulnerable: 0
+  CurrentBossPhase: 0
 --- !u!65 &124160889
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -310,6 +312,7 @@ MonoBehaviour:
   m_LengthArenaOffsetDoubleShoot: 8
   m_TimerBetweenShoots: 1
   m_SideBulletOffset: {x: 1, y: 0, z: 0}
+  m_PhaseChanceToSpawnGreenOrRed: 21000000140000000a000000
 --- !u!1 &317583798
 GameObject:
   m_ObjectHideFlags: 0

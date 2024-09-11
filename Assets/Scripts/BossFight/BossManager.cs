@@ -8,6 +8,10 @@ public class BossManager : MonoBehaviour
 
     [HideInInspector] public bool IsBossBussy = false; // turn to true when starting an attack, gets turned to false by the other scripts
 
+    [HideInInspector] public bool IsBossVulnerable = false;
+
+    public int CurrentBossPhase = 0;
+
     private void Start()
     {
         if (!TryGetComponent(out m_DashScrpt)) Debug.LogError("BossDash script not found in BossManager");
