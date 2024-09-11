@@ -24,6 +24,10 @@ public class PlayerMovement : MonoBehaviour
     private float m_DashMultiplicator = 1f;
     private float m_DashMultiplicatorBaseValue = 1f;
 
+    private bool m_IsPlayerVulnerable = true;
+
+    public bool IsPlayerVulnerable { get { return m_IsPlayerVulnerable; } }
+
 
     private void Start()
     {
@@ -53,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
         {
             m_DashMultiplicator = m_DashPower;
             m_IsDashing = true;
+            m_IsPlayerVulnerable = false;
         }
 
         if (m_IsDashing)
@@ -62,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
             if (m_IsDashingTimer >= m_DashDuration)
             {
                 m_IsDashing = false;
+                m_IsPlayerVulnerable = true;
                 m_IsDashingTimer = 0f;
                 m_DashTimer = 0f;
                 m_DashMultiplicator = m_DashMultiplicatorBaseValue;

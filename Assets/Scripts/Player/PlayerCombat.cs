@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,8 @@ public class PlayerCombat : MonoBehaviour
 
     private bool m_IsBossVulnerable = false;
 
+    [SerializeField] private CinemachineVirtualCamera m_VCam;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +36,7 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(m_Health);
         if (Input.GetButtonDown(m_MeleeAttack) && m_AttackTimer >= m_TimeBtwAttacks)
         {
             MeleeAttack();
@@ -51,8 +55,6 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider lEnemy in m_EnemiesHit)
         {
-            //Debug.Log("Hit :"+ lEnemy.gameObject.name);
-
             if (lEnemy.gameObject.TryGetComponent(out ProjectileBehaviour lProjectile))
             {
                 lProjectile.ProjectileBounced();
@@ -66,9 +68,11 @@ public class PlayerCombat : MonoBehaviour
 
     public void DamageTaken(int pDamage)
     {
-        if (m_Health > 0)
+        if (m_Health > 0  && GetComponent<PlayerMovement>().IsPlayerVulnerable)
         {
             m_Health -= pDamage;
+
+            m_VCam.GetComponent<ScreenShake>().ShakeCamera();
 
             if (m_Health <= 0)
             {
