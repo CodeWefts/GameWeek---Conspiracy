@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6591248862073687712}
   - component: {fileID: 2618922462825770318}
   - component: {fileID: 3381927670903599807}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: AOE
   m_TagString: AOEZone
   m_Icon: {fileID: 0}

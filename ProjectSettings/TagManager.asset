@@ -6,11 +6,12 @@ TagManager:
   tags:
   - DespawnZone
   - AOEZone
+  - SpecialAOEZone
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - Player
   - Water
   - UI
   - Boss
@@ -19,9 +20,6 @@ TagManager:
   - Phone
   - AOEZone
   - DespawnZone
-  - 
-  - 
-  - 
   - 
   - 
   - 

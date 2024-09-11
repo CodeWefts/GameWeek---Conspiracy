@@ -62,11 +62,6 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    public void ProjectileAbsorbed()
-    {
-
-    }
-
     public void Defeat()
     {
 

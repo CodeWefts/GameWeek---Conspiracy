@@ -100,6 +100,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {x: 0, y: 0, z: 0}
   Speed: 10
+  PlayerDamage: 1
+  BossDamage: 1
+  ProjectileType: 0
+  LayerMaskPostBounce:
+    serializedVersion: 2
+    m_Bits: 3880
+  BossName: Boss
+  BossAttackManager: {fileID: 0}
 --- !u!65 &2829189892451140568
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -113,7 +121,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 352
+    m_Bits: 3936
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
