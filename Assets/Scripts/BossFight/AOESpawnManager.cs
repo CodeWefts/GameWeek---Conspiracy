@@ -86,6 +86,8 @@ public class AOESpawnManager : MonoBehaviour
         return lastPosition;
     }
 
+    int x;
+
     // Set the target position of the AOE's Zone
     // ---------------------------------------
     private Vector3 SetAOETargetSpawnPosition()
@@ -119,6 +121,8 @@ public class AOESpawnManager : MonoBehaviour
             Vector3 phoneHeight = new Vector3(0.0f, PlayerCameraObject.transform.position.y + AOEPhoneObject.transform.localScale.y, 0.0f);
             GameObject newAOEPhoneObject = Instantiate(AOEPhoneObject);
             newAOEPhoneObject.transform.position = AOEPosition + phoneHeight;
+            x++;
+            UnityEngine.Debug.Log(x);
         }
     }
 
@@ -171,18 +175,17 @@ public class AOESpawnManager : MonoBehaviour
 
     private void SetFrequencyOfSpecialAttack()
     {
-        /*
         if (nbrOfAOE > 0)
         {
             int random;
-            random = UnityEngine.Random.Range(1, 1000);
+            random = UnityEngine.Random.Range(1, 100);
             if (random < 10)
             {
                 UnityEngine.Debug.Log(random);
                 nbrOfAOE--;
                 isAOEspe = true;
             }
-        }*/
+        }
     }
 
     // Update is called once per frame
