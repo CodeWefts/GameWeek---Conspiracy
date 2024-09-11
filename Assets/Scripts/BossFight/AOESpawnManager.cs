@@ -14,6 +14,7 @@ public class AOESpawnManager : MonoBehaviour
     [SerializeField] public bool isBossAOEPhase = true;
     [SerializeField] public bool isRandomPhase = false;
     [SerializeField] public bool isTargetPhase = false;
+    [SerializeField] public bool isWavePhase = false;
 
     [SerializeField] public bool isAOEspe = false;
     [SerializeField] public int nbrOfAOE = 2;
@@ -33,6 +34,7 @@ public class AOESpawnManager : MonoBehaviour
 
     // ######################  PRIVATE  #######################
     // --------------------------------------------------------
+
     private bool isCoroutine = false;
     private double circleRadius = 0.0f;
     private double AOEZoneRadius;
@@ -86,6 +88,8 @@ public class AOESpawnManager : MonoBehaviour
         return lastPosition;
     }
 
+    int x;
+
     // Set the target position of the AOE's Zone
     // ---------------------------------------
     private Vector3 SetAOETargetSpawnPosition()
@@ -119,6 +123,8 @@ public class AOESpawnManager : MonoBehaviour
             Vector3 phoneHeight = new Vector3(0.0f, PlayerCameraObject.transform.position.y + AOEPhoneObject.transform.localScale.y, 0.0f);
             GameObject newAOEPhoneObject = Instantiate(AOEPhoneObject);
             newAOEPhoneObject.transform.position = AOEPosition + phoneHeight;
+            x++;
+            UnityEngine.Debug.Log(x);
         }
     }
 
@@ -131,10 +137,10 @@ public class AOESpawnManager : MonoBehaviour
     // -----------------------------------------------------------------------------------------
 
     // Timer for the random AOE's Zone
-    // ------------------------
+    // -------------------------------
     private IEnumerator TimerForRandom()
     {
-        while (isBossAOEPhase)
+        while (isRandomPhase && isBossAOEPhase)
         {
             AOESpawn(SetAOERandomSpawnPosition());
             yield return new WaitForSeconds(0.2f);
@@ -143,10 +149,10 @@ public class AOESpawnManager : MonoBehaviour
     }
 
     // Timer for the target AOE's Zone
-    // ------------------------
+    // -------------------------------
     private IEnumerator TimerForTarget()
     {
-        while (isBossAOEPhase)
+        while (isTargetPhase && isBossAOEPhase)
         {
             AOESpawn(SetAOETargetSpawnPosition());
             yield return new WaitForSeconds(0.2f);
@@ -155,10 +161,10 @@ public class AOESpawnManager : MonoBehaviour
     }
 
     // Timer for the wave AOE's Zone
-    // ------------------------
+    // -----------------------------
     private IEnumerator TimerForWave()
     {
-        while (isBossAOEPhase && !isRowFinish && !isWavePhaseFinish)
+        while (isWavePhase && isBossAOEPhase && !isRowFinish && !isWavePhaseFinish)
         {
             AOESpawn(SetAOEWaveSpawnPosition());
         }
@@ -171,15 +177,21 @@ public class AOESpawnManager : MonoBehaviour
 
     private void SetFrequencyOfSpecialAttack()
     {
-        if (nbrOfAOE > 0)
+        if (isWavePhase)
         {
-            int random;
-            random = UnityEngine.Random.Range(0, 100);
-            if (random <= 5)
+        }
+        else
+        {
+            if (nbrOfAOE > 0)
             {
-                UnityEngine.Debug.Log(random);
-                nbrOfAOE--;
-                isAOEspe = true;
+                int random;
+                random = UnityEngine.Random.Range(1, 100);
+                if (random < 10)
+                {
+                    UnityEngine.Debug.Log(random);
+                    nbrOfAOE--;
+                    isAOEspe = true;
+                }
             }
         }
     }
@@ -197,12 +209,10 @@ public class AOESpawnManager : MonoBehaviour
             }
             else if (isTargetPhase)
             {
-                UnityEngine.Debug.Log(SetAOETargetSpawnPosition());
                 StartCoroutine(TimerForTarget());
-
                 isCoroutine = true;
             }
-            else if (!isWavePhaseFinish)
+            else if (isWavePhase && !isWavePhaseFinish)
             {
                 StartCoroutine(TimerForWave());
                 isCoroutine = true;
