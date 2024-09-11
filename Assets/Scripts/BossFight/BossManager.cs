@@ -40,6 +40,7 @@ public class BossManager : MonoBehaviour
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
 
+    [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
     private void Start()
     {
         if (!TryGetComponent(out m_DashScrpt)) Debug.LogError("BossDash script not found in BossManager");
@@ -50,12 +51,6 @@ public class BossManager : MonoBehaviour
         {
             ACTIONS.First_Movement
         };
-
-        //m_ProjScrpt.TripleShootLoop(); // Test
-        //m_ProjScrpt.ShootPlayer(22000); // Test
-
-        //m_DashScrpt.DashToPlayer(Target.transform.position); // Test
-        //m_DashScrpt.DashToWaypoint(Random.Range(0, m_DashScrpt.Waypoints.Length)); // Test
     }
 
     private void Update()
