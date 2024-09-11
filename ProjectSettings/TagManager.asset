@@ -3,23 +3,22 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DespawnZone
+  - AOEZone
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - Player
   - Water
   - UI
   - Boss
   - Walls
   - Projectiles
   - Phone
-  - 
-  - 
-  - 
-  - 
-  - 
+  - AOEZone
+  - DespawnZone
   - 
   - 
   - 
