@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DespawnZone
   - AOEZone
+  - SpecialAOEZone
   layers:
   - Default
   - TransparentFX
@@ -19,9 +20,6 @@ TagManager:
   - Phone
   - AOEZone
   - DespawnZone
-  - 
-  - 
-  - 
   - 
   - 
   - 
