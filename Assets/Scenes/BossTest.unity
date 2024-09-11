@@ -564,8 +564,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBossAOEPhase: 1
-  isRandomPhase: 0
-  isTargetPhase: 1
+  isRandomPhase: 1
+  isTargetPhase: 0
+  isWavePhase: 0
   isAOEspe: 0
   nbrOfAOE: 7
   AOEZoneObject: {fileID: 705937916091069648, guid: 4ab125bdfe2a2c2488ae05f544fca308, type: 3}
