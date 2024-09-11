@@ -21,7 +21,7 @@ public class PlayerCombat : MonoBehaviour
 
     private float m_AttackTimer;
 
-    private bool m_IsBossVulnerable = true;
+    private bool m_IsBossVulnerable = false;
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +51,16 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider lEnemy in m_EnemiesHit)
         {
-            Debug.Log("Hit :"+ lEnemy.gameObject.name);
+            //Debug.Log("Hit :"+ lEnemy.gameObject.name);
+
+            if (lEnemy.gameObject.TryGetComponent(out ProjectileBehaviour lProjectile))
+            {
+                lProjectile.ProjectileBounced();
+            }
+            else if (lEnemy.gameObject.TryGetComponent(out BossManager lBoss))
+            {
+                lBoss.TakeDamage(m_AttackDamage);
+            }
         }
     }
 
@@ -73,9 +82,11 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, m_AttackRange);
     }
+#endif
 }
