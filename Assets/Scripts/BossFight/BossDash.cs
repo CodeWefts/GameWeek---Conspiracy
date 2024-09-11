@@ -8,8 +8,10 @@ public class BossDash : MonoBehaviour
     [Header("Dash to Waypoint")]
     public GameObject[] Waypoints;
 
+    private int m_WaypointTarget = -1;
+
     [Header("Shared")]
-    [SerializeField] private float m_TimerReturnToBase = 2f;
+    [SerializeField] private float m_TimerBeforeNextMove = 2f;
 
     private Vector3 m_StartPoint = Vector3.zero;
 
@@ -19,7 +21,7 @@ public class BossDash : MonoBehaviour
 
     private BossManager m_BigBoss = null;
 
-    private bool m_IsTravelingTo = false;
+    private bool m_IsTraveling = false;
 
     private void Start()
     {
@@ -31,21 +33,37 @@ public class BossDash : MonoBehaviour
     {
         m_StartPoint = transform.position;
         StartCoroutine(TravelTo(_target));
-        m_IsTravelingTo = true;
+        m_IsTraveling = true;
         StartCoroutine(TravelBackToBase());
     }
 
     // Waypoint list starts at ZERO
-    public void DashToWaypoint(int _waypointID)
+    public void DashToWaypoint()
     {
         m_StartPoint = transform.position;
-        StartCoroutine(TravelTo(Waypoints[_waypointID].transform.position));
-        m_IsTravelingTo = true;
+
+        m_WaypointTarget = Random.Range(0, Waypoints.Length);
+        StartCoroutine(TravelTo(Waypoints[m_WaypointTarget].transform.position));
+
+        m_IsTraveling = true;
+        StartCoroutine(DashToWaypointPart2());
+    }
+
+    private IEnumerator DashToWaypointPart2()
+    {
+        while (m_IsTraveling) { yield return null; };
+
+        int newWaypointTarget = Random.Range(0, Waypoints.Length);
+        while (newWaypointTarget == m_WaypointTarget) newWaypointTarget = Random.Range(0, Waypoints.Length);
+
+        StartCoroutine(TravelTo(Waypoints[newWaypointTarget].transform.position));
+        m_IsTraveling = true;
         StartCoroutine(TravelBackToBase());
     }
 
     private IEnumerator TravelTo(Vector3 _destination)
     {
+        m_IsTraveling = true;
         Vector3 direction = _destination - transform.position;
         direction.y = 0;
 
@@ -64,15 +82,17 @@ public class BossDash : MonoBehaviour
 
         transform.position = _destination;
 
-        yield return new WaitForSeconds(m_TimerReturnToBase);
+        yield return new WaitForSeconds(m_TimerBeforeNextMove);
 
-        m_IsTravelingTo = false;
+        m_IsTraveling = false;
     }
 
     private IEnumerator TravelBackToBase()
     {
-        while (m_IsTravelingTo) { yield return null; };
+        while (m_IsTraveling) { yield return null; };
         StartCoroutine(TravelTo(m_StartPoint));
+
+        while (m_IsTraveling) { yield return null; };
         m_BigBoss.IsBossBussy = false;
     }
 }
