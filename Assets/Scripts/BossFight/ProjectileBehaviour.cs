@@ -12,16 +12,16 @@ public class ProjectileBehaviour : MonoBehaviour
 
     public int BossDamage = 1;
 
-    public enum Type
+    public enum TypeProj
     {
         Normal,
         BouncyRed,
-        BouncedRed,
         BouncyGreen,
+        BouncedRed,
         BouncedGreen
     }
 
-    [HideInInspector] public Type ProjectileType = Type.Normal;
+    [HideInInspector] public TypeProj ProjectileType = TypeProj.Normal;
 
     public LayerMask LayerMaskPostBounce;
 
@@ -35,12 +35,12 @@ public class ProjectileBehaviour : MonoBehaviour
 
     public void ProjectileBounced()
     {
-        if (ProjectileType == Type.BouncyGreen || ProjectileType == Type.BouncyRed)
+        if (ProjectileType == TypeProj.BouncyGreen || ProjectileType == TypeProj.BouncyRed)
         {
-            if (ProjectileType == Type.BouncyGreen)
-                ProjectileType = Type.BouncedGreen;
-            else if (ProjectileType == Type.BouncyRed)
-                ProjectileType = Type.BouncedRed;
+            if (ProjectileType == TypeProj.BouncyGreen)
+                ProjectileType = TypeProj.BouncedGreen;
+            else
+                ProjectileType = TypeProj.BouncedRed;
 
             Target = BossManager.gameObject.transform.position;
             m_Direction = (Target - transform.position).normalized;
@@ -52,14 +52,14 @@ public class ProjectileBehaviour : MonoBehaviour
     // Uses layers to ignore certain layers (like other particules)
     private void OnTriggerEnter(Collider _otherBody)
     {
-        if (ProjectileType == Type.BouncedGreen || ProjectileType == Type.BouncedRed
-            && _otherBody.gameObject.name == BossName)
+        if (ProjectileType == TypeProj.BouncedGreen || ProjectileType == TypeProj.BouncedRed
+            && _otherBody.gameObject.layer == 6/*Boss Layer*/
+            )
             BossManager.TakeDamage(BossDamage);
-        else if (_otherBody.gameObject.TryGetComponent(out PlayerCombat playerScript))
-        {
-            Debug.Log("Player is hit by projectile");
+        else if (_otherBody.gameObject.layer == 3/*Player Layer*/ &&
+            _otherBody.gameObject.TryGetComponent(out PlayerCombat playerScript)
+            )
             playerScript.DamageTaken(PlayerDamage);
-        }
 
         Destroy(gameObject);
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -9,37 +10,67 @@ public class AOESpawnManager : MonoBehaviour
 {
     // #######################  PUBLIC  #######################
     // --------------------------------------------------------
+
+    // Booleans
     [SerializeField] public bool isBossAOEPhase = true;
     [SerializeField] public bool isRandomPhase = false;
+    [SerializeField] public bool isTargetPhase = false;
 
+    [SerializeField] public bool isWavePhase = false;
+    [SerializeField] public bool isLeftToRight = true;
+
+    [SerializeField] public bool isAOEspe = false;
+    [SerializeField] public int nbrOfAOE = 2;
+    [SerializeField] public int indxNbrOfAOE = 0;
+    [SerializeField] public int[] randomWaveIndx;
+
+    // GameObjects
     [SerializeField] public GameObject AOEZoneObject;
+    [SerializeField] public GameObject SpecialAOEZoneObject;
     [SerializeField] public GameObject AOEPhoneObject;
     [SerializeField] public GameObject PlayerCameraObject;
-    [SerializeField] public float time = 0.0f;
+    [SerializeField] public GameObject PlayerObject;
 
-    [SerializeField] public double thetaValue = 5.0f * Math.PI / 6.0f;
-    [SerializeField] public double angleValue = 0.0f;
+    // Variables for the Waves
+    [SerializeField] public Vector3 lastPosition;
+    [SerializeField] public Vector3 maximumPosition;
+    [SerializeField] public bool isRowFinish = false;
+    [SerializeField] public bool isWavePhaseFinish = false;
 
     // ######################  PRIVATE  #######################
     // --------------------------------------------------------
+
     private bool isCoroutine = false;
     private double circleRadius = 0.0f;
-    private Vector3 rectangleSize;
     private double AOEZoneRadius;
-    private Vector3 AOEZoneSize;
 
     // Start is called before the first frame update
     // ---------------------------------------------
     void Start()
     {
-        // Get the size of the map
-        circleRadius = gameObject.transform.localScale.x / 2.0f;
-        AOEZoneRadius = AOEZoneObject.transform.localScale.x / 2.0f;
+        // Get Sizes
+        circleRadius = gameObject.transform.localScale.x / 2.0f; // Get the radius of the map
+        AOEZoneRadius = AOEZoneObject.transform.localScale.x / 2.0f; // Get the radius of the AOE's Zone
+
+        // Get Positions
+        if (isLeftToRight)
+        {
+            lastPosition = new Vector3((float)-circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
+            maximumPosition = new Vector3((float)circleRadius - (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
+        }
+        else if (!isLeftToRight)
+        {
+            lastPosition = new Vector3((float)circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
+            maximumPosition = new Vector3((float)-circleRadius + (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
+        }
     }
+
+    // ################################### SPAWN POSITIONS ############################################
+    // ---------------------------------------------------------------------------------------------
 
     // Set the random position of the AOE's Zone
     // -----------------------------------------
-    Vector3 SetAOERandomSpawnPosition()
+    private Vector3 SetAOERandomSpawnPosition()
     {
         Vector3 AOEPosition;
 
@@ -49,7 +80,7 @@ public class AOESpawnManager : MonoBehaviour
         double positionX = gameObject.transform.position.x + radius * Math.Cos(theta);
         double positionZ = gameObject.transform.position.z + radius * Math.Sin(theta);
 
-        // Set the position of the AOE
+        // Set the position on the circle
         AOEPosition = new Vector3((float)positionX, 0.01f, (float)positionZ);
 
         return AOEPosition;
@@ -57,83 +88,226 @@ public class AOESpawnManager : MonoBehaviour
 
     // Set the wave position of the AOE's Zone
     // ---------------------------------------
-    Vector3 SetAOEWaveSpawnPosition()
+    private Vector3 SetAOEWaveSpawnPosition()
     {
-        Vector3 AOEPosition;
+        if (isLeftToRight)
+        {
+            if (lastPosition.x > maximumPosition.x)
+                isWavePhaseFinish = true;
 
-        // The value "AOEZoneRadius" is here because we don't want to outreach the radius of the map
-        double radius = circleRadius - AOEZoneRadius;
+            if (lastPosition.z > maximumPosition.z && lastPosition.x < maximumPosition.x)
+                lastPosition.z -= (float)AOEZoneRadius;
+            else
+                isRowFinish = true;
+        }
+        else if (!isLeftToRight)
+        {
+            UnityEngine.Debug.Log(lastPosition);
 
-        double positionX = radius * Math.Cos(thetaValue);
-        double positionZ = radius * Math.Sin(thetaValue + angleValue);
+            if (lastPosition.x < maximumPosition.x)
+                isWavePhaseFinish = true;
 
-        // Set the position of the AOE
-        AOEPosition = new Vector3((float)positionX, 0.01f, (float)positionZ);
+            if (lastPosition.z > maximumPosition.z && lastPosition.x > maximumPosition.x)
+                lastPosition.z -= (float)AOEZoneRadius;
+            else
+                isRowFinish = true;
+        }
 
-        return AOEPosition;
+        return lastPosition;
+    }
+
+    //int x;
+
+    // Set the target position of the AOE's Zone
+    // ---------------------------------------
+    private Vector3 SetAOETargetSpawnPosition()
+    {
+        return PlayerObject.transform.position;
     }
 
     // Spawn the AOE's Zone
     // --------------------
-    void AOESpawn(bool isRandom)
+    private void AOESpawn(Vector3 AOEPosition)
     {
-        Vector3 AOEPosition = SetAOERandomSpawnPosition();
+        if (Distance(AOEPosition, gameObject.transform.position) > circleRadius)
+            return;
 
-        if (isRandom)
+        SetFrequencyOfSpecialAttack();
+
+        if (isAOEspe)
         {
-            AOEPosition = SetAOERandomSpawnPosition();
+            // Spawning of the AOE's Zone on the floor
+            GameObject newAOEZoneObject = Instantiate(SpecialAOEZoneObject);
+            newAOEZoneObject.transform.position = AOEPosition;
+            isAOEspe = false;
         }
         else
         {
-            AOEPosition = SetAOEWaveSpawnPosition();
-
-            // Row
-            double calcul = (Math.PI - thetaValue) * 2.0f;
-            if (angleValue < calcul)
+            if (isWavePhase && !isWavePhaseFinish)
             {
-                angleValue += 0.25f;
+                indxNbrOfAOE++;
+                for (int i = 0; i < randomWaveIndx.Length; i++)
+                {
+                    if (indxNbrOfAOE == randomWaveIndx[i])
+                    {
+                        // Spawning of the AOE's Zone on the floor
+                        GameObject newAOEZoneObject = Instantiate(SpecialAOEZoneObject);
+                        newAOEZoneObject.transform.position = AOEPosition;
+                    }
+                    else
+                    {
+                        // Spawning of the AOE's Zone on the floor
+                        GameObject newAOEZoneObject = Instantiate(AOEZoneObject);
+                        newAOEZoneObject.transform.position = AOEPosition;
+
+                        // Spawning of the Phone for each AOE's Zone
+                        Vector3 phoneHeight = new Vector3(0.0f, PlayerCameraObject.transform.position.y + AOEPhoneObject.transform.localScale.y, 0.0f);
+                        GameObject newAOEPhoneObject = Instantiate(AOEPhoneObject);
+                        newAOEPhoneObject.transform.position = AOEPosition + phoneHeight;
+                        //x++;
+                    }
+                }
             }
             else
             {
-                angleValue = 0.0f;
-                thetaValue -= 0.25f;
-                if (thetaValue < (Math.PI / 6.0f))
-                {
-                    isBossAOEPhase = false;
-                }
+                // Spawning of the AOE's Zone on the floor
+                GameObject newAOEZoneObject = Instantiate(AOEZoneObject);
+                newAOEZoneObject.transform.position = AOEPosition;
+
+                // Spawning of the Phone for each AOE's Zone
+                Vector3 phoneHeight = new Vector3(0.0f, PlayerCameraObject.transform.position.y + AOEPhoneObject.transform.localScale.y, 0.0f);
+                GameObject newAOEPhoneObject = Instantiate(AOEPhoneObject);
+                newAOEPhoneObject.transform.position = AOEPosition + phoneHeight;
             }
         }
-
-        // Spawning of the AOE's Zone on the floor
-        GameObject newAOEZoneObject = Instantiate(AOEZoneObject);
-        newAOEZoneObject.transform.position = AOEPosition;
-
-        // Spawning of the Phone for each AOE's Zone
-        Vector3 phoneHeight = new Vector3(0.0f, PlayerCameraObject.transform.position.y + AOEPhoneObject.transform.localScale.y, 0.0f);
-        GameObject newAOEPhoneObject = Instantiate(AOEPhoneObject);
-        newAOEPhoneObject.transform.position = AOEPosition + phoneHeight;
     }
 
-    // Timer for the AOE's Zone
-    // ------------------------
-    private IEnumerator Timer()
+    private float Distance(Vector3 pointA, Vector3 pointB)
     {
-        while (isBossAOEPhase)
+        return Mathf.Sqrt(Mathf.Pow(pointB.x - pointA.x, 2) + Mathf.Pow(pointB.z - pointA.z, 2));
+    }
+
+    // ################################## COROUTINE ############################################
+    // -----------------------------------------------------------------------------------------
+
+    // Timer for the random AOE's Zone
+    // -------------------------------
+    private IEnumerator TimerForRandom()
+    {
+        while (isRandomPhase && isBossAOEPhase)
         {
-            AOESpawn(isRandomPhase);
+            AOESpawn(SetAOERandomSpawnPosition());
             yield return new WaitForSeconds(0.2f);
         }
         isCoroutine = false;
     }
 
+    // Timer for the target AOE's Zone
+    // -------------------------------
+    private IEnumerator TimerForTarget()
+    {
+        while (isTargetPhase && isBossAOEPhase)
+        {
+            AOESpawn(SetAOETargetSpawnPosition());
+            yield return new WaitForSeconds(0.2f);
+        }
+        isCoroutine = false;
+    }
+
+    // Timer for the wave AOE's Zone
+    // -----------------------------
+    private IEnumerator TimerForWave()
+    {
+        while (isWavePhase && isBossAOEPhase && !isRowFinish && !isWavePhaseFinish)
+        {
+            AOESpawn(SetAOEWaveSpawnPosition());
+        }
+
+        // if row is finish
+        // ----------------
+
+        if (isLeftToRight)
+        {
+            lastPosition.z = maximumPosition.x;
+            lastPosition.x += (float)AOEZoneRadius * 3.0f;
+        }
+        else if (!isLeftToRight)
+        {
+            lastPosition.z = -maximumPosition.x;
+            lastPosition.x -= (float)AOEZoneRadius * 3.0f;
+        }
+
+        isRowFinish = false;
+        yield return new WaitForSeconds(0.8f);
+        isCoroutine = false;
+    }
+
+    private void SetFrequencyOfSpecialAttack()
+    {
+        if (isWavePhase && nbrOfAOE > 0)
+        {
+            // 177 is the nbr of AOE's Zone in the map for a wave phase
+            randomWaveIndx = Enumerable.Range(1, 177).OrderBy(x => UnityEngine.Random.value).Take(nbrOfAOE).ToArray();
+            nbrOfAOE = 0;
+        }
+        else
+        {
+            if (nbrOfAOE > 0)
+            {
+                int random;
+                random = UnityEngine.Random.Range(1, 100);
+                if (random < 10)
+                {
+                    UnityEngine.Debug.Log(random);
+                    nbrOfAOE--;
+                    isAOEspe = true;
+                }
+            }
+        }
+    }
+
+    void ResetWaves()
+    {
+        if (isWavePhaseFinish)
+        {
+            if (isLeftToRight)
+            {
+                lastPosition = new Vector3((float)-circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
+                maximumPosition = new Vector3((float)circleRadius - (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
+            }
+            else if (!isLeftToRight)
+            {
+                lastPosition = new Vector3((float)circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
+                maximumPosition = new Vector3((float)-circleRadius + (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
+            }
+            isRowFinish = false;
+            isWavePhaseFinish = false;
+            isWavePhase = true;
+        }
+    }
+
     // Update is called once per frame
     // -------------------------------
-    void Update()
+    private void Update()
     {
         if (isBossAOEPhase && !isCoroutine)
         {
-            StartCoroutine(Timer());
-            isCoroutine = true;
+            ResetWaves();
+            if (isRandomPhase)
+            {
+                StartCoroutine(TimerForRandom());
+                isCoroutine = true;
+            }
+            else if (isTargetPhase)
+            {
+                StartCoroutine(TimerForTarget());
+                isCoroutine = true;
+            }
+            else if (isWavePhase && !isWavePhaseFinish)
+            {
+                StartCoroutine(TimerForWave());
+                isCoroutine = true;
+            }
         }
     }
 }
