@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class BossDash : MonoBehaviour
 {
-    //empty [Header("Dash to Player")]
+    [Header("Dash to Player")]
+    public GameObject Player = null;
 
     [Header("Dash to Waypoint")]
     public GameObject[] Waypoints;
@@ -26,13 +27,14 @@ public class BossDash : MonoBehaviour
     private void Start()
     {
         if (!TryGetComponent(out m_BigBoss)) Debug.LogError("BossManager script not foundin BossProjectile");
-        if (Waypoints.Length == 0) Debug.LogError("BossDash Waypoint list in BossProjectile is empty!");
+        if (Waypoints.Length == 0) Debug.LogError("BossDash Waypoint list is empty");
+        if (!Player) Debug.LogError("Player not set in BossDash");
     }
 
-    public void DashToPlayer(Vector3 _target)
+    public void DashToPlayer()
     {
         m_StartPoint = transform.position;
-        StartCoroutine(TravelTo(_target));
+        StartCoroutine(TravelTo(Player.transform.position));
         m_IsTraveling = true;
         StartCoroutine(TravelBackToBase());
     }
