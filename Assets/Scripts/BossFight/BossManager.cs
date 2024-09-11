@@ -34,7 +34,7 @@ public class BossManager : MonoBehaviour
         First_Movement,
     }
 
-    private List<ACTIONS> m_Previous;
+    private List<ACTIONS> m_Previous; // latest actions get added to 0
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
 
@@ -74,51 +74,31 @@ public class BossManager : MonoBehaviour
         }
     }
 
+    private bool IsPreviousActionAOE(int _ID = 0) => m_Previous[_ID] == ACTIONS.AOE_Random || m_Previous[_ID] == ACTIONS.AOE_Player || m_Previous[_ID] == ACTIONS.AOE_Follow;
+
+    private bool IsPreviousActionShoot(int _ID = 0) => m_Previous[_ID] == ACTIONS.Shoot_Player || m_Previous[_ID] == ACTIONS.Shoot_Wave;
+
+    private bool IsPreviousActionDash(int _ID = 0) => m_Previous[_ID] == ACTIONS.Dash_Player || m_Previous[_ID] == ACTIONS.Dash_Random;
+
     private void FirstPhaseAction()
     {
         /* AOERandom
-         * Altern
+         *  OR
          * AOEFollow
-         *
-         * >>
-         *
+         * THEN
          * ShootPlayer
-         *
-         * >>
-         *
-         * DashWay
+         * THEN
+         * DashRandom
         */
-        /* Unused ACTIONS:
-         * AOE Wave
-         * Shoot Wave
-         * Dash Player
-         */
-        if (m_Previous[0] == ACTIONS.First_Movement || m_Previous[0] == ACTIONS.Dash_Random)
+        if (m_Previous[0] == ACTIONS.First_Movement || IsPreviousActionDash())
         {
             //AOE
-            //m_AOESpawnManager.isBossAOEPhase = true;
-            //m_AOESpawnManager.isRandomPhase = true;
-            //m_AOESpawnManager.isWavePhase = true;
-            //m_AOESpawnManager.isTargetPhase = true;
-            m_Previous.Insert(0, ACTIONS.AOE_Random);
-            m_Previous.Insert(0, ACTIONS.AOE_Follow);
-
-            //IsBossBussy = true;
+            m_Previous.Insert(0, ACTIONS.AOE_Random); // TODELETE, here to skip this part
         }
-        else if (m_Previous[0] == ACTIONS.AOE_Random || m_Previous[0] == ACTIONS.AOE_Follow)
-        {
-            m_ProjScrpt.ShootPlayer(m_NbBulletsAgainstPlayer);
-            m_Previous.Insert(0, ACTIONS.Shoot_Player);
-
-            IsBossBussy = true;
-        }
-        else if (m_Previous[0] == ACTIONS.Shoot_Player)
-        {
-            m_DashScrpt.DashToWaypoint();
-            m_Previous.Insert(0, ACTIONS.Dash_Random);
-
-            IsBossBussy = true;
-        }
+        else if (IsPreviousActionAOE())
+            MakeAction(ACTIONS.Shoot_Player);
+        else if (IsPreviousActionShoot())
+            MakeAction(ACTIONS.Dash_Random);
         else
             Debug.LogError("FIRST WAVE: Previous ACTION not handled");
     }
@@ -129,15 +109,19 @@ public class BossManager : MonoBehaviour
          * AOEWave 2 max / 3
          * ShootPlayer
          * WaveShoot 2 max / 3
-         *
-         * >>
-         *
+         * THEN
          * PlayerDash
         */
-        /* Unused ACTIONS:
-         * AOE Player
-         * Dash Random
-         */
+        if ((m_Previous[0] == ACTIONS.First_Movement || IsPreviousActionDash()) // back to zero
+            )
+        {
+        }
+        else if (IsPreviousActionAOE() && IsPreviousActionShoot() && IsPreviousActionAOE(1) && IsPreviousActionShoot(1))
+        // if last two actions are ATTACKS, dashing is unlocked
+        {
+            if ((IsPreviousActionAOE(2) && IsPreviousActionShoot(2)) || Random.Range(0, 1) == 1)
+                MakeAction(ACTIONS.Dash_Player);
+        }
     }
 
     private void ThirdPhaseAction()
@@ -150,9 +134,53 @@ public class BossManager : MonoBehaviour
          *
          *
          * dash rand
-         * dash 2/3 cases
+         * dash player 2/3 cases
          * dash > 2 AOE minimum
         */
+    }
+
+    private void MakeAction(ACTIONS _theAction)
+    {
+        switch (_theAction)
+        {
+            case ACTIONS.AOE_Random:
+                m_Previous.Insert(0, ACTIONS.AOE_Random);
+                break;
+
+            case ACTIONS.AOE_Player:
+                m_Previous.Insert(0, ACTIONS.AOE_Player);
+                break;
+
+            case ACTIONS.AOE_Follow:
+                m_Previous.Insert(0, ACTIONS.AOE_Follow);
+                break;
+
+            case ACTIONS.Shoot_Player:
+                m_ProjScrpt.ShootPlayer(m_NbBulletsAgainstPlayer);
+                m_Previous.Insert(0, ACTIONS.Shoot_Player);
+                break;
+
+            case ACTIONS.Shoot_Wave:
+                m_ProjScrpt.ShootWave();
+                m_Previous.Insert(0, ACTIONS.Shoot_Wave);
+                break;
+
+            case ACTIONS.Dash_Random:
+                m_DashScrpt.DashToWaypoint();
+                m_Previous.Insert(0, ACTIONS.Dash_Random);
+                break;
+
+            case ACTIONS.Dash_Player:
+                m_DashScrpt.DashToPlayer();
+                m_Previous.Insert(0, ACTIONS.Dash_Player);
+                break;
+
+            case ACTIONS.First_Movement:
+            default:
+                Debug.Log("MakeAction ACTION not handled");
+                return;
+        }
+        IsBossBussy = true;
     }
 
     private void NextPhase()
