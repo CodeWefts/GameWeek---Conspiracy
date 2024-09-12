@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class BossManager : MonoBehaviour
@@ -13,6 +13,8 @@ public class BossManager : MonoBehaviour
     [HideInInspector] public bool IsBossBussy = false;
 
     [HideInInspector] public bool IsBossVulnerable = false;
+    
+    [SerializeField] private float m_BossVulnerableTimer = 5f;
 
     public int Health = 10;
 
@@ -34,10 +36,10 @@ public class BossManager : MonoBehaviour
         First_Movement,
     }
 
-    private List<ACTIONS> m_Previous; // latest actions get added to 0
+    private System.Collections.Generic.List<ACTIONS> m_Previous; // latest actions get added to 0
 
-    private List<ACTIONS> m_SecondWavePool;
-    private List<ACTIONS> m_ThirdWavePool;
+    private System.Collections.Generic.List<ACTIONS> m_SecondWavePool;
+    private System.Collections.Generic.List<ACTIONS> m_ThirdWavePool;
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
 
@@ -91,8 +93,18 @@ public class BossManager : MonoBehaviour
 
     private void FirstPhaseAction()
     {
-        if (m_Previous[0] == ACTIONS.First_Movement || IsPreviousActionDash())
-            MakeAction(ACTIONS.AOE_Random);
+        if (m_Previous[0] == ACTIONS.First_Movement)
+
+            if (Random.Range(0, 1) == 1)
+                MakeAction(ACTIONS.AOE_Random);
+            else
+                MakeAction(ACTIONS.AOE_Follow);
+        else if (IsPreviousActionDash())
+
+            if (m_Previous[2] == ACTIONS.AOE_Random)
+                MakeAction(ACTIONS.AOE_Follow);
+            else
+                MakeAction(ACTIONS.AOE_Random);
         else if (IsPreviousActionAOE())
             MakeAction(ACTIONS.Shoot_Player);
         else if (IsPreviousActionShoot())
@@ -172,21 +184,18 @@ public class BossManager : MonoBehaviour
         switch (_theAction)
         {
             case ACTIONS.AOE_Random:
-                Debug.Log("AOE_Random launched");
+                m_AOESpawnManager.PlayRandomAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Random);
-                return; // TODELETE
                 break;
 
             case ACTIONS.AOE_Wave:
-                Debug.Log("AOE_Wave launched");
+                m_AOESpawnManager.PlayWaveAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Wave);
-                return; // TODELETE
                 break;
 
             case ACTIONS.AOE_Follow:
-                Debug.Log("AOE_Follow launched");
+                m_AOESpawnManager.PlayTargetAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Follow);
-                return; // TODELETE
                 break;
 
             case ACTIONS.Shoot_Player:
@@ -202,11 +211,15 @@ public class BossManager : MonoBehaviour
             case ACTIONS.Dash_Random:
                 m_DashScrpt.DashToWaypoint();
                 m_Previous.Insert(0, ACTIONS.Dash_Random);
+
+                StartCoroutine(BossIsTired());
                 break;
 
             case ACTIONS.Dash_Player:
                 m_DashScrpt.DashToPlayer();
                 m_Previous.Insert(0, ACTIONS.Dash_Player);
+
+                StartCoroutine(BossIsTired());
                 break;
 
             case ACTIONS.First_Movement:
@@ -215,6 +228,15 @@ public class BossManager : MonoBehaviour
                 return;
         }
         IsBossBussy = true;
+    }
+
+    private IEnumerator BossIsTired()
+    {
+        yield return new WaitForEndOfFrame();
+        while (IsBossBussy) { yield return null;  }; // while boss is bussy we wait
+        IsBossVulnerable = true;
+        yield return new WaitForSeconds(m_BossVulnerableTimer);
+        IsBossVulnerable = false;
     }
 
     private void NextPhase()
@@ -230,11 +252,18 @@ public class BossManager : MonoBehaviour
 
     public void TakeDamage(int _dmg)
     {
+        if (!IsBossVulnerable) return;
+
         Health -= _dmg;
         if (Health <= 0)
-            Destroy(gameObject);
+            BossIsDead();
         else if ((Health <= m_HealthEndSecondPhase && CurrentBossPhase == 2)
             || (Health <= m_HealthEndFirstPhase && CurrentBossPhase == 1))
             NextPhase();
+    }
+
+    private void BossIsDead()
+    {
+        Destroy(gameObject, 2f);
     }
 }
