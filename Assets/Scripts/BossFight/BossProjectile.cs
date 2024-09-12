@@ -136,7 +136,7 @@ public class BossProjectile : MonoBehaviour
     private ProjectileBehaviour.TypeProj GetTypeProjectile()
     {
         int phase = m_BigBoss.CurrentBossPhase;
-        if (phase > (m_PhaseChanceToSpawnGreenOrRed.Length - 1))
+        if (phase > m_PhaseChanceToSpawnGreenOrRed.Length)
             Debug.LogError("Phase not handled in BossProjectile");
 
         int idType = Random.Range(0, m_TypePool.Count);
