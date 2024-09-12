@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
@@ -48,6 +49,7 @@ public class AOESpawnManager : MonoBehaviour
     [SerializeField] private float maxTimerLeft = 1.0f;
     [SerializeField] private float timerLeft = 1.0f;
     private BossManager m_BigBoss = null;
+    private PlayerCombat m_PlayerScript = null;
 
     // Start is called before the first frame update
     // ---------------------------------------------
@@ -56,6 +58,7 @@ public class AOESpawnManager : MonoBehaviour
         nbrOfAOE = maxNbrOfAOE;
         timerLeft = maxTimerLeft;
         if (!TryGetComponent(out m_BigBoss)) UnityEngine.Debug.LogError("BossManager script not found in BossProjectile");
+        if (!GameObject.Find("Player").TryGetComponent(out m_PlayerScript)) UnityEngine.Debug.LogError("GameObject script not found in PlayerCombat");
 
         // Get Sizes
         circleRadius = CircleMapObject.gameObject.transform.localScale.x / 2.0f; // Get the radius of the map
@@ -115,7 +118,10 @@ public class AOESpawnManager : MonoBehaviour
         else if (!isLeftToRight)
         {
             if (lastPosition.x < maximumPosition.x)
+            {
                 isWavePhaseFinish = true;
+                m_BigBoss.IsBossBussy = false;
+            }
 
             if (lastPosition.z > maximumPosition.z && lastPosition.x > maximumPosition.x)
                 lastPosition.z -= (float)AOEZoneRadius;
@@ -130,7 +136,7 @@ public class AOESpawnManager : MonoBehaviour
     // ---------------------------------------
     private Vector3 SetAOETargetSpawnPosition()
     {
-        return PlayerObject.transform.position;
+        return new Vector3(PlayerObject.transform.position.x, 0.01f, PlayerObject.transform.position.z);
     }
 
     // Spawn the AOE's Zone
@@ -158,9 +164,11 @@ public class AOESpawnManager : MonoBehaviour
                 {
                     if (indxNbrOfAOE == randomWaveIndx[i])
                     {
+                        //m_PlayerScript.PlayerInvincibilities();
+
                         // Spawning of the AOE's Zone on the floor
                         GameObject newAOEZoneObject = Instantiate(SpecialAOEZoneObject);
-                        newAOEZoneObject.transform.position = AOEPosition;
+                        newAOEZoneObject.transform.position = new Vector3(AOEPosition.x, AOEPosition.y + 0.01f, AOEPosition.z);
                     }
                     else
                     {
@@ -230,7 +238,6 @@ public class AOESpawnManager : MonoBehaviour
                 isTargetPhase = false;
                 timerLeft = maxTimerLeft;
             }
-
             AOESpawn(SetAOETargetSpawnPosition());
             yield return new WaitForSeconds(0.2f);
         }
@@ -241,24 +248,27 @@ public class AOESpawnManager : MonoBehaviour
     // -----------------------------
     private IEnumerator TimerForWave()
     {
-        if (isLeftToRight)
+        while (!isWavePhaseFinish)
         {
-            lastPosition.z = maximumPosition.x;
-            lastPosition.x += (float)AOEZoneRadius * 3.0f;
-        }
-        else if (!isLeftToRight)
-        {
-            lastPosition.z = -maximumPosition.x;
-            lastPosition.x -= (float)AOEZoneRadius * 3.0f;
-        }
+            if (isLeftToRight)
+            {
+                lastPosition.z = maximumPosition.x;
+                lastPosition.x += (float)AOEZoneRadius * 3.0f;
+            }
+            else if (!isLeftToRight)
+            {
+                lastPosition.z = -maximumPosition.x;
+                lastPosition.x -= (float)AOEZoneRadius * 3.0f;
+            }
 
-        while (isWavePhase && isBossAOEPhase && !isRowFinish && !isWavePhaseFinish)
-        {
-            AOESpawn(SetAOEWaveSpawnPosition());
-        }
+            while (isWavePhase && isBossAOEPhase && !isRowFinish)
+            {
+                AOESpawn(SetAOEWaveSpawnPosition());
+            }
 
-        isRowFinish = false;
-        yield return new WaitForSeconds(0.8f);
+            isRowFinish = false;
+            yield return new WaitForSeconds(0.8f);
+        }
         isCoroutine = false;
     }
 
@@ -307,24 +317,24 @@ public class AOESpawnManager : MonoBehaviour
         }
     }
 
-    public void PlayRandomAOE()
+    public Coroutine PlayRandomAOE()
     {
         isRandomPhase = true;
-        StartCoroutine(TimerForRandom());
+        return StartCoroutine(TimerForRandom());
         isCoroutine = true;
     }
 
-    public void PlayTargetAOE()
+    public Coroutine PlayTargetAOE()
     {
         isTargetPhase = true;
-        StartCoroutine(TimerForTarget());
+        return StartCoroutine(TimerForTarget());
         isCoroutine = true;
     }
 
-    public void PlayWaveAOE()
+    public Coroutine PlayWaveAOE()
     {
         isWavePhase = true;
-        StartCoroutine(TimerForWave());
+        return StartCoroutine(TimerForWave());
         isCoroutine = true;
     }
 }

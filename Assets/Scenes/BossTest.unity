@@ -649,12 +649,16 @@ PrefabInstance:
       objectReference: {fileID: 107826629}
     - target: {fileID: 5418718178028603304, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_Speed
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5418718178028603304, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_DashPower
-      value: 1.15
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5418718178028603304, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_ArenaCenterPos
+      value: 
+      objectReference: {fileID: 1986192141}
     - target: {fileID: 5606492912958998859, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_Name
       value: Player
@@ -974,8 +978,8 @@ MonoBehaviour:
   maximumPosition: {x: 0, y: 0, z: 0}
   isRowFinish: 0
   isWavePhaseFinish: 0
-  maxTimerLeft: 1
-  timerLeft: 1
+  maxTimerLeft: 0.5
+  timerLeft: 0.5
 --- !u!114 &1922059148919763878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,7 +996,7 @@ MonoBehaviour:
   IsBossVulnerable: 0
   m_BossVulnerableTimer: 5
   Health: 10
-  CurrentBossPhase: 1
+  CurrentBossPhase: 2
   m_HealthEndFirstPhase: 8
   m_HealthEndSecondPhase: 5
   m_GreenRedBar: 0
