@@ -655,6 +655,10 @@ PrefabInstance:
       propertyPath: m_DashPower
       value: 1.15
       objectReference: {fileID: 0}
+    - target: {fileID: 5418718178028603304, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_ArenaCenterPos
+      value: 
+      objectReference: {fileID: 1986192141}
     - target: {fileID: 5606492912958998859, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_Name
       value: Player
