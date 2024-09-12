@@ -1,5 +1,6 @@
 using Cinemachine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
@@ -32,6 +33,10 @@ public class PlayerCombat : MonoBehaviour
 
     private float m_AnimationEnd = 0.2f;
 
+    [SerializeField] private Transform m_LifeBar;
+
+    private List<Transform> m_HealthPointList = new List<Transform>();
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -40,6 +45,11 @@ public class PlayerCombat : MonoBehaviour
         PlayerMovement = GetComponent<PlayerMovement>();
 
         if (!m_BigBoss) Debug.LogError("BossManager not set in PlayerCombat");
+
+        for (int i = 0; i < m_LifeBar.childCount; i++)
+        {
+            m_HealthPointList.Add(m_LifeBar.GetChild(i).transform);
+        }
     }
 
     // Update is called once per frame
@@ -89,6 +99,10 @@ public class PlayerCombat : MonoBehaviour
             m_Health -= pDamage;
 
             m_VCam.GetComponent<ScreenShake>().ShakeCamera();
+
+            m_HealthPointList[m_HealthPointList.Count - 1].GetChild(1).gameObject.SetActive(false);
+            m_HealthPointList[m_HealthPointList.Count - 1].GetChild(0).gameObject.SetActive(true);
+            m_HealthPointList.RemoveAt(m_HealthPointList.Count - 1);
 
             if (m_Health <= 0)
             {
