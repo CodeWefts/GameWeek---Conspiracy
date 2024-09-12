@@ -13,7 +13,7 @@ public class BossManager : MonoBehaviour
     [HideInInspector] public bool IsBossBussy = false;
 
     [HideInInspector] public bool IsBossVulnerable = false;
-
+    
     [SerializeField] private float m_BossVulnerableTimer = 5f;
 
     public int Health = 10;
