@@ -80,7 +80,7 @@ public class BossManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsBossBussy || IsBossVulnerable) return;
+        if (IsBossBussy || IsBossVulnerable || CurrentBossPhase == 4) return;
 
         m_CurrentAttack = null;
 
@@ -275,6 +275,7 @@ public class BossManager : MonoBehaviour
 
         yield return new WaitForSeconds(m_BossVulnerableTimer);
         IsBossVulnerable = false;
+        m_GreenRedCursor.transform.localPosition = Vector3.zero;
     }
 
     private void NextPhase()
@@ -310,8 +311,9 @@ public class BossManager : MonoBehaviour
             return;
         }
 
-        Vector3 cursorPos = m_GreenRedCursor.transform.position;
-        cursorPos.x = m_GreenBlueCursorDistance * (m_GreenRedBar / (float)m_GreenRedMax);
+        Vector3 cursorPos = m_GreenRedCursor.transform.localPosition;
+        cursorPos.x = m_GreenRedBar * (m_GreenBlueCursorDistance / (float)m_GreenRedMax);
+        m_GreenRedCursor.transform.localPosition = cursorPos;
 
         m_DamageFlash.CallDamageFlash();
         m_Animator.SetTrigger("BossHit");
