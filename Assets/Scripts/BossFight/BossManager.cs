@@ -33,7 +33,7 @@ public class BossManager : MonoBehaviour
     [SerializeField] private int m_HealthEndSecondPhase = 5;
 
     private int m_GreenRedBar = 0;
-    [SerializeField, Range(1, 150)] private int m_GreenRedMax = 1;
+    [SerializeField, Range(1, 150)] private int m_GreenRedMax = 5;
 
     private enum ACTIONS
     {
@@ -56,6 +56,9 @@ public class BossManager : MonoBehaviour
 
     private Coroutine m_CurrentAttack = null;
 
+    private Vector3 m_Home = Vector3.zero;
+    [SerializeField] private Vector3 m_CenterOfMap = Vector3.zero;
+
     private void Start()
     {
         if (!TryGetComponent(out m_DashScrpt)) Debug.LogError("BossDash script not found in BossManager");
@@ -65,6 +68,9 @@ public class BossManager : MonoBehaviour
         if (!TryGetComponent(out m_Animator)) Debug.LogError("Animation script not found in BossManager");
 
         if (!m_GreenRedCursor) Debug.LogError("GreenRedCursor not set in BossManager");
+        if (m_CenterOfMap == Vector3.zero) Debug.LogWarning("Center Of Map is set as zero zero zero in BossManager");
+
+        m_Home = transform.position;
 
         m_Previous = new()
         {
@@ -253,14 +259,18 @@ public class BossManager : MonoBehaviour
 
     private IEnumerator BossIsTired()
     {
-        if (m_CurrentAttack != null)
-        {
-            StopCoroutine(m_CurrentAttack);
-            m_AOESpawnManager.StopAOE();
-            m_DashScrpt.StopDash();
-        }
+        Debug.Log("Boss is tired");
 
-        while (IsBossBussy) { yield return null; }; // while boss is bussy we wait
+        m_AOESpawnManager.StopAOE();
+        m_DashScrpt.StopDash();
+
+        m_Animator.SetBool("BossAOE", false);
+        m_Animator.SetBool("BossProj", false);
+        //m_Animator.SetBool("BossDash", false);
+
+        m_DashScrpt.DashToCoord(m_CenterOfMap);
+
+        IsBossBussy = false;
         IsBossVulnerable = true;
 
         yield return new WaitForSeconds(m_BossVulnerableTimer);
@@ -269,13 +279,19 @@ public class BossManager : MonoBehaviour
 
     private void NextPhase()
     {
+        CurrentBossPhase++;
+        Debug.Log("NEW BOSS PHASE");
+
         m_Previous = new()
         {
             ACTIONS.First_Movement
         };
 
-        CurrentBossPhase++;
-        Debug.Log("NEW BOSS PHASE");
+        StopCoroutine(m_CurrentAttack);
+        m_CurrentAttack = null;
+        IsBossVulnerable = false;
+
+        m_DashScrpt.DashToCoord(m_Home);
     }
 
     public void TakeDamageGreenRed(int _dmg, ProjectileBehaviour.TypeProj _type)
@@ -301,7 +317,10 @@ public class BossManager : MonoBehaviour
         m_Animator.SetTrigger("BossHit");
 
         if (m_GreenRedBar >= m_GreenRedMax || m_GreenRedBar <= -m_GreenRedMax)
-            StartCoroutine(BossIsTired());
+        {
+            StopCoroutine(m_CurrentAttack);
+            m_CurrentAttack = StartCoroutine(BossIsTired());
+        }
     }
 
     public void TakeDamage(int _dmg)
