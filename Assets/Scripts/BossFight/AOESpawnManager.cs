@@ -114,8 +114,6 @@ public class AOESpawnManager : MonoBehaviour
         }
         else if (!isLeftToRight)
         {
-            UnityEngine.Debug.Log(lastPosition);
-
             if (lastPosition.x < maximumPosition.x)
                 isWavePhaseFinish = true;
 
@@ -280,7 +278,6 @@ public class AOESpawnManager : MonoBehaviour
                 random = UnityEngine.Random.Range(1, 100);
                 if (random < 10)
                 {
-                    UnityEngine.Debug.Log(random);
                     nbrOfAOE--;
                     isAOEspe = true;
                 }
