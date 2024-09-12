@@ -1,10 +1,11 @@
 using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
+    [SerializeField] private BossManager m_BigBoss = null;
+
     [SerializeField] private float m_AttackRange = 1f;
     [SerializeField] private int m_AttackDamage = 1;
     [SerializeField] private float m_TimeBtwAttacks = 1f;
@@ -23,9 +24,7 @@ public class PlayerCombat : MonoBehaviour
 
     private float m_AttackTimer;
 
-    private bool m_IsBossVulnerable = false;
-
-    public PlayerMovement m_PlayerMovement;
+    [HideInInspector] public PlayerMovement PlayerMovement;
 
     [SerializeField] private CinemachineVirtualCamera m_VCam;
 
@@ -34,15 +33,17 @@ public class PlayerCombat : MonoBehaviour
     private float m_AnimationEnd = 0.2f;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         m_Health = m_MaxHealth;
         m_AttackTimer = m_TimeBtwAttacks;
-        m_PlayerMovement = GetComponent<PlayerMovement>();
+        PlayerMovement = GetComponent<PlayerMovement>();
+
+        if (!m_BigBoss) Debug.LogError("BossManager not set in PlayerCombat");
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetButtonDown(m_MeleeAttack) && m_AttackTimer >= m_TimeBtwAttacks)
         {
@@ -61,7 +62,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void MeleeAttack()
     {
-        if (m_IsBossVulnerable) m_CurrentLayerMask = m_BossLayer;
+        if (m_BigBoss.IsBossVulnerable) m_CurrentLayerMask = m_BossLayer;
         else m_CurrentLayerMask = m_ProjectileLayer;
 
         m_EnemiesHit = Physics.OverlapSphere(transform.position, m_AttackRange, m_CurrentLayerMask);
@@ -81,7 +82,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void DamageTaken(int pDamage)
     {
-        if (m_Health > 0 && m_PlayerMovement.IsPlayerVulnerable)
+        if (m_Health > 0 && PlayerMovement.IsPlayerVulnerable)
         {
             PlayerInvincibilities();
 
@@ -98,7 +99,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void PlayerInvincibilities()
     {
-        m_PlayerMovement.IsPlayerVulnerable = false;
+        PlayerMovement.IsPlayerVulnerable = false;
 
         StartCoroutine(IFramesCount());
     }
@@ -106,7 +107,7 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator IFramesCount()
     {
         yield return new WaitForSeconds(m_IFramesTimer);
-        m_PlayerMovement.IsPlayerVulnerable = true;
+        PlayerMovement.IsPlayerVulnerable = true;
     }
 
     public void Defeat()
@@ -114,10 +115,12 @@ public class PlayerCombat : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, m_AttackRange);
     }
+
 #endif
 }
