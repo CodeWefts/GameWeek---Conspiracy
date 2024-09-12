@@ -330,34 +330,4 @@ public class AOESpawnManager : MonoBehaviour
         StartCoroutine(TimerForWave());
         isCoroutine = true;
     }
-
-    /*
-    // Update is called once per frame
-    // -------------------------------
-    private void Update()
-    {
-        if (isBossAOEPhase && !isCoroutine)
-        {
-            if (isRandomPhase)
-            {
-                StartCoroutine(TimerForRandom());
-                isCoroutine = true;
-            }
-            else if (isTargetPhase)
-            {
-                StartCoroutine(TimerForTarget());
-                isCoroutine = true;
-            }
-            else if (isWavePhase)
-            {
-                StartCoroutine(TimerForWave());
-                isCoroutine = true;
-            }
-
-            if (isWavePhaseFinish)
-            {
-                ResetWaves();
-            }
-        }
-    }*/
 }
