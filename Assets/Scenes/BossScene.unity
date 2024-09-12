@@ -714,7 +714,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 0}
 --- !u!114 &1041164365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,25 +726,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -82931489
-      Data2: 1150833961
-      Data3: -1467812223
-      Data4: -724096026
-    Path: event:/Music Events/FightBoss_Music
-  Event: 
-  PlayEvent: 1
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &1088654303
 GameObject:
   m_ObjectHideFlags: 0
@@ -988,6 +968,10 @@ PrefabInstance:
       objectReference: {fileID: 1986192141}
     - target: {fileID: 5606492912958998859, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5606492912958998859, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
