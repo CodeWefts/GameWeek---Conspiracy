@@ -97,10 +97,6 @@ public class AOESpawnManager : MonoBehaviour
             if (lastPosition.x > maximumPosition.x)
             {
                 isWavePhaseFinish = true;
-
-                // TODOLETE AND MOVE ON THE BOSS MANAGER : JUST FOR THE BUILD
-                // ----------------------------------------------------------
-                isRandomPhase = true;
             }
 
             if (lastPosition.z > maximumPosition.z && lastPosition.x < maximumPosition.x)
@@ -123,8 +119,6 @@ public class AOESpawnManager : MonoBehaviour
 
         return lastPosition;
     }
-
-    //int x;
 
     // Set the target position of the AOE's Zone
     // ---------------------------------------
@@ -172,7 +166,6 @@ public class AOESpawnManager : MonoBehaviour
                         Vector3 phoneHeight = new Vector3(0.0f, PlayerCameraObject.transform.position.y + AOEPhoneObject.transform.localScale.y, 0.0f);
                         GameObject newAOEPhoneObject = Instantiate(AOEPhoneObject);
                         newAOEPhoneObject.transform.position = AOEPosition + phoneHeight;
-                        //x++;
                     }
                 }
             }
@@ -209,10 +202,6 @@ public class AOESpawnManager : MonoBehaviour
             if (timerLeft <= 0.0f)
             {
                 isRandomPhase = false;
-                // TODOLETE AND MOVE ON THE BOSS MANAGER : JUST FOR THE BUILD
-                // ----------------------------------------------------------
-                isLeftToRight = !isLeftToRight;
-                ResetWaves();
             }
             yield return new WaitForSeconds(0.2f);
         }
@@ -236,14 +225,6 @@ public class AOESpawnManager : MonoBehaviour
     // -----------------------------
     private IEnumerator TimerForWave()
     {
-        while (isWavePhase && isBossAOEPhase && !isRowFinish && !isWavePhaseFinish)
-        {
-            AOESpawn(SetAOEWaveSpawnPosition());
-        }
-
-        // if row is finish
-        // ----------------
-
         if (isLeftToRight)
         {
             lastPosition.z = maximumPosition.x;
@@ -253,6 +234,11 @@ public class AOESpawnManager : MonoBehaviour
         {
             lastPosition.z = -maximumPosition.x;
             lastPosition.x -= (float)AOEZoneRadius * 3.0f;
+        }
+
+        while (isWavePhase && isBossAOEPhase && !isRowFinish && !isWavePhaseFinish)
+        {
+            AOESpawn(SetAOEWaveSpawnPosition());
         }
 
         isRowFinish = false;
@@ -288,19 +274,22 @@ public class AOESpawnManager : MonoBehaviour
     {
         if (isWavePhaseFinish)
         {
-            if (isLeftToRight)
-            {
-                lastPosition = new Vector3((float)-circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
-                maximumPosition = new Vector3((float)circleRadius - (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
-            }
-            else if (!isLeftToRight)
-            {
-                lastPosition = new Vector3((float)circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
-                maximumPosition = new Vector3((float)-circleRadius + (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
-            }
+            UnityEngine.Debug.Log("Reset finish");
             isRowFinish = false;
             isWavePhaseFinish = false;
             isWavePhase = true;
+        }
+
+        // Get Positions
+        if (isLeftToRight)
+        {
+            lastPosition = new Vector3((float)-circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
+            maximumPosition = new Vector3((float)circleRadius - (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
+        }
+        else if (!isLeftToRight)
+        {
+            lastPosition = new Vector3((float)circleRadius, 0.01f, (float)circleRadius); // Position of the first AOE's Zone
+            maximumPosition = new Vector3((float)-circleRadius + (float)AOEZoneRadius, 0.01f, (float)-circleRadius + (float)AOEZoneRadius); // Position of the last AOE's Zone
         }
     }
 
@@ -310,7 +299,6 @@ public class AOESpawnManager : MonoBehaviour
     {
         if (isBossAOEPhase && !isCoroutine)
         {
-            //ResetWaves();
             if (isRandomPhase)
             {
                 StartCoroutine(TimerForRandom());
@@ -321,10 +309,15 @@ public class AOESpawnManager : MonoBehaviour
                 StartCoroutine(TimerForTarget());
                 isCoroutine = true;
             }
-            else if (isWavePhase && !isWavePhaseFinish)
+            else if (isWavePhase)
             {
                 StartCoroutine(TimerForWave());
                 isCoroutine = true;
+            }
+
+            if (isWavePhaseFinish)
+            {
+                ResetWaves();
             }
         }
     }

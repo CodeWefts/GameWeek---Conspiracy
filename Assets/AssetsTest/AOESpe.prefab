@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2618922462825770318}
   - component: {fileID: 3381927670903599807}
   - component: {fileID: -5298787335858845283}
-  m_Layer: 7
+  m_Layer: 12
   m_Name: AOESpe
   m_TagString: SpecialAOEZone
   m_Icon: {fileID: 0}
