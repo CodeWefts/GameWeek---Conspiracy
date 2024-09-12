@@ -13,6 +13,10 @@ public class BossManager : MonoBehaviour
 
     private Animator m_Animator = null;
 
+    [SerializeField] private GameObject m_GreenRedCursor = null;
+
+    [SerializeField] private int m_GreenBlueCursorDistance = 150;
+
     // turn to true when starting an attack, gets turned to false by the other scripts
     [HideInInspector] public bool IsBossBussy = false;
 
@@ -28,8 +32,8 @@ public class BossManager : MonoBehaviour
     [SerializeField] private int m_HealthEndFirstPhase = 8;
     [SerializeField] private int m_HealthEndSecondPhase = 5;
 
-    [SerializeField] private int m_GreenRedBar = 0;
-    [SerializeField] private int m_GreenRedMax = 0;
+    private int m_GreenRedBar = 0;
+    [SerializeField, Range(1, 150)] private int m_GreenRedMax = 1;
 
     private enum ACTIONS
     {
@@ -59,6 +63,8 @@ public class BossManager : MonoBehaviour
         if (!TryGetComponent(out m_AOESpawnManager)) Debug.LogError("AOESpawnManager script not found in BossManager");
         if (!TryGetComponent(out m_DamageFlash)) Debug.LogError("DamageFlash script not found in BossManager");
         if (!TryGetComponent(out m_Animator)) Debug.LogError("Animation script not found in BossManager");
+
+        if (!m_GreenRedCursor) Debug.LogError("GreenRedCursor not set in BossManager");
 
         m_Previous = new()
         {
@@ -196,19 +202,19 @@ public class BossManager : MonoBehaviour
         switch (_theAction)
         {
             case ACTIONS.AOE_Random:
-                m_AOESpawnManager.PlayRandomAOE();
+                m_CurrentAttack = m_AOESpawnManager.PlayRandomAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Random);
                 m_Animator.SetBool("BossAOE", true);
                 break;
 
             case ACTIONS.AOE_Wave:
-                m_AOESpawnManager.PlayWaveAOE();
+                m_CurrentAttack = m_AOESpawnManager.PlayWaveAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Wave);
                 m_Animator.SetBool("BossAOE", true);
                 break;
 
             case ACTIONS.AOE_Follow:
-                m_AOESpawnManager.PlayTargetAOE();
+                m_CurrentAttack = m_AOESpawnManager.PlayTargetAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Follow);
                 m_Animator.SetBool("BossAOE", true);
                 break;
@@ -248,9 +254,15 @@ public class BossManager : MonoBehaviour
     private IEnumerator BossIsTired()
     {
         if (m_CurrentAttack != null)
+        {
             StopCoroutine(m_CurrentAttack);
+            m_AOESpawnManager.StopAOE();
+            m_DashScrpt.StopDash();
+        }
+
         while (IsBossBussy) { yield return null; }; // while boss is bussy we wait
         IsBossVulnerable = true;
+
         yield return new WaitForSeconds(m_BossVulnerableTimer);
         IsBossVulnerable = false;
     }
@@ -281,6 +293,9 @@ public class BossManager : MonoBehaviour
             Debug.LogWarning("TakeDamageGreenRed Boss was damaged by the wrong type of projectile");
             return;
         }
+
+        Vector3 cursorPos = m_GreenRedCursor.transform.position;
+        cursorPos.x = m_GreenBlueCursorDistance * (m_GreenRedBar / (float)m_GreenRedMax);
 
         m_DamageFlash.CallDamageFlash();
         m_Animator.SetTrigger("BossHit");

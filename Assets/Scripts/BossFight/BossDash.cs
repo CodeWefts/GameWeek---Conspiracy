@@ -104,4 +104,6 @@ public class BossDash : MonoBehaviour
         while (m_IsTraveling) { yield return null; };
         m_BigBoss.IsBossBussy = false;
     }
+
+    public void StopDash() => m_IsTraveling = false;
 }
