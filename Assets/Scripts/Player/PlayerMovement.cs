@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool m_IsPlayerVulnerable = true;
 
-    public bool IsPlayerVulnerable { get { return m_IsPlayerVulnerable; } }
+    public bool IsPlayerVulnerable { get { return m_IsPlayerVulnerable; } set { m_IsPlayerVulnerable = value; } }
 
 
     private void Start()
