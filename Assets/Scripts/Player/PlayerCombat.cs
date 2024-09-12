@@ -79,8 +79,6 @@ public class PlayerCombat : MonoBehaviour
 
             m_Health -= pDamage;
 
-            Debug.Log(m_Health);
-
             m_VCam.GetComponent<ScreenShake>().ShakeCamera();
 
             if (m_Health <= 0)
