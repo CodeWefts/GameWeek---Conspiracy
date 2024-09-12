@@ -53,8 +53,8 @@ public class BossProjectile : MonoBehaviour
     {
         for (int i = 0; i < _nbBullets; i++)
         {
-            Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
             Vector3 target = m_Player.transform.position; target.y = 1f;
+            Vector3 spawnPoint = transform.position;
 
             SpawnProjectile(target, spawnPoint);
             yield return new WaitForSeconds(m_TimerPlayerTarget);
@@ -84,7 +84,7 @@ public class BossProjectile : MonoBehaviour
         for (int i = -1; i < 2; i++)
         {
             Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetTripleShoot), 1f, -50f);
-            Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
+            Vector3 spawnPoint = transform.position;
 
             SpawnProjectile(target, spawnPoint);
             SpawnProjectile(target + m_SideBulletOffset, spawnPoint);
@@ -97,7 +97,7 @@ public class BossProjectile : MonoBehaviour
         for (int i = -1; i < 2; i += 2)
         {
             Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetDoubleShoot), 1f, -50f);
-            Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
+            Vector3 spawnPoint = transform.position;
 
             SpawnProjectile(target, spawnPoint);
             SpawnProjectile(target + m_SideBulletOffset, spawnPoint);
