@@ -52,7 +52,7 @@ public class ProjectileBehaviour : MonoBehaviour
     // Uses layers to ignore certain layers (like other particules)
     private void OnTriggerEnter(Collider _otherBody)
     {
-        if (ProjectileType == TypeProj.BouncedGreen || ProjectileType == TypeProj.BouncedRed
+        if ((ProjectileType == TypeProj.BouncedGreen || ProjectileType == TypeProj.BouncedRed)
             && _otherBody.gameObject.layer == 6/*Boss Layer*/
             )
             BossManager.TakeDamageGreenRed(BossDamage, ProjectileType);

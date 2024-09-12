@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class BossDeleteAOE : MonoBehaviour
@@ -23,7 +19,7 @@ public class BossDeleteAOE : MonoBehaviour
         }
         if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript))
         {
-            if (playerScript.m_PlayerMovement.IsPlayerVulnerable)
+            if (playerScript.PlayerMovement.IsPlayerVulnerable)
             {
                 playerScript.DamageTaken(PlayerDamage);
             }
