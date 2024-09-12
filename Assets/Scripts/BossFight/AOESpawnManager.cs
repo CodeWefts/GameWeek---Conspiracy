@@ -274,6 +274,11 @@ public class AOESpawnManager : MonoBehaviour
 
     private void SetFrequencyOfSpecialAttack()
     {
+        if (nbrOfAOE == 0)
+        {
+            nbrOfAOE = maxNbrOfAOE;
+        }
+
         if (isWavePhase && nbrOfAOE > 0)
         {
             // 177 is the nbr of AOE's Zone in the map for a wave phase
@@ -302,6 +307,7 @@ public class AOESpawnManager : MonoBehaviour
             isRowFinish = false;
             isWavePhaseFinish = false;
             isWavePhase = true;
+            m_BigBoss.IsBossBussy = false;
         }
 
         // Get Positions
@@ -317,24 +323,36 @@ public class AOESpawnManager : MonoBehaviour
         }
     }
 
+    // ################################### STOP AOE ############################################
+    // -----------------------------------------------------------------------------------------
+
+    public void StopAOE()
+    {
+        m_BigBoss.IsBossBussy = false;
+        isRandomPhase = false;
+        isTargetPhase = false;
+        isWavePhase = false;
+    }
+
+    // ################################### PLAY AOE ############################################
+    // -----------------------------------------------------------------------------------------
+
     public Coroutine PlayRandomAOE()
     {
         isRandomPhase = true;
         return StartCoroutine(TimerForRandom());
-        isCoroutine = true;
     }
 
     public Coroutine PlayTargetAOE()
     {
         isTargetPhase = true;
         return StartCoroutine(TimerForTarget());
-        isCoroutine = true;
     }
 
     public Coroutine PlayWaveAOE()
     {
+        ResetWaves();
         isWavePhase = true;
         return StartCoroutine(TimerForWave());
-        isCoroutine = true;
     }
 }
