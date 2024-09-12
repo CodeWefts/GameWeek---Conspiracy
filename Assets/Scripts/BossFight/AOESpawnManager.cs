@@ -184,8 +184,10 @@ public class AOESpawnManager : MonoBehaviour
             }
             else
             {
+                // Enable the invincibility of the player to let him pass through the AOE's Zone while it's spawning
                 if (isTargetPhase)
                     m_PlayerScript.PlayerInvincibilities();
+
                 // Spawning of the AOE's Zone on the floor
                 GameObject newAOEZoneObject = Instantiate(AOEZoneObject);
                 newAOEZoneObject.transform.position = AOEPosition;
@@ -310,7 +312,6 @@ public class AOESpawnManager : MonoBehaviour
         {
             isRowFinish = false;
             isWavePhaseFinish = false;
-            isWavePhase = true;
             m_BigBoss.IsBossBussy = false;
         }
 

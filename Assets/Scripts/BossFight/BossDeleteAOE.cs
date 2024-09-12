@@ -16,12 +16,11 @@ public class BossDeleteAOE : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 6)
+        if (other.gameObject.layer == 6) // BOSS
         {
-            aAOESpawnManager.nbrOfAOE++;
             Destroy(gameObject, 0.1f);
         }
-        if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript))
+        if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript)) // PLAYER
         {
             if (playerScript.m_PlayerMovement.IsPlayerVulnerable)
             {
