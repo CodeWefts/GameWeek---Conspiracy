@@ -71,7 +71,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void DamageTaken(int pDamage)
     {
-        if (m_Health > 0  && m_PlayerMovement.IsPlayerVulnerable)
+        if (m_Health > 0 && m_PlayerMovement.IsPlayerVulnerable)
         {
             m_PlayerMovement.IsPlayerVulnerable = false;
 
@@ -89,14 +89,13 @@ public class PlayerCombat : MonoBehaviour
     }
 
     private IEnumerator IFramesCount()
-    {       
+    {
         yield return new WaitForSeconds(m_IFramesTimer);
         m_PlayerMovement.IsPlayerVulnerable = true;
     }
 
     public void Defeat()
     {
-
     }
 
 #if UNITY_EDITOR

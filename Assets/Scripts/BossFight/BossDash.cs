@@ -24,6 +24,8 @@ public class BossDash : MonoBehaviour
 
     private bool m_IsTraveling = false;
 
+    private Coroutine m_CurrentCoroutine = null;
+
     private void Start()
     {
         if (!TryGetComponent(out m_BigBoss)) Debug.LogError("BossManager script not foundin BossProjectile");
@@ -31,24 +33,28 @@ public class BossDash : MonoBehaviour
         if (!Player) Debug.LogError("Player not set in BossDash");
     }
 
-    public void DashToPlayer()
+    public Coroutine DashToPlayer()
     {
         m_StartPoint = transform.position;
-        StartCoroutine(TravelTo(Player.transform.position));
+        m_CurrentCoroutine = StartCoroutine(TravelTo(Player.transform.position));
         m_IsTraveling = true;
         StartCoroutine(TravelBackToBase());
+
+        return m_CurrentCoroutine;
     }
 
     // Waypoint list starts at ZERO
-    public void DashToWaypoint()
+    public Coroutine DashToWaypoint()
     {
         m_StartPoint = transform.position;
 
         m_WaypointTarget = Random.Range(0, Waypoints.Length);
-        StartCoroutine(TravelTo(Waypoints[m_WaypointTarget].transform.position));
+        m_CurrentCoroutine = StartCoroutine(TravelTo(Waypoints[m_WaypointTarget].transform.position));
 
         m_IsTraveling = true;
         StartCoroutine(DashToWaypointPart2());
+
+        return m_CurrentCoroutine;
     }
 
     private IEnumerator DashToWaypointPart2()
@@ -58,7 +64,7 @@ public class BossDash : MonoBehaviour
         int newWaypointTarget = Random.Range(0, Waypoints.Length);
         while (newWaypointTarget == m_WaypointTarget) newWaypointTarget = Random.Range(0, Waypoints.Length);
 
-        StartCoroutine(TravelTo(Waypoints[newWaypointTarget].transform.position));
+        m_CurrentCoroutine = StartCoroutine(TravelTo(Waypoints[newWaypointTarget].transform.position));
         m_IsTraveling = true;
         StartCoroutine(TravelBackToBase());
     }
@@ -93,7 +99,7 @@ public class BossDash : MonoBehaviour
     private IEnumerator TravelBackToBase()
     {
         while (m_IsTraveling) { yield return null; };
-        StartCoroutine(TravelTo(m_StartPoint));
+        m_CurrentCoroutine = StartCoroutine(TravelTo(m_StartPoint));
 
         while (m_IsTraveling) { yield return null; };
         m_BigBoss.IsBossBussy = false;

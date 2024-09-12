@@ -43,18 +43,18 @@ public class BossProjectile : MonoBehaviour
         if (!m_Player) Debug.LogError("Player not found in BossProjectile");
     }
 
-    public void ShootPlayer(int _nbBullets)
+    public Coroutine ShootPlayer(int _nbBullets)
     {
         RefillPool(_nbBullets);
-        StartCoroutine(PlayerShoot(_nbBullets));
+        return StartCoroutine(PlayerShoot(_nbBullets));
     }
 
     private IEnumerator PlayerShoot(int _nbBullets)
     {
         for (int i = 0; i < _nbBullets; i++)
         {
-            Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
             Vector3 target = m_Player.transform.position; target.y = 1f;
+            Vector3 spawnPoint = transform.position;
 
             SpawnProjectile(target, spawnPoint);
             yield return new WaitForSeconds(m_TimerPlayerTarget);
@@ -64,10 +64,10 @@ public class BossProjectile : MonoBehaviour
         m_BigBoss.IsBossBussy = false;
     }
 
-    public void ShootWave()
+    public Coroutine ShootWave()
     {
         RefillPool(15/*3*3+2*3*/);
-        StartCoroutine(WaveShoot());
+        return StartCoroutine(WaveShoot());
     }
 
     public IEnumerator WaveShoot()
@@ -84,7 +84,7 @@ public class BossProjectile : MonoBehaviour
         for (int i = -1; i < 2; i++)
         {
             Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetTripleShoot), 1f, -50f);
-            Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
+            Vector3 spawnPoint = transform.position;
 
             SpawnProjectile(target, spawnPoint);
             SpawnProjectile(target + m_SideBulletOffset, spawnPoint);
@@ -97,7 +97,7 @@ public class BossProjectile : MonoBehaviour
         for (int i = -1; i < 2; i += 2)
         {
             Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetDoubleShoot), 1f, -50f);
-            Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
+            Vector3 spawnPoint = transform.position;
 
             SpawnProjectile(target, spawnPoint);
             SpawnProjectile(target + m_SideBulletOffset, spawnPoint);
