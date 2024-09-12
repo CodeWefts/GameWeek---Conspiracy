@@ -14,6 +14,7 @@ public class AOESpawnManager : MonoBehaviour
 
     // Booleans
     [SerializeField] public bool isBossAOEPhase = true;
+
     [SerializeField] public bool isRandomPhase = false;
     [SerializeField] public bool isTargetPhase = false;
 
@@ -28,6 +29,7 @@ public class AOESpawnManager : MonoBehaviour
 
     // GameObjects
     [SerializeField] public GameObject AOEZoneObject;
+
     [SerializeField] public GameObject SpecialAOEZoneObject;
     [SerializeField] public GameObject AOEPhoneObject;
     [SerializeField] public GameObject PlayerCameraObject;
@@ -36,6 +38,7 @@ public class AOESpawnManager : MonoBehaviour
 
     // Variables for the Waves
     [SerializeField] public Vector3 lastPosition;
+
     [SerializeField] public Vector3 maximumPosition;
     [SerializeField] public bool isRowFinish = false;
     [SerializeField] public bool isWavePhaseFinish = false;
@@ -43,8 +46,9 @@ public class AOESpawnManager : MonoBehaviour
     // ######################  PRIVATE  #######################
     // --------------------------------------------------------
 
-    private bool isCoroutine = false;
+    //private bool isCoroutine = false;
     private double circleRadius = 0.0f;
+
     private double AOEZoneRadius;
     [SerializeField] private float maxTimerLeft = 1.0f;
     [SerializeField] private float timerLeft = 1.0f;
@@ -53,7 +57,7 @@ public class AOESpawnManager : MonoBehaviour
 
     // Start is called before the first frame update
     // ---------------------------------------------
-    void Start()
+    private void Start()
     {
         nbrOfAOE = maxNbrOfAOE;
         timerLeft = maxTimerLeft;
@@ -225,7 +229,7 @@ public class AOESpawnManager : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
 
-        isCoroutine = false;
+        //isCoroutine = false;
     }
 
     // Timer for the target AOE's Zone
@@ -244,7 +248,7 @@ public class AOESpawnManager : MonoBehaviour
             AOESpawn(SetAOETargetSpawnPosition());
             yield return new WaitForSeconds(0.2f);
         }
-        isCoroutine = false;
+        //isCoroutine = false;
     }
 
     // Timer for the wave AOE's Zone
@@ -272,7 +276,7 @@ public class AOESpawnManager : MonoBehaviour
             isRowFinish = false;
             yield return new WaitForSeconds(0.8f);
         }
-        isCoroutine = false;
+        //isCoroutine = false;
     }
 
     private void SetFrequencyOfSpecialAttack()
@@ -306,7 +310,7 @@ public class AOESpawnManager : MonoBehaviour
         }
     }
 
-    void ResetWaves()
+    private void ResetWaves()
     {
         if (isWavePhaseFinish)
         {

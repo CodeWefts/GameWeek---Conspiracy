@@ -33,6 +33,7 @@ public class BossManager : MonoBehaviour
     [SerializeField] private int m_HealthEndSecondPhase = 5;
 
     private int m_GreenRedBar = 0;
+    private int m_GreenRedKarma = 0;
     [SerializeField, Range(1, 150)] private int m_GreenRedMax = 5;
 
     private enum ACTIONS
@@ -54,7 +55,7 @@ public class BossManager : MonoBehaviour
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
 
-    private Coroutine m_CurrentAttack = null;
+    //private Coroutine m_CurrentAttack = null;
 
     private Vector3 m_Home = Vector3.zero;
     [SerializeField] private Vector3 m_CenterOfMap = Vector3.zero;
@@ -82,11 +83,11 @@ public class BossManager : MonoBehaviour
     {
         if (IsBossBussy || IsBossVulnerable || CurrentBossPhase == 4) return;
 
-        m_CurrentAttack = null;
+        //m_CurrentAttack = null;
 
         m_Animator.SetBool("BossAOE", false);
         m_Animator.SetBool("BossProj", false);
-        //m_Animator.SetBool("BossDash", false);
+        m_Animator.SetBool("BossDash", false);
 
         switch (CurrentBossPhase)
         {
@@ -208,45 +209,45 @@ public class BossManager : MonoBehaviour
         switch (_theAction)
         {
             case ACTIONS.AOE_Random:
-                m_CurrentAttack = m_AOESpawnManager.PlayRandomAOE();
+                m_AOESpawnManager.PlayRandomAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Random);
                 m_Animator.SetBool("BossAOE", true);
                 break;
 
             case ACTIONS.AOE_Wave:
-                m_CurrentAttack = m_AOESpawnManager.PlayWaveAOE();
+                m_AOESpawnManager.PlayWaveAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Wave);
                 m_Animator.SetBool("BossAOE", true);
                 break;
 
             case ACTIONS.AOE_Follow:
-                m_CurrentAttack = m_AOESpawnManager.PlayTargetAOE();
+                m_AOESpawnManager.PlayTargetAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Follow);
                 m_Animator.SetBool("BossAOE", true);
                 break;
 
             case ACTIONS.Shoot_Player:
-                m_CurrentAttack = m_ProjScrpt.ShootPlayer(m_NbBulletsAgainstPlayer);
+                m_ProjScrpt.ShootPlayer(m_NbBulletsAgainstPlayer);
                 m_Previous.Insert(0, ACTIONS.Shoot_Player);
                 m_Animator.SetBool("BossProj", true);
                 break;
 
             case ACTIONS.Shoot_Wave:
-                m_CurrentAttack = m_ProjScrpt.ShootWave();
+                m_ProjScrpt.ShootWave();
                 m_Previous.Insert(0, ACTIONS.Shoot_Wave);
                 m_Animator.SetBool("BossProj", true);
                 break;
 
             case ACTIONS.Dash_Random:
-                m_CurrentAttack = m_DashScrpt.DashToWaypoint();
+                m_DashScrpt.DashToWaypoint();
                 m_Previous.Insert(0, ACTIONS.Dash_Random);
-                //m_Animator.SetBool("BossDash", true);
+                m_Animator.SetBool("BossDash", true);
                 break;
 
             case ACTIONS.Dash_Player:
-                m_CurrentAttack = m_DashScrpt.DashToPlayer();
+                m_DashScrpt.DashToPlayer();
                 m_Previous.Insert(0, ACTIONS.Dash_Player);
-                //m_Animator.SetBool("BossDash", true);
+                m_Animator.SetBool("BossDash", true);
                 break;
 
             case ACTIONS.First_Movement:
@@ -260,13 +261,14 @@ public class BossManager : MonoBehaviour
     private IEnumerator BossIsTired()
     {
         Debug.Log("Boss is tired");
+        while (IsBossBussy) { yield return null; };
 
-        m_AOESpawnManager.StopAOE();
-        m_DashScrpt.StopDash();
+        //m_AOESpawnManager.StopAOE();
+        //m_DashScrpt.StopDash();
 
         m_Animator.SetBool("BossAOE", false);
         m_Animator.SetBool("BossProj", false);
-        //m_Animator.SetBool("BossDash", false);
+        m_Animator.SetBool("BossDash", false);
 
         m_DashScrpt.DashToCoord(m_CenterOfMap);
 
@@ -288,8 +290,8 @@ public class BossManager : MonoBehaviour
             ACTIONS.First_Movement
         };
 
-        StopCoroutine(m_CurrentAttack);
-        m_CurrentAttack = null;
+        //StopCoroutine(m_CurrentAttack);
+        //m_CurrentAttack = null;
         IsBossVulnerable = false;
 
         m_DashScrpt.DashToCoord(m_Home);
@@ -297,6 +299,8 @@ public class BossManager : MonoBehaviour
 
     public void TakeDamageGreenRed(int _dmg, ProjectileBehaviour.TypeProj _type)
     {
+        if (IsBossVulnerable) return;
+
         if (_type == ProjectileBehaviour.TypeProj.BouncedGreen)
         {
             m_GreenRedBar += _dmg;
@@ -320,8 +324,10 @@ public class BossManager : MonoBehaviour
 
         if (m_GreenRedBar >= m_GreenRedMax || m_GreenRedBar <= -m_GreenRedMax)
         {
-            StopCoroutine(m_CurrentAttack);
-            m_CurrentAttack = StartCoroutine(BossIsTired());
+            m_GreenRedKarma += (m_GreenRedBar / m_GreenRedBar);
+            //StopCoroutine(m_CurrentAttack);
+            StartCoroutine(BossIsTired());
+            IsBossVulnerable = true;
         }
     }
 
@@ -342,7 +348,13 @@ public class BossManager : MonoBehaviour
 
     private void BossIsDead()
     {
-        Destroy(gameObject, 2f);
-        m_Animator.SetTrigger("BossDeath");
+        CurrentBossPhase++;
+        m_DashScrpt.DashToCoord(m_Home);
+        //Destroy(gameObject, 10f);
+
+        if (m_GreenRedKarma > 0)
+            m_Animator.SetTrigger("BossGoodDeath");
+        else
+            m_Animator.SetTrigger("BossBadDeath");
     }
 }
