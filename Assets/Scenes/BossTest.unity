@@ -877,9 +877,7 @@ MonoBehaviour:
   isWavePhase: 0
   isLeftToRight: 1
   isAOEspe: 0
-  maxNbrOfAOE_atOne: 2
-  maxNbrOfAOE_atTwo: 5
-  maxNbrOfAOE_atThree: 7
+  maxNbrOfAOE: 2
   nbrOfAOE: 2
   indxNbrOfAOE: 0
   randomWaveIndx: 
@@ -909,6 +907,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsBossBussy: 0
   IsBossVulnerable: 0
+  m_BossVulnerableTimer: 5
   Health: 10
   CurrentBossPhase: 1
   m_HealthEndFirstPhase: 8
@@ -949,8 +948,8 @@ MonoBehaviour:
   m_TimerBetweenShoots: 0.16
   m_SideBulletOffset: {x: 1, y: 0, z: 0}
   ProjectileNormal: {fileID: 6341665446510125006, guid: 2952e7e0453623c4695f92130a4bb8b9, type: 3}
-  ProjectileGreen: {fileID: 6341665446510125006, guid: 2952e7e0453623c4695f92130a4bb8b9, type: 3}
-  ProjectileRed: {fileID: 6341665446510125006, guid: 2952e7e0453623c4695f92130a4bb8b9, type: 3}
+  ProjectileGreen: {fileID: 5853551224875634409, guid: 7bb0c22f9cedb9146aba5de40ba9e557, type: 3}
+  ProjectileRed: {fileID: 6224400216948919506, guid: cf5bf809e6281b04fba47fd0dcf46321, type: 3}
   m_PhaseChanceToSpawnGreenOrRed: 21000000140000000a000000
   m_TimerBeforeNextMove: 1
 --- !u!33 &5946830801173180864

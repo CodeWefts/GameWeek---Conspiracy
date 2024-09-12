@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class BossManager : MonoBehaviour
@@ -36,10 +36,10 @@ public class BossManager : MonoBehaviour
         First_Movement,
     }
 
-    private List<ACTIONS> m_Previous; // latest actions get added to 0
+    private System.Collections.Generic.List<ACTIONS> m_Previous; // latest actions get added to 0
 
-    private List<ACTIONS> m_SecondWavePool;
-    private List<ACTIONS> m_ThirdWavePool;
+    private System.Collections.Generic.List<ACTIONS> m_SecondWavePool;
+    private System.Collections.Generic.List<ACTIONS> m_ThirdWavePool;
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
 
@@ -212,14 +212,14 @@ public class BossManager : MonoBehaviour
                 m_DashScrpt.DashToWaypoint();
                 m_Previous.Insert(0, ACTIONS.Dash_Random);
 
-                StartCoroutine((System.Collections.IEnumerator)BossIsTired());
+                StartCoroutine(BossIsTired());
                 break;
 
             case ACTIONS.Dash_Player:
                 m_DashScrpt.DashToPlayer();
                 m_Previous.Insert(0, ACTIONS.Dash_Player);
 
-                StartCoroutine((System.Collections.IEnumerator)BossIsTired());
+                StartCoroutine(BossIsTired());
                 break;
 
             case ACTIONS.First_Movement:
@@ -230,9 +230,10 @@ public class BossManager : MonoBehaviour
         IsBossBussy = true;
     }
 
-    private System.Collections.IEnumerable BossIsTired()
+    private IEnumerator BossIsTired()
     {
-        while (IsBossBussy) { yield return new WaitForEndOfFrame(); }; // while boss is bussy we wait
+        yield return new WaitForEndOfFrame();
+        while (IsBossBussy) { yield return null;  }; // while boss is bussy we wait
         IsBossVulnerable = true;
         yield return new WaitForSeconds(m_BossVulnerableTimer);
         IsBossVulnerable = false;
