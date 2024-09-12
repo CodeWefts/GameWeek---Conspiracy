@@ -246,7 +246,6 @@ public class BossManager : MonoBehaviour
                 return;
         }
         IsBossBussy = true;
-        m_Animator.SetTrigger("BossHit");
     }
 
     private IEnumerator BossIsTired()
