@@ -11,6 +11,8 @@ public class BossManager : MonoBehaviour
 
     private DamageFlash m_DamageFlash = null;
 
+    private Animator m_Animator = null;
+
     // turn to true when starting an attack, gets turned to false by the other scripts
     [HideInInspector] public bool IsBossBussy = false;
 
@@ -25,6 +27,9 @@ public class BossManager : MonoBehaviour
 
     [SerializeField] private int m_HealthEndFirstPhase = 8;
     [SerializeField] private int m_HealthEndSecondPhase = 5;
+
+    [SerializeField] private int m_GreenRedBar = 0;
+    [SerializeField] private int m_GreenRedMax = 0;
 
     private enum ACTIONS
     {
@@ -45,12 +50,15 @@ public class BossManager : MonoBehaviour
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
 
+    private Coroutine m_CurrentAttack = null;
+
     private void Start()
     {
         if (!TryGetComponent(out m_DashScrpt)) Debug.LogError("BossDash script not found in BossManager");
         if (!TryGetComponent(out m_ProjScrpt)) Debug.LogError("BossProjectile script not found in BossManager");
         if (!TryGetComponent(out m_AOESpawnManager)) Debug.LogError("AOESpawnManager script not found in BossManager");
         if (!TryGetComponent(out m_DamageFlash)) Debug.LogError("DamageFlash script not found in BossManager");
+        if (!TryGetComponent(out m_Animator)) Debug.LogError("Animation script not found in BossManager");
 
         m_Previous = new()
         {
@@ -61,6 +69,12 @@ public class BossManager : MonoBehaviour
     private void Update()
     {
         if (IsBossBussy || IsBossVulnerable) return;
+
+        m_CurrentAttack = null;
+
+        m_Animator.SetBool("BossAOE", false);
+        m_Animator.SetBool("BossProj", false);
+        //m_Animator.SetBool("BossDash", false);
 
         switch (CurrentBossPhase)
         {
@@ -97,13 +111,11 @@ public class BossManager : MonoBehaviour
     private void FirstPhaseAction()
     {
         if (m_Previous[0] == ACTIONS.First_Movement)
-
             if (Random.Range(0, 2) == 1)
                 MakeAction(ACTIONS.AOE_Random);
             else
                 MakeAction(ACTIONS.AOE_Follow);
         else if (IsPreviousActionDash())
-
             if (m_Previous[2] == ACTIONS.AOE_Random)
                 MakeAction(ACTIONS.AOE_Follow);
             else
@@ -189,40 +201,43 @@ public class BossManager : MonoBehaviour
             case ACTIONS.AOE_Random:
                 m_AOESpawnManager.PlayRandomAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Random);
+                m_Animator.SetBool("BossAOE", true);
                 break;
 
             case ACTIONS.AOE_Wave:
                 m_AOESpawnManager.PlayWaveAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Wave);
+                m_Animator.SetBool("BossAOE", true);
                 break;
 
             case ACTIONS.AOE_Follow:
                 m_AOESpawnManager.PlayTargetAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Follow);
+                m_Animator.SetBool("BossAOE", true);
                 break;
 
             case ACTIONS.Shoot_Player:
-                m_ProjScrpt.ShootPlayer(m_NbBulletsAgainstPlayer);
+                m_CurrentAttack = m_ProjScrpt.ShootPlayer(m_NbBulletsAgainstPlayer);
                 m_Previous.Insert(0, ACTIONS.Shoot_Player);
+                m_Animator.SetBool("BossProj", true);
                 break;
 
             case ACTIONS.Shoot_Wave:
-                m_ProjScrpt.ShootWave();
+                m_CurrentAttack = m_ProjScrpt.ShootWave();
                 m_Previous.Insert(0, ACTIONS.Shoot_Wave);
+                m_Animator.SetBool("BossProj", true);
                 break;
 
             case ACTIONS.Dash_Random:
-                m_DashScrpt.DashToWaypoint();
+                m_CurrentAttack = m_DashScrpt.DashToWaypoint();
                 m_Previous.Insert(0, ACTIONS.Dash_Random);
-
-                StartCoroutine(BossIsTired());
+                //m_Animator.SetBool("BossDash", true);
                 break;
 
             case ACTIONS.Dash_Player:
-                m_DashScrpt.DashToPlayer();
+                m_CurrentAttack = m_DashScrpt.DashToPlayer();
                 m_Previous.Insert(0, ACTIONS.Dash_Player);
-
-                StartCoroutine(BossIsTired());
+                //m_Animator.SetBool("BossDash", true);
                 break;
 
             case ACTIONS.First_Movement:
@@ -231,11 +246,13 @@ public class BossManager : MonoBehaviour
                 return;
         }
         IsBossBussy = true;
+        m_Animator.SetTrigger("BossHit");
     }
 
     private IEnumerator BossIsTired()
     {
-        yield return new WaitForEndOfFrame();
+        if (m_CurrentAttack != null)
+            StopCoroutine(m_CurrentAttack);
         while (IsBossBussy) { yield return null; }; // while boss is bussy we wait
         IsBossVulnerable = true;
         yield return new WaitForSeconds(m_BossVulnerableTimer);
@@ -253,12 +270,36 @@ public class BossManager : MonoBehaviour
         Debug.Log("NEW BOSS PHASE");
     }
 
+    public void TakeDamageGreenRed(int _dmg, ProjectileBehaviour.TypeProj _type)
+    {
+        if (_type == ProjectileBehaviour.TypeProj.BouncedGreen)
+        {
+            m_GreenRedBar += _dmg;
+        }
+        else if (_type == ProjectileBehaviour.TypeProj.BouncedRed)
+        {
+            m_GreenRedBar -= _dmg;
+        }
+        else
+        {
+            Debug.LogWarning("TakeDamageGreenRed Boss was damaged by the wrong type of projectile");
+            return;
+        }
+
+        m_DamageFlash.CallDamageFlash();
+        m_Animator.SetTrigger("BossHit");
+
+        if (m_GreenRedBar >= m_GreenRedMax || m_GreenRedBar <= -m_GreenRedMax)
+            StartCoroutine(BossIsTired());
+    }
+
     public void TakeDamage(int _dmg)
     {
         if (!IsBossVulnerable) return;
 
         Health -= _dmg;
         m_DamageFlash.CallDamageFlash();
+        m_Animator.SetTrigger("BossHit");
 
         if (Health <= 0)
             BossIsDead();
@@ -270,5 +311,6 @@ public class BossManager : MonoBehaviour
     private void BossIsDead()
     {
         Destroy(gameObject, 2f);
+        m_Animator.SetTrigger("BossDeath");
     }
 }

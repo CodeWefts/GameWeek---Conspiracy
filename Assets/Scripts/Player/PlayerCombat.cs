@@ -9,7 +9,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private int m_AttackDamage = 1;
     [SerializeField] private float m_TimeBtwAttacks = 1f;
     [SerializeField] private int m_MaxHealth = 3;
-    [SerializeField] private float m_IFramesTimer = 1f;
+    [SerializeField] private float m_IFramesTimer = 2f;
 
     private int m_Health;
 
@@ -25,7 +25,7 @@ public class PlayerCombat : MonoBehaviour
 
     private bool m_IsBossVulnerable = false;
 
-    private PlayerMovement m_PlayerMovement;
+    public PlayerMovement m_PlayerMovement;
 
     [SerializeField] private CinemachineVirtualCamera m_VCam;
 
@@ -73,9 +73,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (m_Health > 0 && m_PlayerMovement.IsPlayerVulnerable)
         {
-            m_PlayerMovement.IsPlayerVulnerable = false;
-
-            StartCoroutine(IFramesCount());
+            PlayerInvincibilities();
 
             m_Health -= pDamage;
 
@@ -86,6 +84,13 @@ public class PlayerCombat : MonoBehaviour
                 Defeat();
             }
         }
+    }
+
+    public void PlayerInvincibilities()
+    {
+        m_PlayerMovement.IsPlayerVulnerable = false;
+
+        StartCoroutine(IFramesCount());
     }
 
     private IEnumerator IFramesCount()
