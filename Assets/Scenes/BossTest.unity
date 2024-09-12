@@ -998,13 +998,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d4d52afcd91b434ba87c8ccc6480332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HealthEndFirstPhase: 8
-  m_HealthEndSecondPhase: 5
-  m_NbBulletsAgainstPlayer: 10
   IsBossBussy: 0
   IsBossVulnerable: 0
   Health: 10
   CurrentBossPhase: 1
+  m_HealthEndFirstPhase: 8
+  m_HealthEndSecondPhase: 5
+  m_NbBulletsAgainstPlayer: 10
 --- !u!33 &1942074071280974149
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1550,6 +1550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38139c4ddaa5d664d86f51f91561fa52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 346819545}
   Waypoints:
   - {fileID: 1088654303}
   - {fileID: 552468489}

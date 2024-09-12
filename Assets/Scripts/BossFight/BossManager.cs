@@ -17,7 +17,7 @@ public class BossManager : MonoBehaviour
     public int Health = 10;
 
     [Header("Boss Phases")]
-    public int CurrentBossPhase = 1;
+    [Range(1, 3)] public int CurrentBossPhase = 1;
 
     [SerializeField] private int m_HealthEndFirstPhase = 8;
     [SerializeField] private int m_HealthEndSecondPhase = 5;
@@ -25,7 +25,7 @@ public class BossManager : MonoBehaviour
     private enum ACTIONS
     {
         AOE_Random,
-        AOE_Player,
+        AOE_Wave,
         AOE_Follow,
         Shoot_Player,
         Shoot_Wave,
@@ -36,6 +36,7 @@ public class BossManager : MonoBehaviour
 
     private List<ACTIONS> m_Previous; // latest actions get added to 0
 
+    private List<ACTIONS> m_SecondWavePool;
     private List<ACTIONS> m_ThirdWavePool;
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
@@ -73,7 +74,7 @@ public class BossManager : MonoBehaviour
     private bool IsPreviousActionAOE(int _ID = 0)
     {
         if (_ID > m_Previous.Count) return false;
-        return m_Previous[_ID] == ACTIONS.AOE_Random || m_Previous[_ID] == ACTIONS.AOE_Player || m_Previous[_ID] == ACTIONS.AOE_Follow;
+        return m_Previous[_ID] == ACTIONS.AOE_Random || m_Previous[_ID] == ACTIONS.AOE_Wave || m_Previous[_ID] == ACTIONS.AOE_Follow;
     }
 
     private bool IsPreviousActionShoot(int _ID = 0)
@@ -90,19 +91,8 @@ public class BossManager : MonoBehaviour
 
     private void FirstPhaseAction()
     {
-        /* AOERandom
-         *  1 THEN 2
-         * AOEFollow
-         * THEN
-         * ShootPlayer
-         * THEN
-         * DashRandom
-        */
         if (m_Previous[0] == ACTIONS.First_Movement || IsPreviousActionDash())
-        {
-            //AOE
-            m_Previous.Insert(0, ACTIONS.AOE_Random); // TODELETE, here to skip this part
-        }
+            MakeAction(ACTIONS.AOE_Random);
         else if (IsPreviousActionAOE())
             MakeAction(ACTIONS.Shoot_Player);
         else if (IsPreviousActionShoot())
@@ -111,25 +101,35 @@ public class BossManager : MonoBehaviour
             Debug.LogError("FIRST WAVE: Previous ACTION not handled");
     }
 
+    private ACTIONS GetSecondPhaseAction()
+    {
+        if (m_SecondWavePool == null || m_SecondWavePool.Count == 0)
+        {
+            m_SecondWavePool = new()
+            {
+                ACTIONS.AOE_Random,
+                ACTIONS.AOE_Wave,
+                ACTIONS.Shoot_Player,
+                ACTIONS.Shoot_Wave
+            };
+        }
+
+        int IDAction = Random.Range(0, m_SecondWavePool.Count);
+        ACTIONS returnAction = m_SecondWavePool[IDAction];
+        m_SecondWavePool.RemoveAt(IDAction);
+
+        return returnAction;
+    }
+
     private void SecondPhaseAction()
     {
-        /* AOERandom
-         * AOEWave 2 max / 3
-         * ShootPlayer
-         * WaveShoot 2 max / 3
-         * THEN
-         * PlayerDash
-        */
-        if (m_Previous[0] == ACTIONS.First_Movement || IsPreviousActionDash() // back to zero
-            || IsPreviousActionAOE() && IsPreviousActionShoot())
-        {
-        }
+        if (m_Previous[0] == ACTIONS.First_Movement)
+            MakeAction(GetSecondPhaseAction());
         else if (!IsPreviousActionDash() && !IsPreviousActionDash(1))
-        // if last two actions are ATTACKS, dashing is unlocked
-        {
-            if (!IsPreviousActionDash(2) || Random.Range(0, 1) == 1)
-                MakeAction(ACTIONS.Dash_Player);
-        }
+            // if last two actions are ATTACKS, DASH is unlocked
+            MakeAction(ACTIONS.Dash_Player);
+        else
+            MakeAction(GetSecondPhaseAction());
     }
 
     private ACTIONS GetThirdPhaseAction()
@@ -138,7 +138,7 @@ public class BossManager : MonoBehaviour
         {
             m_ThirdWavePool = new()
             {
-                ACTIONS.AOE_Player,
+                ACTIONS.AOE_Wave,
                 ACTIONS.AOE_Follow,
                 ACTIONS.AOE_Random,
                 ACTIONS.Shoot_Player,
@@ -155,28 +155,14 @@ public class BossManager : MonoBehaviour
 
     private void ThirdPhaseAction()
     {
-        /* AOE rand
-         * not same twice in a row
-         * & all at least present 1/5 times
-         * shoot rand
-         * not the same 3 times in a row
-         *
-         * dash rand
-         * dash player 2/3 cases
-         * dash > 2 AOE minimum
-        */
         if (m_Previous[0] == ACTIONS.First_Movement)
-        {
             MakeAction(GetThirdPhaseAction());
-        }
         else if (!IsPreviousActionDash() && !IsPreviousActionDash(1))
-        // if last two actions are ATTACKS, dashing is unlocked
-        {
+            // if last two actions are ATTACKS, DASH is unlocked
             if (Random.Range(0, 2) == 0)
                 MakeAction(ACTIONS.Dash_Random);
             else
                 MakeAction(ACTIONS.Dash_Player);
-        }
         else
             MakeAction(GetThirdPhaseAction());
     }
@@ -186,15 +172,21 @@ public class BossManager : MonoBehaviour
         switch (_theAction)
         {
             case ACTIONS.AOE_Random:
+                Debug.Log("AOE_Random launched");
                 m_Previous.Insert(0, ACTIONS.AOE_Random);
+                return; // TODELETE
                 break;
 
-            case ACTIONS.AOE_Player:
-                m_Previous.Insert(0, ACTIONS.AOE_Player);
+            case ACTIONS.AOE_Wave:
+                Debug.Log("AOE_Wave launched");
+                m_Previous.Insert(0, ACTIONS.AOE_Wave);
+                return; // TODELETE
                 break;
 
             case ACTIONS.AOE_Follow:
+                Debug.Log("AOE_Follow launched");
                 m_Previous.Insert(0, ACTIONS.AOE_Follow);
+                return; // TODELETE
                 break;
 
             case ACTIONS.Shoot_Player:

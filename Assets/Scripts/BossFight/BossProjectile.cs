@@ -34,7 +34,7 @@ public class BossProjectile : MonoBehaviour
 
     private ArrayList m_TypePool;
 
-    private float m_TimerBeforeNextMove = 1f;
+    [SerializeField] private float m_TimerBeforeNextMove = 1f;
 
     private void Start()
     {
@@ -83,7 +83,7 @@ public class BossProjectile : MonoBehaviour
     {
         for (int i = -1; i < 2; i++)
         {
-            Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetTripleShoot), 1f, 0f);
+            Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetTripleShoot), 1f, -50f);
             Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
 
             SpawnProjectile(target, spawnPoint);
@@ -96,7 +96,7 @@ public class BossProjectile : MonoBehaviour
     {
         for (int i = -1; i < 2; i += 2)
         {
-            Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetDoubleShoot), 1f, 0f);
+            Vector3 target = new(i * (m_LengthArena - m_LengthArenaOffsetDoubleShoot), 1f, -50f);
             Vector3 spawnPoint = transform.position; spawnPoint.y = 1f;
 
             SpawnProjectile(target, spawnPoint);
