@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6591248862073687712}
   - component: {fileID: 2618922462825770318}
   - component: {fileID: 3381927670903599807}
-  - component: {fileID: 2624778906686155730}
-  m_Layer: 7
+  - component: {fileID: -5298787335858845283}
+  m_Layer: 12
   m_Name: AOESpe
   m_TagString: SpecialAOEZone
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &2624778906686155730
+--- !u!114 &-5298787335858845283
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -33,10 +33,6 @@ public class ProjectileBehaviour : MonoBehaviour
 
     private void Update() => transform.position += Speed * Time.deltaTime * m_Direction;
 
-    public void MakeType(TypeProj _proj)
-    {
-    }
-
     public void ProjectileBounced()
     {
         if (ProjectileType == TypeProj.BouncyGreen || ProjectileType == TypeProj.BouncyRed)
@@ -56,10 +52,10 @@ public class ProjectileBehaviour : MonoBehaviour
     // Uses layers to ignore certain layers (like other particules)
     private void OnTriggerEnter(Collider _otherBody)
     {
-        if (ProjectileType == TypeProj.BouncedGreen || ProjectileType == TypeProj.BouncedRed
+        if ((ProjectileType == TypeProj.BouncedGreen || ProjectileType == TypeProj.BouncedRed)
             && _otherBody.gameObject.layer == 6/*Boss Layer*/
             )
-            BossManager.TakeDamage(BossDamage);
+            BossManager.TakeDamageGreenRed(BossDamage, ProjectileType);
         else if (_otherBody.gameObject.layer == 3/*Player Layer*/ &&
             _otherBody.gameObject.TryGetComponent(out PlayerCombat playerScript)
             )

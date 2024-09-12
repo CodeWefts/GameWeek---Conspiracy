@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class BossDash : MonoBehaviour
 {
-    //empty [Header("Dash to Player")]
+    [Header("Dash to Player")]
+    public GameObject Player = null;
 
     [Header("Dash to Waypoint")]
     public GameObject[] Waypoints;
 
+    private int m_WaypointTarget = -1;
+
     [Header("Shared")]
-    [SerializeField] private float m_TimerReturnToBase = 2f;
+    [SerializeField] private float m_TimerBeforeNextMove = 2f;
 
     private Vector3 m_StartPoint = Vector3.zero;
 
@@ -19,33 +22,68 @@ public class BossDash : MonoBehaviour
 
     private BossManager m_BigBoss = null;
 
-    private bool m_IsTravelingTo = false;
+    private bool m_IsTraveling = false;
+
+    private Coroutine m_CurrentCoroutine = null;
 
     private void Start()
     {
         if (!TryGetComponent(out m_BigBoss)) Debug.LogError("BossManager script not foundin BossProjectile");
-        if (Waypoints.Length == 0) Debug.LogError("BossDash Waypoint list in BossProjectile is empty!");
+        if (Waypoints.Length == 0) Debug.LogError("BossDash Waypoint list is empty");
+        if (!Player) Debug.LogError("Player not set in BossDash");
     }
 
-    public void DashToPlayer(Vector3 _target)
+    public Coroutine DashToPlayer()
     {
         m_StartPoint = transform.position;
-        StartCoroutine(TravelTo(_target));
-        m_IsTravelingTo = true;
+        Vector3 destination = Player.transform.position;
+
+        m_CurrentCoroutine = StartCoroutine(TravelTo(destination));
+        m_IsTraveling = true;
         StartCoroutine(TravelBackToBase());
+
+        return m_CurrentCoroutine;
     }
 
     // Waypoint list starts at ZERO
-    public void DashToWaypoint(int _waypointID)
+    public Coroutine DashToWaypoint()
     {
         m_StartPoint = transform.position;
-        StartCoroutine(TravelTo(Waypoints[_waypointID].transform.position));
-        m_IsTravelingTo = true;
+
+        m_WaypointTarget = Random.Range(0, Waypoints.Length);
+        m_CurrentCoroutine = StartCoroutine(TravelTo(Waypoints[m_WaypointTarget].transform.position));
+
+        m_IsTraveling = true;
+        StartCoroutine(DashToWaypointPart2());
+
+        return m_CurrentCoroutine;
+    }
+
+    public Coroutine DashToCoord(Vector3 _target)
+    {
+        m_StartPoint = transform.position;
+
+        m_CurrentCoroutine = StartCoroutine(TravelTo(_target));
+        m_IsTraveling = true;
+
+        return m_CurrentCoroutine;
+    }
+
+    private IEnumerator DashToWaypointPart2()
+    {
+        while (m_IsTraveling) { yield return null; };
+
+        int newWaypointTarget = Random.Range(0, Waypoints.Length);
+        while (newWaypointTarget == m_WaypointTarget) newWaypointTarget = Random.Range(0, Waypoints.Length);
+
+        m_CurrentCoroutine = StartCoroutine(TravelTo(Waypoints[newWaypointTarget].transform.position));
+        m_IsTraveling = true;
         StartCoroutine(TravelBackToBase());
     }
 
     private IEnumerator TravelTo(Vector3 _destination)
     {
+        m_IsTraveling = true;
         Vector3 direction = _destination - transform.position;
         direction.y = 0;
 
@@ -62,17 +100,22 @@ public class BossDash : MonoBehaviour
             yield return null;
         }
 
+        _destination.y = transform.position.y;
         transform.position = _destination;
 
-        yield return new WaitForSeconds(m_TimerReturnToBase);
+        yield return new WaitForSeconds(m_TimerBeforeNextMove);
 
-        m_IsTravelingTo = false;
+        m_IsTraveling = false;
     }
 
     private IEnumerator TravelBackToBase()
     {
-        while (m_IsTravelingTo) { yield return null; };
-        StartCoroutine(TravelTo(m_StartPoint));
+        while (m_IsTraveling) { yield return null; };
+        m_CurrentCoroutine = StartCoroutine(TravelTo(m_StartPoint));
+
+        while (m_IsTraveling) { yield return null; };
         m_BigBoss.IsBossBussy = false;
     }
+
+    public void StopDash() => m_IsTraveling = false;
 }
