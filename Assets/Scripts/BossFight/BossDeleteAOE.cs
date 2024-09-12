@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class BossDeleteAOE : MonoBehaviour
 {
+    private void Start()
+    {
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 6)
