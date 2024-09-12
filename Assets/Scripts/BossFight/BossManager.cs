@@ -302,13 +302,9 @@ public class BossManager : MonoBehaviour
         if (IsBossVulnerable) return;
 
         if (_type == ProjectileBehaviour.TypeProj.BouncedGreen)
-        {
             m_GreenRedBar += _dmg;
-        }
         else if (_type == ProjectileBehaviour.TypeProj.BouncedRed)
-        {
             m_GreenRedBar -= _dmg;
-        }
         else
         {
             Debug.LogWarning("TakeDamageGreenRed Boss was damaged by the wrong type of projectile");
@@ -324,7 +320,11 @@ public class BossManager : MonoBehaviour
 
         if (m_GreenRedBar >= m_GreenRedMax || m_GreenRedBar <= -m_GreenRedMax)
         {
-            m_GreenRedKarma += (m_GreenRedBar / m_GreenRedBar);
+            if (_type == ProjectileBehaviour.TypeProj.BouncedGreen)
+                m_GreenRedKarma += _dmg;
+            else if (_type == ProjectileBehaviour.TypeProj.BouncedRed)
+                m_GreenRedKarma -= _dmg;
+
             //StopCoroutine(m_CurrentAttack);
             StartCoroutine(BossIsTired());
             IsBossVulnerable = true;
