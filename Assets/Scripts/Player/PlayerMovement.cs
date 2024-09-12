@@ -28,9 +28,17 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsPlayerVulnerable { get { return m_IsPlayerVulnerable; } set { m_IsPlayerVulnerable = value; } }
 
+    private Vector3 m_PreviousPos;
+    private float m_DistanceFromCenter;
+    private float m_MaxDistanceFromCenter;
+
+    [SerializeField] private Transform m_ArenaCenterPos;
+
     private void Start()
     {
         m_DashTimer = m_TimeBtwDashes;
+        m_PreviousPos = transform.position;
+        m_MaxDistanceFromCenter = m_ArenaCenterPos.localScale.x/2;
     }
 
     // Update is called once per frame
@@ -45,6 +53,15 @@ public class PlayerMovement : MonoBehaviour
         Dash();
 
         transform.position += m_Direction * m_Speed * m_DashMultiplicator * Time.deltaTime;
+
+        m_DistanceFromCenter = Vector3.Distance(m_ArenaCenterPos.position, transform.position);
+
+        if (m_DistanceFromCenter > m_MaxDistanceFromCenter)
+        {
+            transform.position = m_PreviousPos;
+        }
+
+        m_PreviousPos = transform.position;
 
         m_DashTimer += Time.deltaTime;
     }
