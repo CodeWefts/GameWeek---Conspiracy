@@ -20,6 +20,7 @@ public class AOESpawnManager : MonoBehaviour
     [SerializeField] public bool isLeftToRight = true;
 
     [SerializeField] public bool isAOEspe = false;
+    [SerializeField] public int maxNbrOfAOE = 2;
     [SerializeField] public int nbrOfAOE = 2;
     [SerializeField] public int indxNbrOfAOE = 0;
     [SerializeField] public int[] randomWaveIndx;
@@ -44,12 +45,18 @@ public class AOESpawnManager : MonoBehaviour
     private bool isCoroutine = false;
     private double circleRadius = 0.0f;
     private double AOEZoneRadius;
+    [SerializeField] private float maxTimerLeft = 1.0f;
     [SerializeField] private float timerLeft = 1.0f;
+    private BossManager m_BigBoss = null;
 
     // Start is called before the first frame update
     // ---------------------------------------------
     void Start()
     {
+        nbrOfAOE = maxNbrOfAOE;
+        timerLeft = maxTimerLeft;
+        if (!TryGetComponent(out m_BigBoss)) UnityEngine.Debug.LogError("BossManager script not found in BossProjectile");
+
         // Get Sizes
         circleRadius = CircleMapObject.gameObject.transform.localScale.x / 2.0f; // Get the radius of the map
         AOEZoneRadius = AOEZoneObject.transform.localScale.x / 2.0f; // Get the radius of the AOE's Zone
@@ -97,6 +104,7 @@ public class AOESpawnManager : MonoBehaviour
             if (lastPosition.x > maximumPosition.x)
             {
                 isWavePhaseFinish = true;
+                m_BigBoss.IsBossBussy = false;
             }
 
             if (lastPosition.z > maximumPosition.z && lastPosition.x < maximumPosition.x)
@@ -201,7 +209,9 @@ public class AOESpawnManager : MonoBehaviour
             AOESpawn(SetAOERandomSpawnPosition());
             if (timerLeft <= 0.0f)
             {
+                m_BigBoss.IsBossBussy = false;
                 isRandomPhase = false;
+                timerLeft = maxTimerLeft;
             }
             yield return new WaitForSeconds(0.2f);
         }
@@ -215,6 +225,14 @@ public class AOESpawnManager : MonoBehaviour
     {
         while (isTargetPhase && isBossAOEPhase)
         {
+            timerLeft -= Time.deltaTime * 3;
+            if (timerLeft <= 0.0f)
+            {
+                m_BigBoss.IsBossBussy = false;
+                isTargetPhase = false;
+                timerLeft = maxTimerLeft;
+            }
+
             AOESpawn(SetAOETargetSpawnPosition());
             yield return new WaitForSeconds(0.2f);
         }
@@ -274,7 +292,6 @@ public class AOESpawnManager : MonoBehaviour
     {
         if (isWavePhaseFinish)
         {
-            UnityEngine.Debug.Log("Reset finish");
             isRowFinish = false;
             isWavePhaseFinish = false;
             isWavePhase = true;
@@ -293,32 +310,24 @@ public class AOESpawnManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    // -------------------------------
-    private void Update()
+    public void PlayRandomAOE()
     {
-        if (isBossAOEPhase && !isCoroutine)
-        {
-            if (isRandomPhase)
-            {
-                StartCoroutine(TimerForRandom());
-                isCoroutine = true;
-            }
-            else if (isTargetPhase)
-            {
-                StartCoroutine(TimerForTarget());
-                isCoroutine = true;
-            }
-            else if (isWavePhase)
-            {
-                StartCoroutine(TimerForWave());
-                isCoroutine = true;
-            }
+        isRandomPhase = true;
+        StartCoroutine(TimerForRandom());
+        isCoroutine = true;
+    }
 
-            if (isWavePhaseFinish)
-            {
-                ResetWaves();
-            }
-        }
+    public void PlayTargetAOE()
+    {
+        isTargetPhase = true;
+        StartCoroutine(TimerForTarget());
+        isCoroutine = true;
+    }
+
+    public void PlayWaveAOE()
+    {
+        isWavePhase = true;
+        StartCoroutine(TimerForWave());
+        isCoroutine = true;
     }
 }

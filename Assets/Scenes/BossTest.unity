@@ -872,11 +872,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBossAOEPhase: 1
-  isRandomPhase: 0
+  isRandomPhase: 1
   isTargetPhase: 0
-  isWavePhase: 1
+  isWavePhase: 0
   isLeftToRight: 1
   isAOEspe: 0
+  maxNbrOfAOE_atOne: 2
+  maxNbrOfAOE_atTwo: 5
+  maxNbrOfAOE_atThree: 7
   nbrOfAOE: 2
   indxNbrOfAOE: 0
   randomWaveIndx: 
@@ -890,6 +893,7 @@ MonoBehaviour:
   maximumPosition: {x: 0, y: 0, z: 0}
   isRowFinish: 0
   isWavePhaseFinish: 0
+  maxTimerLeft: 1
   timerLeft: 1
 --- !u!114 &1922059148919763878
 MonoBehaviour:

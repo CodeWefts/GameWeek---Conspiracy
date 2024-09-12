@@ -184,21 +184,18 @@ public class BossManager : MonoBehaviour
         switch (_theAction)
         {
             case ACTIONS.AOE_Random:
-                Debug.Log("AOE_Random launched");
+                m_AOESpawnManager.PlayRandomAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Random);
-                return; // TODELETE
                 break;
 
             case ACTIONS.AOE_Wave:
-                Debug.Log("AOE_Wave launched");
+                m_AOESpawnManager.PlayWaveAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Wave);
-                return; // TODELETE
                 break;
 
             case ACTIONS.AOE_Follow:
-                Debug.Log("AOE_Follow launched");
+                m_AOESpawnManager.PlayTargetAOE();
                 m_Previous.Insert(0, ACTIONS.AOE_Follow);
-                return; // TODELETE
                 break;
 
             case ACTIONS.Shoot_Player:
