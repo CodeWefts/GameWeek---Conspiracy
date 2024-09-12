@@ -118,7 +118,10 @@ public class AOESpawnManager : MonoBehaviour
         else if (!isLeftToRight)
         {
             if (lastPosition.x < maximumPosition.x)
+            {
                 isWavePhaseFinish = true;
+                m_BigBoss.IsBossBussy = false;
+            }
 
             if (lastPosition.z > maximumPosition.z && lastPosition.x > maximumPosition.x)
                 lastPosition.z -= (float)AOEZoneRadius;
@@ -245,24 +248,27 @@ public class AOESpawnManager : MonoBehaviour
     // -----------------------------
     private IEnumerator TimerForWave()
     {
-        if (isLeftToRight)
+        while (!isWavePhaseFinish)
         {
-            lastPosition.z = maximumPosition.x;
-            lastPosition.x += (float)AOEZoneRadius * 3.0f;
-        }
-        else if (!isLeftToRight)
-        {
-            lastPosition.z = -maximumPosition.x;
-            lastPosition.x -= (float)AOEZoneRadius * 3.0f;
-        }
+            if (isLeftToRight)
+            {
+                lastPosition.z = maximumPosition.x;
+                lastPosition.x += (float)AOEZoneRadius * 3.0f;
+            }
+            else if (!isLeftToRight)
+            {
+                lastPosition.z = -maximumPosition.x;
+                lastPosition.x -= (float)AOEZoneRadius * 3.0f;
+            }
 
-        while (isWavePhase && isBossAOEPhase /*&& !isRowFinish*/ && !isWavePhaseFinish)
-        {
-            AOESpawn(SetAOEWaveSpawnPosition());
-        }
+            while (isWavePhase && isBossAOEPhase && !isRowFinish)
+            {
+                AOESpawn(SetAOEWaveSpawnPosition());
+            }
 
-        isRowFinish = false;
-        yield return new WaitForSeconds(0.8f);
+            isRowFinish = false;
+            yield return new WaitForSeconds(0.8f);
+        }
         isCoroutine = false;
     }
 
