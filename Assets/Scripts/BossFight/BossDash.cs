@@ -45,7 +45,17 @@ public class BossDash : MonoBehaviour
         return m_CurrentCoroutine;
     }
 
-    // Waypoint list starts at ZERO
+    public Coroutine DashToCoord(Vector3 _target)
+    {
+        m_StartPoint = transform.position;
+
+        m_CurrentCoroutine = StartCoroutine(TravelTo(_target));
+        m_IsTraveling = true;
+        StartCoroutine(TravelBackToBase());
+
+        return m_CurrentCoroutine;
+    }
+
     public Coroutine DashToWaypoint()
     {
         m_StartPoint = transform.position;
@@ -55,16 +65,6 @@ public class BossDash : MonoBehaviour
 
         m_IsTraveling = true;
         StartCoroutine(DashToWaypointPart2());
-
-        return m_CurrentCoroutine;
-    }
-
-    public Coroutine DashToCoord(Vector3 _target)
-    {
-        m_StartPoint = transform.position;
-
-        m_CurrentCoroutine = StartCoroutine(TravelTo(_target));
-        m_IsTraveling = true;
 
         return m_CurrentCoroutine;
     }
@@ -93,14 +93,16 @@ public class BossDash : MonoBehaviour
         while (distanceToTravel.magnitude >= m_TravelTolerance)
         {
             Vector3 thisTravel = m_ForceOfDash * Time.deltaTime * direction;
-            transform.Translate(thisTravel);
+            transform.position += thisTravel;
+            //transform.Translate(thisTravel); // doesn't work properly for some reason
 
             distanceToTravel -= thisTravel;
 
             yield return null;
         }
 
-        _destination.y = transform.position.y;
+        Vector3 finalDestination = _destination;
+        finalDestination.y = transform.position.y;
         transform.position = _destination;
 
         yield return new WaitForSeconds(m_TimerBeforeNextMove);

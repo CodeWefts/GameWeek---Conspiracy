@@ -1442,7 +1442,7 @@ MonoBehaviour:
   ProjectileGreen: {fileID: 5853551224875634409, guid: 7bb0c22f9cedb9146aba5de40ba9e557, type: 3}
   ProjectileRed: {fileID: 6224400216948919506, guid: cf5bf809e6281b04fba47fd0dcf46321, type: 3}
   m_PhaseChanceToSpawnGreenOrRed: 21000000140000000a000000
-  m_TimerBeforeNextMove: 2
+  m_TimerBeforeNextMove: 3
 --- !u!1 &4960676629234219182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1628,8 +1628,8 @@ MonoBehaviour:
   - {fileID: 1659735372}
   - {fileID: 44881171}
   - {fileID: 1456074589}
-  m_TimerBeforeNextMove: 2
-  m_TravelTolerance: 0.5
+  m_TimerBeforeNextMove: 3
+  m_TravelTolerance: 2
   m_ForceOfDash: 30
 --- !u!114 &8952553006743868796
 MonoBehaviour:
