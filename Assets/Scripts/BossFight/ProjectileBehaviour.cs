@@ -55,7 +55,7 @@ public class ProjectileBehaviour : MonoBehaviour
         if (ProjectileType == TypeProj.BouncedGreen || ProjectileType == TypeProj.BouncedRed
             && _otherBody.gameObject.layer == 6/*Boss Layer*/
             )
-            BossManager.TakeDamage(BossDamage);
+            BossManager.TakeDamageGreenRed(BossDamage, ProjectileType);
         else if (_otherBody.gameObject.layer == 3/*Player Layer*/ &&
             _otherBody.gameObject.TryGetComponent(out PlayerCombat playerScript)
             )
