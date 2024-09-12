@@ -40,7 +40,6 @@ public class BossManager : MonoBehaviour
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
 
-    [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
     private void Start()
     {
         if (!TryGetComponent(out m_DashScrpt)) Debug.LogError("BossDash script not found in BossManager");
