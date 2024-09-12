@@ -968,9 +968,9 @@ MonoBehaviour:
   nbrOfAOE: 2
   indxNbrOfAOE: 0
   randomWaveIndx: 
-  AOEZoneObject: {fileID: 705937916091069648, guid: 4ab125bdfe2a2c2488ae05f544fca308, type: 3}
-  SpecialAOEZoneObject: {fileID: 705937916091069648, guid: 67d4669cdbfa92d4b9366cdbd774c293, type: 3}
-  AOEPhoneObject: {fileID: 5064135794643019519, guid: 80d06cc5ded02c04e8b20c82f125d7d8, type: 3}
+  AOEZoneObject: {fileID: 5054288334145438816, guid: 3f13427f07b0fa7428ce2829ccc032ca, type: 3}
+  SpecialAOEZoneObject: {fileID: 5054288334145438816, guid: 7aef26342b7c1e14b9c7849bf021cd14, type: 3}
+  AOEPhoneObject: {fileID: 4840154875586500242, guid: 68390a942a9dd8d44b39d8ec9e2dcb70, type: 3}
   PlayerCameraObject: {fileID: 1041164358}
   PlayerObject: {fileID: 1338568673}
   CircleMapObject: {fileID: 1986192137}
@@ -1086,6 +1086,7 @@ GameObject:
   - component: {fileID: 8952553006743868796}
   - component: {fileID: 8952553006743868797}
   - component: {fileID: 8952553006743868798}
+  - component: {fileID: 8952553006743868799}
   m_Layer: 6
   m_Name: Boss
   m_TagString: Untagged
@@ -1202,6 +1203,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8952553006743868799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571292224965724043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37aac5444ed46a4894de6ad6237a2f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerDamage: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

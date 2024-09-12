@@ -108,6 +108,7 @@ public class AOESpawnManager : MonoBehaviour
             {
                 isWavePhaseFinish = true;
                 m_BigBoss.IsBossBussy = false;
+                nbrOfAOE = maxNbrOfAOE;
             }
 
             if (lastPosition.z > maximumPosition.z && lastPosition.x < maximumPosition.x)
@@ -164,8 +165,6 @@ public class AOESpawnManager : MonoBehaviour
                 {
                     if (indxNbrOfAOE == randomWaveIndx[i])
                     {
-                        //m_PlayerScript.PlayerInvincibilities();
-
                         // Spawning of the AOE's Zone on the floor
                         GameObject newAOEZoneObject = Instantiate(SpecialAOEZoneObject);
                         newAOEZoneObject.transform.position = new Vector3(AOEPosition.x, AOEPosition.y + 0.01f, AOEPosition.z);
@@ -185,6 +184,8 @@ public class AOESpawnManager : MonoBehaviour
             }
             else
             {
+                if (isTargetPhase)
+                    m_PlayerScript.PlayerInvincibilities();
                 // Spawning of the AOE's Zone on the floor
                 GameObject newAOEZoneObject = Instantiate(AOEZoneObject);
                 newAOEZoneObject.transform.position = AOEPosition;
@@ -274,15 +275,18 @@ public class AOESpawnManager : MonoBehaviour
 
     private void SetFrequencyOfSpecialAttack()
     {
-        if (nbrOfAOE == 0)
+        if (!isWavePhase)
         {
-            nbrOfAOE = maxNbrOfAOE;
+            if (nbrOfAOE == 0)
+            {
+                nbrOfAOE = maxNbrOfAOE;
+            }
         }
 
         if (isWavePhase && nbrOfAOE > 0)
         {
-            // 177 is the nbr of AOE's Zone in the map for a wave phase
-            randomWaveIndx = Enumerable.Range(1, 177).OrderBy(x => UnityEngine.Random.value).Take(nbrOfAOE).ToArray();
+            // 400 is the nbr of AOE's Zone in the map for a wave phase
+            randomWaveIndx = Enumerable.Range(1, 400).OrderBy(x => UnityEngine.Random.value).Take(nbrOfAOE).ToArray();
             nbrOfAOE = 0;
         }
         else
@@ -291,7 +295,7 @@ public class AOESpawnManager : MonoBehaviour
             {
                 int random;
                 random = UnityEngine.Random.Range(1, 100);
-                if (random < 10)
+                if (random < 15)
                 {
                     nbrOfAOE--;
                     isAOEspe = true;
@@ -329,6 +333,7 @@ public class AOESpawnManager : MonoBehaviour
     public void StopAOE()
     {
         m_BigBoss.IsBossBussy = false;
+
         isRandomPhase = false;
         isTargetPhase = false;
         isWavePhase = false;
