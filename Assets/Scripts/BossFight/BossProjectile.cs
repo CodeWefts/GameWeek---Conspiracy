@@ -43,10 +43,10 @@ public class BossProjectile : MonoBehaviour
         if (!m_Player) Debug.LogError("Player not found in BossProjectile");
     }
 
-    public void ShootPlayer(int _nbBullets)
+    public Coroutine ShootPlayer(int _nbBullets)
     {
         RefillPool(_nbBullets);
-        StartCoroutine(PlayerShoot(_nbBullets));
+        return StartCoroutine(PlayerShoot(_nbBullets));
     }
 
     private IEnumerator PlayerShoot(int _nbBullets)
@@ -64,10 +64,10 @@ public class BossProjectile : MonoBehaviour
         m_BigBoss.IsBossBussy = false;
     }
 
-    public void ShootWave()
+    public Coroutine ShootWave()
     {
         RefillPool(15/*3*3+2*3*/);
-        StartCoroutine(WaveShoot());
+        return StartCoroutine(WaveShoot());
     }
 
     public IEnumerator WaveShoot()
