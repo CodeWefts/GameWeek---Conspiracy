@@ -28,6 +28,10 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] private CinemachineVirtualCamera m_VCam;
 
+    [SerializeField] private Animator m_Animator;
+
+    private float m_AnimationEnd = 0.2f;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -43,11 +47,17 @@ public class PlayerCombat : MonoBehaviour
     {
         if (Input.GetButtonDown(m_MeleeAttack) && m_AttackTimer >= m_TimeBtwAttacks)
         {
+            m_Animator.SetBool("IsAttacking",true);
             MeleeAttack();
             m_AttackTimer = 0f;
         }
 
         m_AttackTimer += Time.deltaTime;
+
+        if (m_AttackTimer >= m_AnimationEnd)
+        {
+            m_Animator.SetBool("IsAttacking", false);
+        }
     }
 
     private void MeleeAttack()
