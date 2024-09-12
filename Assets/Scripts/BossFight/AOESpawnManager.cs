@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
@@ -48,6 +49,7 @@ public class AOESpawnManager : MonoBehaviour
     [SerializeField] private float maxTimerLeft = 1.0f;
     [SerializeField] private float timerLeft = 1.0f;
     private BossManager m_BigBoss = null;
+    private PlayerCombat m_PlayerScript = null;
 
     // Start is called before the first frame update
     // ---------------------------------------------
@@ -56,6 +58,7 @@ public class AOESpawnManager : MonoBehaviour
         nbrOfAOE = maxNbrOfAOE;
         timerLeft = maxTimerLeft;
         if (!TryGetComponent(out m_BigBoss)) UnityEngine.Debug.LogError("BossManager script not found in BossProjectile");
+        if (!GameObject.Find("Player").TryGetComponent(out m_PlayerScript)) UnityEngine.Debug.LogError("GameObject script not found in PlayerCombat");
 
         // Get Sizes
         circleRadius = CircleMapObject.gameObject.transform.localScale.x / 2.0f; // Get the radius of the map
@@ -130,7 +133,7 @@ public class AOESpawnManager : MonoBehaviour
     // ---------------------------------------
     private Vector3 SetAOETargetSpawnPosition()
     {
-        return PlayerObject.transform.position;
+        return new Vector3(PlayerObject.transform.position.x, 0.01f, PlayerObject.transform.position.z);
     }
 
     // Spawn the AOE's Zone
@@ -158,6 +161,8 @@ public class AOESpawnManager : MonoBehaviour
                 {
                     if (indxNbrOfAOE == randomWaveIndx[i])
                     {
+                        //m_PlayerScript.PlayerInvincibilities();
+
                         // Spawning of the AOE's Zone on the floor
                         GameObject newAOEZoneObject = Instantiate(SpecialAOEZoneObject);
                         newAOEZoneObject.transform.position = AOEPosition;
@@ -230,7 +235,6 @@ public class AOESpawnManager : MonoBehaviour
                 isTargetPhase = false;
                 timerLeft = maxTimerLeft;
             }
-
             AOESpawn(SetAOETargetSpawnPosition());
             yield return new WaitForSeconds(0.2f);
         }

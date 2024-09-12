@@ -24,16 +24,14 @@ public class PlayerMovement : MonoBehaviour
     private float m_DashMultiplicator = 1f;
     private float m_DashMultiplicatorBaseValue = 1f;
 
-    private bool m_IsPlayerVulnerable = true;
+    public bool m_IsPlayerVulnerable = true;
 
     public bool IsPlayerVulnerable { get { return m_IsPlayerVulnerable; } set { m_IsPlayerVulnerable = value; } }
-
 
     private void Start()
     {
         m_DashTimer = m_TimeBtwDashes;
     }
-
 
     // Update is called once per frame
     void Update()
