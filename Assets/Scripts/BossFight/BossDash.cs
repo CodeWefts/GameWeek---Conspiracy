@@ -36,7 +36,9 @@ public class BossDash : MonoBehaviour
     public Coroutine DashToPlayer()
     {
         m_StartPoint = transform.position;
-        m_CurrentCoroutine = StartCoroutine(TravelTo(Player.transform.position));
+        Vector3 destination = Player.transform.position;
+
+        m_CurrentCoroutine = StartCoroutine(TravelTo(destination));
         m_IsTraveling = true;
         StartCoroutine(TravelBackToBase());
 
@@ -53,6 +55,16 @@ public class BossDash : MonoBehaviour
 
         m_IsTraveling = true;
         StartCoroutine(DashToWaypointPart2());
+
+        return m_CurrentCoroutine;
+    }
+
+    public Coroutine DashToCoord(Vector3 _target)
+    {
+        m_StartPoint = transform.position;
+
+        m_CurrentCoroutine = StartCoroutine(TravelTo(_target));
+        m_IsTraveling = true;
 
         return m_CurrentCoroutine;
     }
@@ -104,4 +116,6 @@ public class BossDash : MonoBehaviour
         while (m_IsTraveling) { yield return null; };
         m_BigBoss.IsBossBussy = false;
     }
+
+    public void StopDash() => m_IsTraveling = false;
 }
