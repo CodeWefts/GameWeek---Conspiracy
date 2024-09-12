@@ -351,6 +351,7 @@ public class AOESpawnManager : MonoBehaviour
 
     public Coroutine PlayWaveAOE()
     {
+        ResetWaves();
         isWavePhase = true;
         return StartCoroutine(TimerForWave());
     }
