@@ -9,11 +9,13 @@ public class BossManager : MonoBehaviour
 
     private AOESpawnManager m_AOESpawnManager = null;
 
+    private DamageFlash m_DamageFlash = null;
+
     // turn to true when starting an attack, gets turned to false by the other scripts
     [HideInInspector] public bool IsBossBussy = false;
 
     [HideInInspector] public bool IsBossVulnerable = false;
-    
+
     [SerializeField] private float m_BossVulnerableTimer = 5f;
 
     public int Health = 10;
@@ -48,6 +50,7 @@ public class BossManager : MonoBehaviour
         if (!TryGetComponent(out m_DashScrpt)) Debug.LogError("BossDash script not found in BossManager");
         if (!TryGetComponent(out m_ProjScrpt)) Debug.LogError("BossProjectile script not found in BossManager");
         if (!TryGetComponent(out m_AOESpawnManager)) Debug.LogError("AOESpawnManager script not found in BossManager");
+        if (!TryGetComponent(out m_DamageFlash)) Debug.LogError("DamageFlash script not found in BossManager");
 
         m_Previous = new()
         {
@@ -95,7 +98,7 @@ public class BossManager : MonoBehaviour
     {
         if (m_Previous[0] == ACTIONS.First_Movement)
 
-            if (Random.Range(0, 1) == 1)
+            if (Random.Range(0, 2) == 1)
                 MakeAction(ACTIONS.AOE_Random);
             else
                 MakeAction(ACTIONS.AOE_Follow);
@@ -233,7 +236,7 @@ public class BossManager : MonoBehaviour
     private IEnumerator BossIsTired()
     {
         yield return new WaitForEndOfFrame();
-        while (IsBossBussy) { yield return null;  }; // while boss is bussy we wait
+        while (IsBossBussy) { yield return null; }; // while boss is bussy we wait
         IsBossVulnerable = true;
         yield return new WaitForSeconds(m_BossVulnerableTimer);
         IsBossVulnerable = false;
@@ -255,6 +258,8 @@ public class BossManager : MonoBehaviour
         if (!IsBossVulnerable) return;
 
         Health -= _dmg;
+        m_DamageFlash.CallDamageFlash();
+
         if (Health <= 0)
             BossIsDead();
         else if ((Health <= m_HealthEndSecondPhase && CurrentBossPhase == 2)
