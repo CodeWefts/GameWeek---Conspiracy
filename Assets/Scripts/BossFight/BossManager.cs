@@ -91,8 +91,18 @@ public class BossManager : MonoBehaviour
 
     private void FirstPhaseAction()
     {
-        if (m_Previous[0] == ACTIONS.First_Movement || IsPreviousActionDash())
-            MakeAction(ACTIONS.AOE_Random);
+        if (m_Previous[0] == ACTIONS.First_Movement)
+
+            if (Random.Range(0, 1) == 1)
+                MakeAction(ACTIONS.AOE_Random);
+            else
+                MakeAction(ACTIONS.AOE_Follow);
+        else if (IsPreviousActionDash())
+
+            if (m_Previous[2] == ACTIONS.AOE_Random)
+                MakeAction(ACTIONS.AOE_Follow);
+            else
+                MakeAction(ACTIONS.AOE_Random);
         else if (IsPreviousActionAOE())
             MakeAction(ACTIONS.Shoot_Player);
         else if (IsPreviousActionShoot())
