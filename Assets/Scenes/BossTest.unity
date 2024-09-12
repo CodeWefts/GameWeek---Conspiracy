@@ -1016,8 +1016,8 @@ MonoBehaviour:
   maximumPosition: {x: 0, y: 0, z: 0}
   isRowFinish: 0
   isWavePhaseFinish: 0
-  maxTimerLeft: 1
-  timerLeft: 1
+  maxTimerLeft: 0.5
+  timerLeft: 0.5
 --- !u!114 &1922059148919763878
 MonoBehaviour:
   m_ObjectHideFlags: 0

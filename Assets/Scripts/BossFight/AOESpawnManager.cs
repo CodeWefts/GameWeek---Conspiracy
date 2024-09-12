@@ -256,7 +256,7 @@ public class AOESpawnManager : MonoBehaviour
             lastPosition.x -= (float)AOEZoneRadius * 3.0f;
         }
 
-        while (isWavePhase && isBossAOEPhase && !isRowFinish && !isWavePhaseFinish)
+        while (isWavePhase && isBossAOEPhase /*&& !isRowFinish*/ && !isWavePhaseFinish)
         {
             AOESpawn(SetAOEWaveSpawnPosition());
         }
@@ -311,24 +311,24 @@ public class AOESpawnManager : MonoBehaviour
         }
     }
 
-    public void PlayRandomAOE()
+    public Coroutine PlayRandomAOE()
     {
         isRandomPhase = true;
-        StartCoroutine(TimerForRandom());
+        return StartCoroutine(TimerForRandom());
         isCoroutine = true;
     }
 
-    public void PlayTargetAOE()
+    public Coroutine PlayTargetAOE()
     {
         isTargetPhase = true;
-        StartCoroutine(TimerForTarget());
+        return StartCoroutine(TimerForTarget());
         isCoroutine = true;
     }
 
-    public void PlayWaveAOE()
+    public Coroutine PlayWaveAOE()
     {
         isWavePhase = true;
-        StartCoroutine(TimerForWave());
+        return StartCoroutine(TimerForWave());
         isCoroutine = true;
     }
 }
