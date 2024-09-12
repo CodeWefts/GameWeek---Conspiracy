@@ -111,10 +111,7 @@ public class BossManager : MonoBehaviour
     private void FirstPhaseAction()
     {
         if (m_Previous[0] == ACTIONS.First_Movement)
-            if (Random.Range(0, 2) == 1)
-                MakeAction(ACTIONS.AOE_Random);
-            else
-                MakeAction(ACTIONS.AOE_Follow);
+            MakeAction(ACTIONS.AOE_Random);
         else if (IsPreviousActionDash())
             if (m_Previous[2] == ACTIONS.AOE_Random)
                 MakeAction(ACTIONS.AOE_Follow);
