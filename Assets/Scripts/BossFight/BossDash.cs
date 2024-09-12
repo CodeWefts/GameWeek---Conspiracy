@@ -90,7 +90,7 @@ public class BossDash : MonoBehaviour
         Vector3 distanceToTravel = direction;
         direction.Normalize();
 
-        while (distanceToTravel.magnitude >= m_TravelTolerance)
+        while (distanceToTravel.magnitude >= m_TravelTolerance && distanceToTravel.magnitude > 0)
         {
             Vector3 thisTravel = m_ForceOfDash * Time.deltaTime * direction;
             transform.position += thisTravel;
