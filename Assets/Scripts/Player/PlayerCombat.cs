@@ -73,9 +73,13 @@ public class PlayerCombat : MonoBehaviour
     {
         if (m_Health > 0  && m_PlayerMovement.IsPlayerVulnerable)
         {
+            m_PlayerMovement.IsPlayerVulnerable = false;
+
             StartCoroutine(IFramesCount());
 
             m_Health -= pDamage;
+
+            Debug.Log(m_Health);
 
             m_VCam.GetComponent<ScreenShake>().ShakeCamera();
 
@@ -87,7 +91,7 @@ public class PlayerCombat : MonoBehaviour
     }
 
     private IEnumerator IFramesCount()
-    {
+    {       
         yield return new WaitForSeconds(m_IFramesTimer);
         m_PlayerMovement.IsPlayerVulnerable = true;
     }
