@@ -9,6 +9,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private int m_AttackDamage = 1;
     [SerializeField] private float m_TimeBtwAttacks = 1f;
     [SerializeField] private int m_MaxHealth = 3;
+    [SerializeField] private float m_IFramesTimer = 1f;
 
     private int m_Health;
 
@@ -24,6 +25,8 @@ public class PlayerCombat : MonoBehaviour
 
     private bool m_IsBossVulnerable = false;
 
+    private PlayerMovement m_PlayerMovement;
+
     [SerializeField] private CinemachineVirtualCamera m_VCam;
 
     // Start is called before the first frame update
@@ -31,12 +34,12 @@ public class PlayerCombat : MonoBehaviour
     {
         m_Health = m_MaxHealth;
         m_AttackTimer = m_TimeBtwAttacks;
+        m_PlayerMovement = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(m_Health);
         if (Input.GetButtonDown(m_MeleeAttack) && m_AttackTimer >= m_TimeBtwAttacks)
         {
             MeleeAttack();
@@ -68,9 +71,15 @@ public class PlayerCombat : MonoBehaviour
 
     public void DamageTaken(int pDamage)
     {
-        if (m_Health > 0  && GetComponent<PlayerMovement>().IsPlayerVulnerable)
+        if (m_Health > 0  && m_PlayerMovement.IsPlayerVulnerable)
         {
+            m_PlayerMovement.IsPlayerVulnerable = false;
+
+            StartCoroutine(IFramesCount());
+
             m_Health -= pDamage;
+
+            Debug.Log(m_Health);
 
             m_VCam.GetComponent<ScreenShake>().ShakeCamera();
 
@@ -79,6 +88,12 @@ public class PlayerCombat : MonoBehaviour
                 Defeat();
             }
         }
+    }
+
+    private IEnumerator IFramesCount()
+    {       
+        yield return new WaitForSeconds(m_IFramesTimer);
+        m_PlayerMovement.IsPlayerVulnerable = true;
     }
 
     public void Defeat()
