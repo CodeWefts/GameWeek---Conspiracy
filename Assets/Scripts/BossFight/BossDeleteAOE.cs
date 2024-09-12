@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class BossDeleteAOE : MonoBehaviour
 {
+    public int PlayerDamage = 1;
+
     private AOESpawnManager aAOESpawnManager;
     private void Start()
     {
@@ -18,6 +20,10 @@ public class BossDeleteAOE : MonoBehaviour
         {
             aAOESpawnManager.nbrOfAOE++;
             Destroy(gameObject, 0.1f);
+        }
+        if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript))
+        {
+            playerScript.DamageTaken(PlayerDamage);
         }
     }
 }

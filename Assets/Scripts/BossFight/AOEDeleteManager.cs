@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AOEDeleteManager : MonoBehaviour
 {
+    public int PlayerDamage = 1;
+
+    // Phone
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "DespawnZone")
@@ -14,6 +17,10 @@ public class AOEDeleteManager : MonoBehaviour
         {
             Destroy(other.gameObject);
             Destroy(gameObject, 0.1f);
+        }
+        if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript))
+        {
+            playerScript.DamageTaken(PlayerDamage);
         }
     }
 
