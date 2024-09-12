@@ -168,7 +168,7 @@ public class AOESpawnManager : MonoBehaviour
 
                         // Spawning of the AOE's Zone on the floor
                         GameObject newAOEZoneObject = Instantiate(SpecialAOEZoneObject);
-                        newAOEZoneObject.transform.position = AOEPosition;
+                        newAOEZoneObject.transform.position = new Vector3(AOEPosition.x, AOEPosition.y + 0.01f, AOEPosition.z);
                     }
                     else
                     {

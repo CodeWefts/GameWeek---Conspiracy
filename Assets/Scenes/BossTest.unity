@@ -996,7 +996,7 @@ MonoBehaviour:
   IsBossVulnerable: 0
   m_BossVulnerableTimer: 5
   Health: 10
-  CurrentBossPhase: 1
+  CurrentBossPhase: 2
   m_HealthEndFirstPhase: 8
   m_HealthEndSecondPhase: 5
   m_GreenRedBar: 0
