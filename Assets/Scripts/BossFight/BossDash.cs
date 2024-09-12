@@ -82,6 +82,7 @@ public class BossDash : MonoBehaviour
             yield return null;
         }
 
+        _destination.y = transform.position.y;
         transform.position = _destination;
 
         yield return new WaitForSeconds(m_TimerBeforeNextMove);
