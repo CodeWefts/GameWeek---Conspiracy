@@ -34,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Transform m_ArenaCenterPos;
 
+    [SerializeField] private Animator m_Animator;
+
     private void Start()
     {
         m_DashTimer = m_TimeBtwDashes;
@@ -64,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
         m_PreviousPos = transform.position;
 
         m_DashTimer += Time.deltaTime;
+
+        m_Animator.SetFloat("Speed", Mathf.Abs(m_Direction.x));
     }
 
     private void Dash()
