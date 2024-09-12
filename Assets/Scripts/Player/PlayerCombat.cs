@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,13 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private int m_AttackDamage = 1;
     [SerializeField] private float m_TimeBtwAttacks = 1f;
     [SerializeField] private int m_MaxHealth = 3;
+    [SerializeField] private float m_IFramesTimer = 1f;
 
     private int m_Health;
 
-    [SerializeField] private LayerMask m_EnemyLayer;
+    [SerializeField] private LayerMask m_BossLayer;
+    [SerializeField] private LayerMask m_ProjectileLayer;
+    private LayerMask m_CurrentLayerMask;
 
     private string m_MeleeAttack = "MeleeAttack";
 
@@ -19,11 +23,18 @@ public class PlayerCombat : MonoBehaviour
 
     private float m_AttackTimer;
 
+    private bool m_IsBossVulnerable = false;
+
+    private PlayerMovement m_PlayerMovement;
+
+    [SerializeField] private CinemachineVirtualCamera m_VCam;
+
     // Start is called before the first frame update
     void Start()
     {
         m_Health = m_MaxHealth;
         m_AttackTimer = m_TimeBtwAttacks;
+        m_PlayerMovement = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -40,20 +51,35 @@ public class PlayerCombat : MonoBehaviour
 
     private void MeleeAttack()
     {
-        m_EnemiesHit = Physics.OverlapSphere(transform.position, m_AttackRange, m_EnemyLayer);
+        if (m_IsBossVulnerable) m_CurrentLayerMask = m_BossLayer;
+        else m_CurrentLayerMask = m_ProjectileLayer;
+
+        m_EnemiesHit = Physics.OverlapSphere(transform.position, m_AttackRange, m_CurrentLayerMask);
 
         foreach (Collider lEnemy in m_EnemiesHit)
         {
-            Debug.Log("Hit :"+ lEnemy.gameObject.name);
-
+            if (lEnemy.gameObject.TryGetComponent(out ProjectileBehaviour lProjectile))
+            {
+                lProjectile.ProjectileBounced();
+            }
+            else if (lEnemy.gameObject.TryGetComponent(out BossManager lBoss))
+            {
+                lBoss.TakeDamage(m_AttackDamage);
+            }
         }
     }
 
     public void DamageTaken(int pDamage)
     {
-        if (m_Health > 0)
+        if (m_Health > 0 && m_PlayerMovement.IsPlayerVulnerable)
         {
+            m_PlayerMovement.IsPlayerVulnerable = false;
+
+            StartCoroutine(IFramesCount());
+
             m_Health -= pDamage;
+
+            m_VCam.GetComponent<ScreenShake>().ShakeCamera();
 
             if (m_Health <= 0)
             {
@@ -62,14 +88,21 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    public void Defeat()
+    private IEnumerator IFramesCount()
     {
-
+        yield return new WaitForSeconds(m_IFramesTimer);
+        m_PlayerMovement.IsPlayerVulnerable = true;
     }
 
+    public void Defeat()
+    {
+    }
+
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, m_AttackRange);
     }
+#endif
 }

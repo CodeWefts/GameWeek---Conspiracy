@@ -16,13 +16,17 @@ public class PlayerMovement : MonoBehaviour
     private string m_Dash = "Dash";
 
     private bool m_IsDashing;
-    [SerializeField, Range(1f, 5f)] private float m_DashPower;
+    [SerializeField, Range(1f, 10f)] private float m_DashPower;
     [SerializeField] private float m_TimeBtwDashes = 1f;
-    [SerializeField] private float m_DashLength = 0.5f;
+    [SerializeField] private float m_DashDuration = 0.5f;
     private float m_IsDashingTimer;
     private float m_DashTimer;
     private float m_DashMultiplicator = 1f;
     private float m_DashMultiplicatorBaseValue = 1f;
+
+    private bool m_IsPlayerVulnerable = true;
+
+    public bool IsPlayerVulnerable { get { return m_IsPlayerVulnerable; } set { m_IsPlayerVulnerable = value; } }
 
 
     private void Start()
@@ -53,15 +57,17 @@ public class PlayerMovement : MonoBehaviour
         {
             m_DashMultiplicator = m_DashPower;
             m_IsDashing = true;
+            m_IsPlayerVulnerable = false;
         }
 
         if (m_IsDashing)
         {
             m_IsDashingTimer += Time.deltaTime;
 
-            if (m_IsDashingTimer >= m_DashLength)
+            if (m_IsDashingTimer >= m_DashDuration)
             {
                 m_IsDashing = false;
+                m_IsPlayerVulnerable = true;
                 m_IsDashingTimer = 0f;
                 m_DashTimer = 0f;
                 m_DashMultiplicator = m_DashMultiplicatorBaseValue;

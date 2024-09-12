@@ -33,10 +33,6 @@ public class ProjectileBehaviour : MonoBehaviour
 
     private void Update() => transform.position += Speed * Time.deltaTime * m_Direction;
 
-    public void MakeType(TypeProj _proj)
-    {
-    }
-
     public void ProjectileBounced()
     {
         if (ProjectileType == TypeProj.BouncyGreen || ProjectileType == TypeProj.BouncyRed)
