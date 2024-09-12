@@ -14,6 +14,8 @@ public class BossManager : MonoBehaviour
 
     [HideInInspector] public bool IsBossVulnerable = false;
 
+    [SerializeField] private float m_BossVulnerableTimer = 5f;
+
     public int Health = 10;
 
     [Header("Boss Phases")]
@@ -212,11 +214,15 @@ public class BossManager : MonoBehaviour
             case ACTIONS.Dash_Random:
                 m_DashScrpt.DashToWaypoint();
                 m_Previous.Insert(0, ACTIONS.Dash_Random);
+
+                StartCoroutine((System.Collections.IEnumerator)BossIsTired());
                 break;
 
             case ACTIONS.Dash_Player:
                 m_DashScrpt.DashToPlayer();
                 m_Previous.Insert(0, ACTIONS.Dash_Player);
+
+                StartCoroutine((System.Collections.IEnumerator)BossIsTired());
                 break;
 
             case ACTIONS.First_Movement:
@@ -225,6 +231,14 @@ public class BossManager : MonoBehaviour
                 return;
         }
         IsBossBussy = true;
+    }
+
+    private System.Collections.IEnumerable BossIsTired()
+    {
+        while (IsBossBussy) { yield return new WaitForEndOfFrame(); }; // while boss is bussy we wait
+        IsBossVulnerable = true;
+        yield return new WaitForSeconds(m_BossVulnerableTimer);
+        IsBossVulnerable = false;
     }
 
     private void NextPhase()
@@ -240,11 +254,18 @@ public class BossManager : MonoBehaviour
 
     public void TakeDamage(int _dmg)
     {
+        if (!IsBossVulnerable) return;
+
         Health -= _dmg;
         if (Health <= 0)
-            Destroy(gameObject);
+            BossIsDead();
         else if ((Health <= m_HealthEndSecondPhase && CurrentBossPhase == 2)
             || (Health <= m_HealthEndFirstPhase && CurrentBossPhase == 1))
             NextPhase();
+    }
+
+    private void BossIsDead()
+    {
+        Destroy(gameObject, 2f);
     }
 }
