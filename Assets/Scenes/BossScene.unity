@@ -551,6 +551,7 @@ GameObject:
   - component: {fileID: 1041164363}
   - component: {fileID: 1041164364}
   - component: {fileID: 1041164365}
+  - component: {fileID: 1041164366}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -722,7 +723,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041164358}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
@@ -742,10 +743,28 @@ MonoBehaviour:
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
-  Params: []
+  Params:
+  - Name: End
+    Value: 0
+  - Name: Pause
+    Value: 0
+  - Name: Transitions
+    Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1041164366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041164358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a19c33a419bbf4290b1dd4c8ae51ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1088654303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,7 +1529,7 @@ MonoBehaviour:
   m_GreenBlueCursorDistance: 150
   IsBossBussy: 0
   IsBossVulnerable: 0
-  m_BossVulnerableTimer: 5
+  m_BossVulnerableTimer: 15
   Health: 10
   CurrentBossPhase: 1
   m_HealthEndFirstPhase: 8
@@ -1518,7 +1537,6 @@ MonoBehaviour:
   m_GreenRedMax: 1
   m_NbBulletsAgainstPlayer: 10
   m_CenterOfMap: {x: 0, y: 0, z: 0}
-  PlayerDamage: 1
 --- !u!4 &4588122476481085629
 Transform:
   m_ObjectHideFlags: 0
