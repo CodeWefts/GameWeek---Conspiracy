@@ -576,8 +576,8 @@ GameObject:
   - component: {fileID: 1041164362}
   - component: {fileID: 1041164363}
   - component: {fileID: 1041164364}
-  - component: {fileID: 1041164365}
   - component: {fileID: 1041164366}
+  - component: {fileID: 1041164367}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -742,39 +742,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
---- !u!114 &1041164365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1041164358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -82931489
-      Data2: 1150833961
-      Data3: -1467812223
-      Data4: -724096026
-    Path: event:/Music Events/FightBoss_Music
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params:
-  - Name: Transitions
-    Value: 1
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!114 &1041164366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -782,11 +749,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041164358}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05a19c33a419bbf4290b1dd4c8ae51ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Transitions: 0
+--- !u!114 &1041164367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041164358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Emitters:
+  - Target: {fileID: 0}
+    Params:
+    - Name: Transitions
+      Value: 0
+  TriggerEvent: 0
 --- !u!1 &1088654303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,6 +1603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Stuned: {fileID: 509493561}
+  Transitions: 0
   m_GreenRedCursor: {fileID: 1023966295}
   m_GreenBlueCursorDistance: 150
   IsBossBussy: 0

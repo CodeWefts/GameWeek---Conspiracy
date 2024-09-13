@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class BossManager : MonoBehaviour
 {
+    private FMOD.Studio.EventInstance m_BossMusic;
+
+    [SerializeField]
+    [Range(0, 4)]
+    private float Transitions;
+
     private BossDash m_DashScrpt = null;
 
     private BossProjectile m_ProjScrpt = null;
@@ -31,6 +37,8 @@ public class BossManager : MonoBehaviour
     [HideInInspector] public bool IsBossVulnerable = false;
 
     [SerializeField] private float m_BossVulnerableTimer = 5f;
+
+    public CameraSound Camera;
 
     public int Health = 10;
 
@@ -88,6 +96,10 @@ public class BossManager : MonoBehaviour
             ACTIONS.First_Movement
         };
 
+        m_BossMusic = FMODUnity.RuntimeManager.CreateInstance("event:/Music Events/FightBoss_Music");
+        m_BossMusic.start();
+        m_BossMusic.release();
+        
         IsBossBussy = true;
         StartCoroutine(WaitForStart());
     }
@@ -97,6 +109,8 @@ public class BossManager : MonoBehaviour
 
     private void Update()
     {
+        m_BossMusic.setParameterByName("Transitions", Transitions);
+
         if (IsBossBussy || IsBossVulnerable || CurrentBossPhase == 4) return;
 
         m_Animator.SetBool("BossAOE", false);
@@ -316,6 +330,7 @@ public class BossManager : MonoBehaviour
 
         m_GreenRedCursor.transform.localPosition = Vector3.zero;
         m_DashScrpt.DashToCoord(m_Home);
+        Transitions++;
     }
 
     public void TakeDamageGreenRed(int _dmg, ProjectileBehaviour.TypeProj _type)
@@ -350,6 +365,7 @@ public class BossManager : MonoBehaviour
             else if (_type == ProjectileBehaviour.TypeProj.BouncedRed)
                 m_GreenRedKarma -= _dmg;
 
+            Transitions++;
             m_StunedCoroutine = StartCoroutine(BossIsTired());
             IsBossVulnerable = true;
         }
