@@ -4,6 +4,12 @@ using UnityEngine.Rendering;
 
 public class BossManager : MonoBehaviour
 {
+    private FMOD.Studio.EventInstance m_BossMusic;
+
+    [SerializeField]
+    [Range(0, 4)]
+    private float Transitions;
+
     private BossDash m_DashScrpt = null;
 
     private BossProjectile m_ProjScrpt = null;
@@ -28,6 +34,8 @@ public class BossManager : MonoBehaviour
     [HideInInspector] public bool IsBossVulnerable = false;
 
     [SerializeField] private float m_BossVulnerableTimer = 5f;
+
+    public CameraSound Camera;
 
     public int Health = 10;
 
@@ -80,10 +88,17 @@ public class BossManager : MonoBehaviour
         {
             ACTIONS.First_Movement
         };
+
+        m_BossMusic = FMODUnity.RuntimeManager.CreateInstance("event:/Music Events/FightBoss_Music");
+
+        m_BossMusic.start();
+        m_BossMusic.release();
     }
 
     private void Update()
     {
+        m_BossMusic.setParameterByName("Transitions", Transitions);
+
         if (IsBossBussy || IsBossVulnerable || CurrentBossPhase == 4) return;
 
         m_Animator.SetBool("BossAOE", false);
@@ -264,15 +279,9 @@ public class BossManager : MonoBehaviour
     {
         Debug.Log("Boss is tired");
         while (IsBossBussy) { yield return null; };
-
         m_BossStunned = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Stunned");
         m_BossStunned.start();
         m_BossStunned.release();
-
-        // TODOSOUND : play stunned music
-        //m_BossStunned = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Stunned");
-        //m_BossStunned.start();
-        //m_BossStunned.release();
 
         m_Animator.SetBool("BossAOE", false);
         m_Animator.SetBool("BossProj", false);
@@ -284,6 +293,7 @@ public class BossManager : MonoBehaviour
         IsBossVulnerable = true;
 
         yield return new WaitForSeconds(m_BossVulnerableTimer);
+
         IsBossVulnerable = false;
         m_GreenRedCursor.transform.localPosition = Vector3.zero;
     }
@@ -299,8 +309,8 @@ public class BossManager : MonoBehaviour
         };
 
         IsBossVulnerable = false;
-
         m_DashScrpt.DashToCoord(m_Home);
+        Transitions++;
     }
 
     public void TakeDamageGreenRed(int _dmg, ProjectileBehaviour.TypeProj _type)
@@ -335,7 +345,7 @@ public class BossManager : MonoBehaviour
             else if (_type == ProjectileBehaviour.TypeProj.BouncedRed)
                 m_GreenRedKarma -= _dmg;
 
-            //StopCoroutine(m_CurrentAttack);
+            Transitions++;
             StartCoroutine(BossIsTired());
             IsBossVulnerable = true;
         }

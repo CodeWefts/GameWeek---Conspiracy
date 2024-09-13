@@ -37,6 +37,9 @@ public class BossDash : MonoBehaviour
 
     public Coroutine DashToPlayer()
     {
+        m_DashSound = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Dash");
+        m_DashSound.start();
+        m_DashSound.release();
         m_StartPoint = transform.position;
         Vector3 destination = Player.transform.position;
         destination.y = m_StartPoint.y;
@@ -86,7 +89,7 @@ public class BossDash : MonoBehaviour
 
     private IEnumerator TravelTo(Vector3 _destination)
     {
-        m_DashSound = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Dash");
+        m_DashSound = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Prepare Dash");
         m_DashSound.start();
         m_DashSound.release();
 
