@@ -36,6 +36,8 @@ public class BossProjectile : MonoBehaviour
 
     [SerializeField] private float m_TimerBeforeNextMove = 1f;
 
+    private FMOD.Studio.EventInstance m_ProjectileAttack;
+
     private void Start()
     {
         if (!TryGetComponent(out m_BigBoss)) Debug.LogError("BossManager script not found in BossProjectile");
@@ -154,6 +156,10 @@ public class BossProjectile : MonoBehaviour
 
     private void SpawnProjectile(Vector3 _target, Vector3 _spawnPoint)
     {
+        m_ProjectileAttack = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Projectile Attack");
+        m_ProjectileAttack.start();
+        m_ProjectileAttack.release();
+
         ProjectileBehaviour.TypeProj type = GetTypeProjectile();
         GameObject newProj = type switch
         {

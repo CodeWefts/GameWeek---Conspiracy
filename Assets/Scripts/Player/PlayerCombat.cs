@@ -14,6 +14,8 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private int m_MaxHealth = 3;
     [SerializeField] private float m_IFramesTimer = 2f;
     private FMOD.Studio.EventInstance m_PlayerHit;
+    private FMOD.Studio.EventInstance m_PlayerAttack;
+    private FMOD.Studio.EventInstance m_PlayerDeath;
 
     private int m_Health;
 
@@ -83,10 +85,16 @@ public class PlayerCombat : MonoBehaviour
         {
             if (lEnemy.gameObject.TryGetComponent(out ProjectileBehaviour lProjectile))
             {
+                m_PlayerAttack = FMODUnity.RuntimeManager.CreateInstance("event:/Player Events/Player Attack");
+                m_PlayerAttack.start();
+                m_PlayerAttack.release();
                 lProjectile.ProjectileBounced();
             }
             else if (lEnemy.gameObject.TryGetComponent(out BossManager lBoss))
             {
+                m_PlayerAttack = FMODUnity.RuntimeManager.CreateInstance("event:/Player Events/Player Attack");
+                m_PlayerAttack.start();
+                m_PlayerAttack.release();
                 lBoss.TakeDamage(m_AttackDamage);
             }
         }
@@ -111,6 +119,9 @@ public class PlayerCombat : MonoBehaviour
 
             if (m_Health <= 0)
             {
+                m_PlayerDeath = FMODUnity.RuntimeManager.CreateInstance("event:/Player Events/Player Death");
+                m_PlayerDeath.start();
+                m_PlayerDeath.release();
                 Defeat();
             }
         }
