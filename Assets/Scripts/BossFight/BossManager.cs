@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class BossManager : MonoBehaviour
 {
@@ -19,6 +18,10 @@ public class BossManager : MonoBehaviour
     private DamageFlash m_DamageFlash = null;
 
     private Animator m_Animator = null;
+
+    private Coroutine m_StunedCoroutine = null;
+
+    [SerializeField] private GameObject m_Stuned = null;
 
     private FMOD.Studio.EventInstance m_BossDeath;
     private FMOD.Studio.EventInstance m_BossHit;
@@ -80,6 +83,10 @@ public class BossManager : MonoBehaviour
         if (!TryGetComponent(out m_Animator)) Debug.LogError("Animation script not found in BossManager");
 
         if (!m_GreenRedCursor) Debug.LogError("GreenRedCursor not set in BossManager");
+        if (!m_Stuned) Debug.LogError("Stuned effect not set in BossManager");
+        else
+            m_Stuned.SetActive(false);
+
         if (m_CenterOfMap == Vector3.zero) Debug.LogWarning("Center Of Map is set as zero zero zero in BossManager");
 
         m_Home = transform.position;
@@ -103,7 +110,10 @@ public class BossManager : MonoBehaviour
 
         m_Animator.SetBool("BossAOE", false);
         m_Animator.SetBool("BossProj", false);
-        m_Animator.SetBool("BossDash", false);
+        m_Animator.SetBool("BossDashPlayer", false);
+        m_Animator.SetBool("BossDashWaypoint", false);
+
+        m_Stuned.SetActive(false);
 
         switch (CurrentBossPhase)
         {
@@ -258,13 +268,13 @@ public class BossManager : MonoBehaviour
                 m_DashScrpt.DashToWaypoint();
                 m_Previous.Insert(0, ACTIONS.Dash_Random);
 
-                m_Animator.SetBool("BossDash", true);
+                m_Animator.SetBool("BossDashWaypoint", true);
                 break;
 
             case ACTIONS.Dash_Player:
                 m_DashScrpt.DashToPlayer();
                 m_Previous.Insert(0, ACTIONS.Dash_Player);
-                m_Animator.SetBool("BossDash", true);
+                m_Animator.SetBool("BossDashPlayer", true);
                 break;
 
             case ACTIONS.First_Movement:
@@ -279,6 +289,9 @@ public class BossManager : MonoBehaviour
     {
         Debug.Log("Boss is tired");
         while (IsBossBussy) { yield return null; };
+
+        m_Stuned.SetActive(true);
+
         m_BossStunned = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Stunned");
         m_BossStunned.start();
         m_BossStunned.release();
@@ -292,8 +305,7 @@ public class BossManager : MonoBehaviour
         IsBossBussy = false;
         IsBossVulnerable = true;
 
-        yield return new WaitForSeconds(m_BossVulnerableTimer);
-
+        yield return new WaitForSeconds(m_BossVulnerableTimer); // note: timer is 500000
         IsBossVulnerable = false;
         m_GreenRedCursor.transform.localPosition = Vector3.zero;
     }
@@ -308,7 +320,10 @@ public class BossManager : MonoBehaviour
             ACTIONS.First_Movement
         };
 
+        StopCoroutine(m_StunedCoroutine);
         IsBossVulnerable = false;
+
+        m_GreenRedCursor.transform.localPosition = Vector3.zero;
         m_DashScrpt.DashToCoord(m_Home);
         Transitions++;
     }
@@ -346,7 +361,7 @@ public class BossManager : MonoBehaviour
                 m_GreenRedKarma -= _dmg;
 
             Transitions++;
-            StartCoroutine(BossIsTired());
+            m_StunedCoroutine = StartCoroutine(BossIsTired());
             IsBossVulnerable = true;
         }
     }
