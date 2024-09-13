@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
@@ -12,6 +13,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float m_TimeBtwAttacks = 1f;
     [SerializeField] private int m_MaxHealth = 3;
     [SerializeField] private float m_IFramesTimer = 2f;
+    private FMOD.Studio.EventInstance m_PlayerHit;
 
     private int m_Health;
 
@@ -57,7 +59,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (Input.GetButtonDown(m_MeleeAttack) && m_AttackTimer >= m_TimeBtwAttacks)
         {
-            m_Animator.SetBool("IsAttacking",true);
+            m_Animator.SetBool("IsAttacking", true);
             MeleeAttack();
             m_AttackTimer = 0f;
         }
@@ -94,6 +96,9 @@ public class PlayerCombat : MonoBehaviour
     {
         if (m_Health > 0 && PlayerMovement.IsPlayerVulnerable)
         {
+            m_PlayerHit = FMODUnity.RuntimeManager.CreateInstance("event:/Player Events/Player Got Hit");
+            m_PlayerHit.start();
+            m_PlayerHit.release();
             PlayerInvincibilities();
 
             m_Health -= pDamage;

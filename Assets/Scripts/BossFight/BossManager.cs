@@ -55,10 +55,17 @@ public class BossManager : MonoBehaviour
 
     [SerializeField] private int m_NbBulletsAgainstPlayer = 10;
 
-    //private Coroutine m_CurrentAttack = null;
-
     private Vector3 m_Home = Vector3.zero;
     [SerializeField] private Vector3 m_CenterOfMap = Vector3.zero;
+    public int PlayerDamage = 1;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript))
+        {
+            playerScript.DamageTaken(PlayerDamage);
+        }
+    }
 
     private void Start()
     {

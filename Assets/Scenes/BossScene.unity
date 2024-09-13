@@ -973,6 +973,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1922059148919763878}
     - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_LifeBar
+      value: 
+      objectReference: {fileID: 1684332178}
+    - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_MaxHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_PlayerMovement
       value: 
       objectReference: {fileID: 1338568674}
@@ -1185,6 +1193,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1302044810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &1684332178 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7239233461128703909, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+  m_PrefabInstance: {fileID: 1302064311}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1786405137
 GameObject:
   m_ObjectHideFlags: 3
