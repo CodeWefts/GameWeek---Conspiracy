@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BossManager : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class BossManager : MonoBehaviour
     private DamageFlash m_DamageFlash = null;
 
     private Animator m_Animator = null;
+
+    private FMOD.Studio.EventInstance m_BossDeath;
+    private FMOD.Studio.EventInstance m_BossHit;
+    private FMOD.Studio.EventInstance m_BossStunned;
 
     [SerializeField] private GameObject m_GreenRedCursor = null;
 
@@ -57,15 +62,6 @@ public class BossManager : MonoBehaviour
 
     private Vector3 m_Home = Vector3.zero;
     [SerializeField] private Vector3 m_CenterOfMap = Vector3.zero;
-    public int PlayerDamage = 1;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript))
-        {
-            playerScript.DamageTaken(PlayerDamage);
-        }
-    }
 
     private void Start()
     {
@@ -89,8 +85,6 @@ public class BossManager : MonoBehaviour
     private void Update()
     {
         if (IsBossBussy || IsBossVulnerable || CurrentBossPhase == 4) return;
-
-        //m_CurrentAttack = null;
 
         m_Animator.SetBool("BossAOE", false);
         m_Animator.SetBool("BossProj", false);
@@ -248,6 +242,7 @@ public class BossManager : MonoBehaviour
             case ACTIONS.Dash_Random:
                 m_DashScrpt.DashToWaypoint();
                 m_Previous.Insert(0, ACTIONS.Dash_Random);
+
                 m_Animator.SetBool("BossDash", true);
                 break;
 
@@ -270,8 +265,14 @@ public class BossManager : MonoBehaviour
         Debug.Log("Boss is tired");
         while (IsBossBussy) { yield return null; };
 
-        //m_AOESpawnManager.StopAOE();
-        //m_DashScrpt.StopDash();
+        m_BossStunned = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Stunned");
+        m_BossStunned.start();
+        m_BossStunned.release();
+
+        // TODOSOUND : play stunned music
+        //m_BossStunned = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Stunned");
+        //m_BossStunned.start();
+        //m_BossStunned.release();
 
         m_Animator.SetBool("BossAOE", false);
         m_Animator.SetBool("BossProj", false);
@@ -297,8 +298,6 @@ public class BossManager : MonoBehaviour
             ACTIONS.First_Movement
         };
 
-        //StopCoroutine(m_CurrentAttack);
-        //m_CurrentAttack = null;
         IsBossVulnerable = false;
 
         m_DashScrpt.DashToCoord(m_Home);
@@ -325,6 +324,10 @@ public class BossManager : MonoBehaviour
         m_DamageFlash.CallDamageFlash();
         m_Animator.SetTrigger("BossHit");
 
+        m_BossHit = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Got Hit");
+        m_BossHit.start();
+        m_BossHit.release();
+
         if (m_GreenRedBar >= m_GreenRedMax || m_GreenRedBar <= -m_GreenRedMax)
         {
             if (_type == ProjectileBehaviour.TypeProj.BouncedGreen)
@@ -342,6 +345,10 @@ public class BossManager : MonoBehaviour
     {
         if (!IsBossVulnerable) return;
 
+        m_BossHit = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Got Hit");
+        m_BossHit.start();
+        m_BossHit.release();
+
         Health -= _dmg;
         m_DamageFlash.CallDamageFlash();
         m_Animator.SetTrigger("BossHit");
@@ -355,9 +362,12 @@ public class BossManager : MonoBehaviour
 
     private void BossIsDead()
     {
+        m_BossDeath = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Death");
+        m_BossDeath.start();
+        m_BossDeath.release();
+
         CurrentBossPhase++;
         m_DashScrpt.DashToCoord(m_Home);
-        //Destroy(gameObject, 10f);
 
         if (m_GreenRedKarma > 0)
             m_Animator.SetTrigger("BossGoodDeath");

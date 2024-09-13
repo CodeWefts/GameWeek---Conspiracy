@@ -3,8 +3,9 @@ using UnityEngine;
 public class AOEDeleteManager : MonoBehaviour
 {
     public int PlayerDamage = 1;
-    //[SerializeField] public GameObject destroyEffectObject;
     private bool isPhoneDestroyed = false;
+    private FMOD.Studio.EventInstance m_PhoneDestroyed;
+
     // Phone
     private void OnTriggerEnter(Collider other)
     {
@@ -14,13 +15,22 @@ public class AOEDeleteManager : MonoBehaviour
         }
         if (other.gameObject.tag == "AOEZone")
         {
-            Destroy(other.gameObject);
-            Destroy(gameObject, 0.1f);
             isPhoneDestroyed = true;
+
+            m_PhoneDestroyed = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Phone Attack");
+            m_PhoneDestroyed.start();
+            m_PhoneDestroyed.release();
+
+            Destroy(other.gameObject);
         }
         if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript) && isPhoneDestroyed)
         {
             playerScript.DamageTaken(PlayerDamage);
+        }
+
+        if (isPhoneDestroyed)
+        {
+            Destroy(gameObject, 0.1f);
         }
     }
 

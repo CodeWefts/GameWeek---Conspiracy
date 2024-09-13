@@ -43,6 +43,8 @@ public class AOESpawnManager : MonoBehaviour
     [SerializeField] public bool isRowFinish = false;
     [SerializeField] public bool isWavePhaseFinish = false;
 
+    private FMOD.Studio.EventInstance m_BossAOE;
+
     // ######################  PRIVATE  #######################
     // --------------------------------------------------------
 
@@ -193,10 +195,6 @@ public class AOESpawnManager : MonoBehaviour
             }
             else
             {
-                // Enable the invincibility of the player to let him pass through the AOE's Zone while it's spawning
-                if (isTargetPhase)
-                    m_PlayerScript.PlayerInvincibilities();
-
                 // Spawning of the AOE's Zone on the floor
                 GameObject newAOEZoneObject = Instantiate(AOEZoneObject);
                 newAOEZoneObject.transform.position = AOEPosition;
@@ -355,12 +353,22 @@ public class AOESpawnManager : MonoBehaviour
     public Coroutine PlayRandomAOE()
     {
         isRandomPhase = true;
+
+        m_BossAOE = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Launch AOE");
+        m_BossAOE.start();
+        m_BossAOE.release();
+
         return StartCoroutine(TimerForRandom());
     }
 
     public Coroutine PlayTargetAOE()
     {
         isTargetPhase = true;
+
+        m_BossAOE = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Launch AOE");
+        m_BossAOE.start();
+        m_BossAOE.release();
+
         return StartCoroutine(TimerForTarget());
     }
 
@@ -368,6 +376,11 @@ public class AOESpawnManager : MonoBehaviour
     {
         ResetWaves();
         isWavePhase = true;
+
+        m_BossAOE = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Launch AOE");
+        m_BossAOE.start();
+        m_BossAOE.release();
+
         return StartCoroutine(TimerForWave());
     }
 }

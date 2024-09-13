@@ -14,6 +14,8 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private int m_MaxHealth = 3;
     [SerializeField] private float m_IFramesTimer = 2f;
     private FMOD.Studio.EventInstance m_PlayerHit;
+    private FMOD.Studio.EventInstance m_PlayerAttack;
+    private FMOD.Studio.EventInstance m_PlayerDeath;
 
     private int m_Health;
 
@@ -36,6 +38,8 @@ public class PlayerCombat : MonoBehaviour
     private float m_AnimationEnd = 0.2f;
 
     [SerializeField] private Transform m_LifeBar;
+    [SerializeField] private GameObject m_GameOver;
+    [SerializeField] private GameObject m_GameWon;
 
     private List<Transform> m_HealthPointList = new List<Transform>();
 
@@ -70,6 +74,8 @@ public class PlayerCombat : MonoBehaviour
         {
             m_Animator.SetBool("IsAttacking", false);
         }
+
+        Victory();
     }
 
     private void MeleeAttack()
@@ -83,10 +89,16 @@ public class PlayerCombat : MonoBehaviour
         {
             if (lEnemy.gameObject.TryGetComponent(out ProjectileBehaviour lProjectile))
             {
+                m_PlayerAttack = FMODUnity.RuntimeManager.CreateInstance("event:/Player Events/Player Attack");
+                m_PlayerAttack.start();
+                m_PlayerAttack.release();
                 lProjectile.ProjectileBounced();
             }
             else if (lEnemy.gameObject.TryGetComponent(out BossManager lBoss))
             {
+                m_PlayerAttack = FMODUnity.RuntimeManager.CreateInstance("event:/Player Events/Player Attack");
+                m_PlayerAttack.start();
+                m_PlayerAttack.release();
                 lBoss.TakeDamage(m_AttackDamage);
             }
         }
@@ -111,6 +123,9 @@ public class PlayerCombat : MonoBehaviour
 
             if (m_Health <= 0)
             {
+                m_PlayerDeath = FMODUnity.RuntimeManager.CreateInstance("event:/Player Events/Player Death");
+                m_PlayerDeath.start();
+                m_PlayerDeath.release();
                 Defeat();
             }
         }
@@ -131,6 +146,26 @@ public class PlayerCombat : MonoBehaviour
 
     public void Defeat()
     {
+        Time.timeScale = 0f;
+        m_GameOver.SetActive(true);
+    }
+
+    public void Victory()
+    {
+        if (m_BigBoss.Health <= 0)
+        {
+            Time.timeScale = 0f;
+            m_GameWon.SetActive(true);
+        }
+    }
+
+    private void OnTriggerEnter(Collider _other)
+    {
+        if (_other.gameObject.layer == 6 /*Boss layer*/
+            && !m_BigBoss.IsBossVulnerable)
+        {
+            DamageTaken(1);
+        }
     }
 
 #if UNITY_EDITOR
