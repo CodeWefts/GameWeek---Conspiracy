@@ -1,0 +1,627 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8952317793867440228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music Events/Menu_Music
+  m_EditorClassIdentifier: 
+  Path: event:/Music Events/Menu_Music
+  Guid:
+    Data1: -1513468096
+    Data2: 1253087533
+    Data3: 1841777076
+    Data4: 1204479085
+  Banks:
+  - {fileID: -658597924697543399}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 42666
+--- !u!114 &-7943403193595910749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Boss Events/Boss Projectile Attack
+  m_EditorClassIdentifier: 
+  Path: event:/Boss Events/Boss Projectile Attack
+  Guid:
+    Data1: -811280363
+    Data2: 1300983730
+    Data3: -1376172134
+    Data4: -1767106596
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-7813857111204573031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Boss Events/Boss Dash
+  m_EditorClassIdentifier: 
+  Path: event:/Boss Events/Boss Dash
+  Guid:
+    Data1: 1932180305
+    Data2: 1144872552
+    Data3: 1310710945
+    Data4: -82026019
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-7127901364765552341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Assets/Audio/Build/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638618164945474564
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-5739871780566730921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Boss Events/Boss Got Hit
+  m_EditorClassIdentifier: 
+  Path: event:/Boss Events/Boss Got Hit
+  Guid:
+    Data1: -527765605
+    Data2: 1219890134
+    Data3: 1045753526
+    Data4: 2005798996
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-5677847239379005615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player Events/Player Attack
+  m_EditorClassIdentifier: 
+  Path: event:/Player Events/Player Attack
+  Guid:
+    Data1: 1259799583
+    Data2: 1143642715
+    Data3: 1882872766
+    Data4: -2031583048
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-4566436255055072479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/SFX.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Assets/Audio/Build/Build/Desktop/SFX.bank
+  Name: SFX
+  StudioPath: bank:/SFX
+  lastModified: 638618164946065825
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-2857339761285197974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/FightBoss_Music/End
+  m_EditorClassIdentifier: 
+  Name: End
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 1100550905
+    data2: 3697341436
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Fight
+  - Win
+  - Lose
+  Exists: 1
+--- !u!114 &-1951133671578565817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Boss Events/Boss Launch AOE
+  m_EditorClassIdentifier: 
+  Path: event:/Boss Events/Boss Launch AOE
+  Guid:
+    Data1: 227668865
+    Data2: 1118720951
+    Data3: 152132786
+    Data4: -667334898
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1657247785828725973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player Events/Player Got Hit
+  m_EditorClassIdentifier: 
+  Path: event:/Player Events/Player Got Hit
+  Guid:
+    Data1: 2146885916
+    Data2: 1120884852
+    Data3: -1246320973
+    Data4: -2082092027
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1111729380262544752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Boss Events/Boss Death
+  m_EditorClassIdentifier: 
+  Path: event:/Boss Events/Boss Death
+  Guid:
+    Data1: 1824021676
+    Data2: 1193289017
+    Data3: 318928043
+    Data4: 751584908
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-658597924697543399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Music.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Assets/Audio/Build/Build/Desktop/Music.bank
+  Name: Music
+  StudioPath: bank:/Music
+  lastModified: 638618164945945851
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-471076004259780437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI Events/UI Over Select
+  m_EditorClassIdentifier: 
+  Path: event:/UI Events/UI Over Select
+  Guid:
+    Data1: 1295023321
+    Data2: 1239953125
+    Data3: -800760433
+    Data4: -626107371
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  EditorBanks:
+  - {fileID: 7763247286275012867}
+  - {fileID: -7127901364765552341}
+  - {fileID: -658597924697543399}
+  - {fileID: -4566436255055072479}
+  EditorEvents:
+  - {fileID: -8952317793867440228}
+  - {fileID: 1758293431442556213}
+  - {fileID: 3050393283473426012}
+  - {fileID: -7943403193595910749}
+  - {fileID: -1657247785828725973}
+  - {fileID: -5677847239379005615}
+  - {fileID: 8742606480495263202}
+  - {fileID: -7813857111204573031}
+  - {fileID: 8787525476195563128}
+  - {fileID: -1951133671578565817}
+  - {fileID: 6328618326706087624}
+  - {fileID: 3378343432632435455}
+  - {fileID: -5739871780566730921}
+  - {fileID: -1111729380262544752}
+  - {fileID: 9055742825789319333}
+  - {fileID: -471076004259780437}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: -7127901364765552341}
+  StringsBanks:
+  - {fileID: 7763247286275012867}
+  cacheTime: 638618164946065825
+  cacheVersion: 131619
+--- !u!114 &1758293431442556213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music Events/FightBoss_Music
+  m_EditorClassIdentifier: 
+  Path: event:/Music Events/FightBoss_Music
+  Guid:
+    Data1: -82931489
+    Data2: 1150833961
+    Data3: -1467812223
+    Data4: -724096026
+  Banks:
+  - {fileID: -658597924697543399}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 6369705810073528131}
+  - {fileID: -2857339761285197974}
+  - {fileID: 4280957769879853523}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 702666
+--- !u!114 &3050393283473426012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Boss Events/Boss Stunned
+  m_EditorClassIdentifier: 
+  Path: event:/Boss Events/Boss Stunned
+  Guid:
+    Data1: 613671685
+    Data2: 1306712131
+    Data3: 709248135
+    Data4: -864229424
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &3378343432632435455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Boss Events/Boss Prepare Dash
+  m_EditorClassIdentifier: 
+  Path: event:/Boss Events/Boss Prepare Dash
+  Guid:
+    Data1: 1166710161
+    Data2: 1277582743
+    Data3: -1481970812
+    Data4: 1027620333
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4280957769879853523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/FightBoss_Music/Transitions
+  m_EditorClassIdentifier: 
+  Name: Transitions
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 0
+  ID:
+    data1: 309289218
+    data2: 3866915810
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &6328618326706087624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI Events/UI Press
+  m_EditorClassIdentifier: 
+  Path: event:/UI Events/UI Press
+  Guid:
+    Data1: 826143632
+    Data2: 1194370135
+    Data3: 1968288176
+    Data4: 445345768
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &6369705810073528131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/FightBoss_Music/Pause
+  m_EditorClassIdentifier: 
+  Name: Pause
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2715011372
+    data2: 3878767203
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &7763247286275012867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Assets/Audio/Build/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 638618164945474564
+  FileSizes:
+  - Name: 
+    Value: 1744
+  Exists: 1
+--- !u!114 &8742606480495263202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience Loop
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience Loop
+  Guid:
+    Data1: -1338417846
+    Data2: 1099655978
+    Data3: 573242279
+    Data4: -167931062
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 104789
+--- !u!114 &8787525476195563128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Boss Events/Boss Phone Attack
+  m_EditorClassIdentifier: 
+  Path: event:/Boss Events/Boss Phone Attack
+  Guid:
+    Data1: -1503932046
+    Data2: 1235008400
+    Data3: 708176272
+    Data4: 645934669
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &9055742825789319333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player Events/Player Death
+  m_EditorClassIdentifier: 
+  Path: event:/Player Events/Player Death
+  Guid:
+    Data1: 595195053
+    Data2: 1290348337
+    Data3: -408059754
+    Data4: 704746684
+  Banks:
+  - {fileID: -4566436255055072479}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
