@@ -159,6 +159,11 @@ public class AOESpawnManager : MonoBehaviour
             GameObject newAOEZoneObject = Instantiate(SpecialAOEZoneObject);
             newAOEZoneObject.transform.position = AOEPosition;
             isAOEspe = false;
+
+            // Spawning of the Phone for each AOE's Zone
+            Vector3 phoneHeight = new Vector3(0.0f, PlayerCameraObject.transform.position.y + AOEPhoneObject.transform.localScale.y, 0.0f);
+            GameObject newAOEPhoneObject = Instantiate(AOEPhoneObject);
+            newAOEPhoneObject.transform.position = AOEPosition + phoneHeight;
         }
         else
         {

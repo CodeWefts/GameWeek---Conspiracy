@@ -18,10 +18,10 @@ public class BossDeleteAOE : MonoBehaviour
         }
         if (other.gameObject.layer == 3 && other.gameObject.TryGetComponent(out PlayerCombat playerScript)) // PLAYER
         {
-            if (playerScript.PlayerMovement.IsPlayerVulnerable)
-            {
-                playerScript.DamageTaken(PlayerDamage);
-            }
+            //if (playerScript.PlayerMovement.IsPlayerVulnerable)
+            //{
+            playerScript.DamageTaken(PlayerDamage);
+            //}
         }
     }
 }
