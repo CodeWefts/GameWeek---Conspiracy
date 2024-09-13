@@ -39,6 +39,7 @@ public class BossDash : MonoBehaviour
     {
         m_StartPoint = transform.position;
         Vector3 destination = Player.transform.position;
+        destination.y = m_StartPoint.y;
 
         m_CurrentCoroutine = StartCoroutine(TravelTo(destination));
         m_IsTraveling = true;
