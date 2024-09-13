@@ -26,6 +26,8 @@ public class BossDash : MonoBehaviour
 
     private Coroutine m_CurrentCoroutine = null;
 
+    private FMOD.Studio.EventInstance m_DashSound;
+
     private void Start()
     {
         if (!TryGetComponent(out m_BigBoss)) Debug.LogError("BossManager script not foundin BossProjectile");
@@ -84,6 +86,10 @@ public class BossDash : MonoBehaviour
 
     private IEnumerator TravelTo(Vector3 _destination)
     {
+        m_DashSound = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Dash");
+        m_DashSound.start();
+        m_DashSound.release();
+
         m_IsTraveling = true;
         Vector3 direction = _destination - transform.position;
         direction.y = 0;

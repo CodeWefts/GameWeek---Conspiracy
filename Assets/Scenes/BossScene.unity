@@ -742,9 +742,7 @@ MonoBehaviour:
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
-  Params:
-  - Name: Transitions
-    Value: 0
+  Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
@@ -1198,6 +1196,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1302044810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &1684332178 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7239233461128703909, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+  m_PrefabInstance: {fileID: 1302064311}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1786405137
 GameObject:
   m_ObjectHideFlags: 3
@@ -1520,6 +1523,7 @@ MonoBehaviour:
   m_GreenRedMax: 1
   m_NbBulletsAgainstPlayer: 10
   m_CenterOfMap: {x: 0, y: 2, z: 0}
+  PlayerDamage: 1
 --- !u!4 &4588122476481085629
 Transform:
   m_ObjectHideFlags: 0
