@@ -577,6 +577,7 @@ GameObject:
   - component: {fileID: 1041164363}
   - component: {fileID: 1041164364}
   - component: {fileID: 1041164365}
+  - component: {fileID: 1041164366}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -762,16 +763,30 @@ MonoBehaviour:
       Data4: -724096026
     Path: event:/Music Events/FightBoss_Music
   Event: 
-  PlayEvent: 1
+  PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
-  Params: []
+  Params:
+  - Name: Transitions
+    Value: 1
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1041164366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041164358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a19c33a419bbf4290b1dd4c8ae51ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1088654303
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,6 +941,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6802939506241139850, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7086352199793902565, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
       propertyPath: m_Name
       value: UIInGame
@@ -939,6 +958,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+--- !u!1 &1302064312 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6802939506241139850, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+  m_PrefabInstance: {fileID: 1302064311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1302064313 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7805196041950876952, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+  m_PrefabInstance: {fileID: 1302064311}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1338568672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -996,13 +1025,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1922059148919763878}
     - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_GameWon
+      value: 
+      objectReference: {fileID: 1302064313}
+    - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_LifeBar
       value: 
       objectReference: {fileID: 1352431749}
     - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_GameOver
+      value: 
+      objectReference: {fileID: 1302064312}
+    - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_MaxHealth
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_BossManager
+      value: 
+      objectReference: {fileID: 1922059148919763878}
     - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_PlayerMovement
       value: 

@@ -376,7 +376,6 @@ public class BossManager : MonoBehaviour
 
         CurrentBossPhase++;
         m_DashScrpt.DashToCoord(m_Home);
-        //Destroy(gameObject, 10f);
 
         if (m_GreenRedKarma > 0)
             m_Animator.SetTrigger("BossGoodDeath");

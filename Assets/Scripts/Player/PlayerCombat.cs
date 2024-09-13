@@ -38,6 +38,8 @@ public class PlayerCombat : MonoBehaviour
     private float m_AnimationEnd = 0.2f;
 
     [SerializeField] private Transform m_LifeBar;
+    [SerializeField] private GameObject m_GameOver;
+    [SerializeField] private GameObject m_GameWon;
 
     private List<Transform> m_HealthPointList = new List<Transform>();
 
@@ -72,6 +74,8 @@ public class PlayerCombat : MonoBehaviour
         {
             m_Animator.SetBool("IsAttacking", false);
         }
+
+        Victory();
     }
 
     private void MeleeAttack()
@@ -142,6 +146,17 @@ public class PlayerCombat : MonoBehaviour
 
     public void Defeat()
     {
+        Time.timeScale = 0f;
+        m_GameOver.SetActive(true);
+    }
+
+    public void Victory()
+    {
+        if (m_BigBoss.Health <= 0)
+        {
+            Time.timeScale = 0f;
+            m_GameWon.SetActive(true);
+        }
     }
 
     private void OnTriggerEnter(Collider _other)
