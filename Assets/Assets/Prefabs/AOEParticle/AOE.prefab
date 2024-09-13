@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1641768414170120858}
   - component: {fileID: 9210835881693326640}
   - component: {fileID: 4541456771248664183}
-  - component: {fileID: 6745250568318678186}
+  - component: {fileID: 5265906669135120160}
   m_Layer: 10
   m_Name: AOE
   m_TagString: AOEZone
@@ -4917,8 +4917,8 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!65 &6745250568318678186
-BoxCollider:
+--- !u!135 &5265906669135120160
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4936,5 +4936,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}

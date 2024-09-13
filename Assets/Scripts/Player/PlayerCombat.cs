@@ -128,6 +128,15 @@ public class PlayerCombat : MonoBehaviour
     {
     }
 
+    private void OnTriggerEnter(Collider _other)
+    {
+        if (_other.gameObject.layer == 6 /*Boss layer*/
+            && !m_BigBoss.IsBossVulnerable)
+        {
+            DamageTaken(1);
+        }
+    }
+
 #if UNITY_EDITOR
 
     private void OnDrawGizmosSelected()

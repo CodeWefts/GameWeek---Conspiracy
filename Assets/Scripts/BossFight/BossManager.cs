@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BossManager : MonoBehaviour
 {
@@ -356,5 +357,19 @@ public class BossManager : MonoBehaviour
             m_Animator.SetTrigger("BossGoodDeath");
         else
             m_Animator.SetTrigger("BossBadDeath");
+    }
+
+    private void OnTriggerEnter(Collider _other)
+    {
+        if (_other.gameObject.layer == 3 /*Player layer*/
+            && !IsBossVulnerable)
+        {
+            if (_other.gameObject.TryGetComponent(out PlayerCombat _PCScript))
+            {
+                _PCScript.DamageTaken(1);
+            }
+            else
+                Debug.LogWarning("Weird collision just happened in Boss Manager");
+        }
     }
 }
