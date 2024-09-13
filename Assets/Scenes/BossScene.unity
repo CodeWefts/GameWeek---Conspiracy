@@ -933,6 +933,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+--- !u!1 &1302064312 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6802939506241139850, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+  m_PrefabInstance: {fileID: 1302064311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1302064313 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7805196041950876952, guid: 12eb27b4436e5fa4b861fae4a4c0bf6f, type: 3}
+  m_PrefabInstance: {fileID: 1302064311}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1338568672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -990,13 +1000,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1922059148919763878}
     - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_GameWon
+      value: 
+      objectReference: {fileID: 1302064313}
+    - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_LifeBar
       value: 
       objectReference: {fileID: 1352431749}
     - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_GameOver
+      value: 
+      objectReference: {fileID: 1302064312}
+    - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_MaxHealth
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
+      propertyPath: m_BossManager
+      value: 
+      objectReference: {fileID: 1922059148919763878}
     - target: {fileID: 2796834922261220455, guid: fa801d26b9458394698a5854b9275ce7, type: 3}
       propertyPath: m_PlayerMovement
       value: 
