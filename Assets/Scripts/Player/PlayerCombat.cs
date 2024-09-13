@@ -129,13 +129,13 @@ public class PlayerCombat : MonoBehaviour
                 m_PlayerDeath.release();
                 Defeat();
             }
-
-            PlayerInvincibilities();
         }
     }
 
     public void PlayerInvincibilities()
     {
+        PlayerMovement.IsPlayerVulnerable = false;
+
         StartCoroutine(IFramesCount());
     }
 
