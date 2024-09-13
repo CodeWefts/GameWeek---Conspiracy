@@ -87,7 +87,13 @@ public class BossManager : MonoBehaviour
         {
             ACTIONS.First_Movement
         };
+
+        IsBossBussy = true;
+        StartCoroutine(WaitForStart());
     }
+
+    private IEnumerator WaitForStart()
+    { yield return new WaitForSeconds(3f); IsBossBussy = false; }
 
     private void Update()
     {
