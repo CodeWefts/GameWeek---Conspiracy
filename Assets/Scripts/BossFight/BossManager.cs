@@ -86,8 +86,6 @@ public class BossManager : MonoBehaviour
     {
         if (IsBossBussy || IsBossVulnerable || CurrentBossPhase == 4) return;
 
-        //m_CurrentAttack = null;
-
         m_Animator.SetBool("BossAOE", false);
         m_Animator.SetBool("BossProj", false);
         m_Animator.SetBool("BossDash", false);
@@ -272,6 +270,9 @@ public class BossManager : MonoBehaviour
         m_BossStunned.release();
 
         // TODOSOUND : play stunned music
+        //m_BossStunned = FMODUnity.RuntimeManager.CreateInstance("event:/Boss Events/Boss Stunned");
+        //m_BossStunned.start();
+        //m_BossStunned.release();
 
         m_Animator.SetBool("BossAOE", false);
         m_Animator.SetBool("BossProj", false);
@@ -297,8 +298,6 @@ public class BossManager : MonoBehaviour
             ACTIONS.First_Movement
         };
 
-        //StopCoroutine(m_CurrentAttack);
-        //m_CurrentAttack = null;
         IsBossVulnerable = false;
 
         m_DashScrpt.DashToCoord(m_Home);
@@ -369,7 +368,6 @@ public class BossManager : MonoBehaviour
 
         CurrentBossPhase++;
         m_DashScrpt.DashToCoord(m_Home);
-        //Destroy(gameObject, 10f);
 
         if (m_GreenRedKarma > 0)
             m_Animator.SetTrigger("BossGoodDeath");
