@@ -40,7 +40,6 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private Transform m_LifeBar;
     [SerializeField] private GameObject m_GameOver;
     [SerializeField] private GameObject m_GameWon;
-    [SerializeField] private BossManager m_BossManager;
 
     private List<Transform> m_HealthPointList = new List<Transform>();
 
@@ -153,7 +152,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void Victory()
     {
-        if (m_BossManager.Health <= 0)
+        if (m_BigBoss.Health <= 0)
         {
             Time.timeScale = 0f;
             m_GameWon.SetActive(true);
